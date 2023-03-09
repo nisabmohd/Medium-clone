@@ -1,6 +1,7 @@
 import Post from "../components/Post";
 import SuggestionBar from "../components/SuggestionBar";
 import Topics from "../components/Topics";
+import TopPicks from "../components/TopPicks";
 import WhoToFollow from "../components/WhoToFollow";
 
 export default function Home() {
@@ -40,6 +41,7 @@ export default function Home() {
           gap: "38px",
         }}
       >
+        <TopPicks />
         <Topics />
         <WhoToFollow />
       </div>
