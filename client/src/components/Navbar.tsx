@@ -5,8 +5,6 @@ import {
   NotificationIcon,
   writeBlogIcon,
 } from "../assets/icons";
-import NotificationsNoneIcon from "@mui/icons-material/NotificationsNone";
-import NoteAltOutlinedIcon from "@mui/icons-material/NoteAltOutlined";
 import Search from "./Search";
 
 export default function Navbar() {
@@ -37,7 +35,7 @@ export default function Navbar() {
       <div
         className="right"
         style={{
-          marginRight: "45px",
+          marginRight: "25px",
           display: "flex",
           flexDirection: "row",
           alignItems: "center",

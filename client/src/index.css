@@ -7,3 +7,10 @@
 :root {
   --borderColor: rgba(242, 242, 242, 1)
 }
+
+.container {
+  width: 52%;
+  margin: auto;
+  min-height: 89vh;
+  max-height: fit-content;
+}

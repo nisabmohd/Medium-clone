@@ -58,3 +58,7 @@ $ npm run dev
 - Your client application should run on port 5137 with the _development_ environment configuration, so in your browser just go to [http://localhost:5173](http://localhost:5173)
 
 - Your server application should run on port 8000, so in your browser just go to [http://localhost:8000](http://localhost:8000)
+
+### Overview
+
+<img src="./screenshots/home.png" />
