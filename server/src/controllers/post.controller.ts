@@ -26,7 +26,7 @@ export const deletePost = asyncHandler((req, res, next) => {});
 
 export const savePost = asyncHandler((req, res, next) => {});
 
-export const suggestPosts = asyncHandler((req, res, next) => {});
+export const suggestTopPosts = asyncHandler((req, res, next) => {});
 
 export const suggestTopics = asyncHandler((req, res, next) => {});
 

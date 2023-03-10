@@ -7,6 +7,12 @@ const env = cleanEnv(process.env, {
   JWT_SECRET: str(),
   JWT_REFRESH_SECRET: str(),
   DEV: bool(),
+  CLIENT_URL: str(),
+  email: str(),
+  password: str(),
+  clientid: str(),
+  clientsecret: str(),
+  redirect_url: str(),
 });
 
 export default env;
