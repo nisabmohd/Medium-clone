@@ -27,7 +27,7 @@ VITE_API_URL=http://localhost:8000
 
 ## Environment variables Node setup
 
-create .env in root folder
+create .env file in server/ 
 
 ```
 PORT=8000
