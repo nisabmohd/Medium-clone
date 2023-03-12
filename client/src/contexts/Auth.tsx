@@ -1,5 +1,14 @@
-import React from "react";
+import { createContext, ReactNode, useContext } from "react";
 
-export default function Auth() {
-  return <div>Auth</div>;
+const Context = createContext<any>(undefined);
+
+type AuthProps = {
+  children: ReactNode;
+};
+export default function Auth({ children }: AuthProps) {
+  return <Context.Provider value={{}}>{children}</Context.Provider>;
+}
+
+export function useAuth() {
+  return useContext(Context);
 }
