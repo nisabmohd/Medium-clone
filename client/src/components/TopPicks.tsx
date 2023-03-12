@@ -1,6 +1,11 @@
 import StoryCard from "./StoryCard";
 
-export default function TopPicks() {
+type TopPicksProps = {
+  text: string;
+  showImg?: boolean;
+};
+
+export default function TopPicks({ text, showImg = false }: TopPicksProps) {
   return (
     <div style={{ width: "90%", marginLeft: "auto" }}>
       <h5
@@ -13,15 +18,15 @@ export default function TopPicks() {
           marginBottom: "22px",
         }}
       >
-        Top Picks
+        {text}
       </h5>
       <div
         className="story_top"
         style={{ display: "flex", flexDirection: "column", gap: "22px" }}
       >
-        <StoryCard />
-        <StoryCard />
-        <StoryCard />
+        <StoryCard showImg={showImg} />
+        <StoryCard showImg={showImg} />
+        <StoryCard showImg={showImg} />
       </div>
     </div>
   );

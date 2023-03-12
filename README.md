@@ -27,7 +27,7 @@ VITE_API_URL=http://localhost:8000
 
 ## Environment variables Node setup
 
-create .env file in server/ 
+create .env file in server/
 
 ```
 PORT=8000
@@ -62,3 +62,4 @@ $ npm run dev
 ### Overview
 
 <img src="./screenshots/home.png" />
+<img src="./screenshots/post.png" />

@@ -1,6 +1,10 @@
-export default function StoryCard() {
+type StoryCardProps = {
+  showImg: boolean;
+};
+
+export default function StoryCard({ showImg }: StoryCardProps) {
   return (
-    <div style={{ marginLeft: "8px" }}>
+    <div style={{ marginLeft: "8px", marginBottom: showImg ? "15px" : "0px" }}>
       <div
         className="firstLine"
         style={{
@@ -17,8 +21,8 @@ export default function StoryCard() {
         />
         <p
           style={{
-            fontFamily: "Roboto Slab",
-            fontSize: "12.5px",
+            fontFamily: "Roboto",
+            fontSize: "13.95px",
             fontWeight: "500",
             color: "rgb(64 64 64)",
           }}
@@ -26,7 +30,10 @@ export default function StoryCard() {
           Manish Salunke
         </p>
       </div>
-      <div className="post_details">
+      <div
+        className="post_details"
+        style={{ display: "flex", flexDirection: "row" }}
+      >
         <p
           style={{
             fontFamily: "Poppins",
@@ -37,6 +44,15 @@ export default function StoryCard() {
         >
           Functional Programming with React and Redux
         </p>
+        {showImg && (
+          <div className="img">
+            <img
+              style={{ marginTop: "-12px", width: "51px" }}
+              src="https://miro.medium.com/v2/resize:fill:101:101/1*sKKbnXiHhuHwgJxosQLaQQ.png"
+              alt=""
+            />
+          </div>
+        )}
       </div>
     </div>
   );

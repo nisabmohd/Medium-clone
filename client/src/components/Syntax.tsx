@@ -9,7 +9,7 @@ export default function Syntax({ children }: SyntaxProps) {
     <div
       style={{
         margin: "20px 0",
-        fontSize: "13.85px",
+        fontSize: "13.55px",
         lineHeight: "27px",
         fontFamily: "Roboto Slab",
       }}

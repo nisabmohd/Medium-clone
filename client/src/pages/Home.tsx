@@ -41,7 +41,7 @@ export default function Home() {
           gap: "38px",
         }}
       >
-        <TopPicks />
+        <TopPicks text="Top Picks" />
         <Topics />
         <WhoToFollow />
       </div>
