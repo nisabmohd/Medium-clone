@@ -4,6 +4,7 @@ import {
   editUser,
   followUser,
   getUser,
+  getUserIntrests,
   suggestUsers,
   unfollowUser,
 } from "../controllers/user.controller";
@@ -16,6 +17,8 @@ router
   .delete(isAuthenticated, deleteUser);
 
 router.route("/suggest").get(isAuthenticated, suggestUsers);
+
+router.route("/intrests").get(isAuthenticated, getUserIntrests);
 
 router.route("/:userId").get(getUser);
 

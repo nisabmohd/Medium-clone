@@ -14,7 +14,7 @@ const userSchema = new Schema(
       type: Schema.Types.ObjectId,
       required: true,
     },
-    tag: [{ type: Schema.Types.ObjectId, ref: "tags" }],
+    tags: [{ type: String, required: true }],
     votes: [{ type: Schema.Types.ObjectId, ref: "users" }],
     comments: [
       {

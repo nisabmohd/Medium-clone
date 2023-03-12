@@ -80,3 +80,8 @@ export const getUser = asyncHandler(async (req, res, next) => {
   if (!user) throw new ServerError(400, "User doesn't exist");
   res.json(user);
 });
+
+export const getUserIntrests = asyncHandler(async (req, res, next) => {
+  const intrests = await User.findOne({ _id: req.userId }, { intrests: 1 });
+  res.send(intrests);
+});

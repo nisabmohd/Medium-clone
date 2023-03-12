@@ -20,6 +20,7 @@ const userSchema = new Schema(
         posts: [{ type: Schema.Types.ObjectId, ref: "posts" }],
       },
     ],
+    intrests: [{ type: String, required: true }],
   },
   { timestamps: true }
 );

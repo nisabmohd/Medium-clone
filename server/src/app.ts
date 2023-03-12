@@ -1,5 +1,5 @@
-import expreess from "express";
-export const app = expreess();
+import express from "express";
+export const app = express();
 import env from "./utils/envalid";
 import logger from "./middlewares/logger";
 import postRouter from "./routers/post";
@@ -12,7 +12,8 @@ if (isProd) {
   app.use(logger);
 }
 app.use(cors());
-app.use(expreess.json());
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
 declare global {
   namespace Express {
