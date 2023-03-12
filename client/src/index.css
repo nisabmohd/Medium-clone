@@ -1,7 +1,6 @@
 * {
   margin: 0;
   padding: 0;
-  font-family: 'Roboto', sans-serif;
 }
 
 :root {
@@ -13,4 +12,43 @@
   margin: auto;
   min-height: 89vh;
   max-height: fit-content;
+}
+
+.markdown {
+  white-space: break-spaces;
+  margin-top: -58px;
+  font-size: 17.75px;
+  line-height: 36px;
+  font-family: 'Roboto Slab', serif;
+  color: rgb(80 80 80) !important;
+}
+
+.markdown>h1,
+h2,
+h3,
+h4 {
+  margin: 15px 0;
+  font-family: 'Poppins';
+  color: black;
+  font-weight: bold;
+}
+
+.markdown>h5,
+h6 {
+  margin: 8px 0;
+  color: black;
+  font-family: 'Poppins';
+}
+
+.markdown li {
+  margin-left: 25px;
+}
+
+.markdown>br {
+  margin-top: -66px;
+  margin-bottom: -18px;
+}
+
+.code {
+  font-size: 16px !important;
 }

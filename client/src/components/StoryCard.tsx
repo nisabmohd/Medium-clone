@@ -17,10 +17,10 @@ export default function StoryCard() {
         />
         <p
           style={{
-            fontFamily: "Questrial",
-            fontSize: "14.5px",
+            fontFamily: "Roboto Slab",
+            fontSize: "12.5px",
             fontWeight: "500",
-            color: "#514e4e",
+            color: "rgb(64 64 64)",
           }}
         >
           Manish Salunke

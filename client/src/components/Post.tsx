@@ -26,11 +26,15 @@ export default function Post() {
           src="https://miro.medium.com/v2/resize:fill:79:79/1*59QlNEVxLou5mkeqJANSAA.jpeg"
           alt=""
         />
-        <p style={{ fontSize: "15px", fontFamily: "Questrial" }}>
+        <p style={{ fontSize: "15px", fontFamily: "Roboto Slab" }}>
           Antonio Castillo .
         </p>
         <p
-          style={{ fontSize: "13.5px", color: "gray", fontFamily: "Questrial" }}
+          style={{
+            fontSize: "13.5px",
+            color: "gray",
+            fontFamily: "Roboto Slab",
+          }}
         >
           Feb 17
         </p>
@@ -51,9 +55,10 @@ export default function Post() {
             style={{
               fontSize: "15.25px",
               marginTop: "10px",
-              letterSpacing: "0.5px",
+              letterSpacing: "0.2px",
               lineHeight: "25px",
-              fontFamily: "Questrial",
+              fontFamily: "Roboto Slab",
+              color: "rgb(80 80 80)",
             }}
           >
             Sometimes doing less is more, when it comes to optimizing

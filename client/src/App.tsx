@@ -4,6 +4,7 @@ import { Routes, Route } from "react-router-dom";
 import Login from "./pages/Login";
 import AuthRedirect from "./pages/AuthRedirect";
 import Authentication from "./router/Authentication";
+import Post from "./pages/Post";
 
 export default function App() {
   return (
@@ -14,6 +15,14 @@ export default function App() {
           element={
             <Authentication>
               <Home />
+            </Authentication>
+          }
+        />
+        <Route
+          path="/blog/:id"
+          element={
+            <Authentication>
+              <Post />
             </Authentication>
           }
         />
