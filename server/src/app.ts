@@ -6,6 +6,7 @@ import postRouter from "./routers/post";
 import authRouter from "./routers/auth";
 import userRouter from "./routers/user";
 import cors from "cors";
+import { errorHandler } from "./middlewares/errorHandler";
 
 const isProd = !env.DEV;
 if (isProd) {
@@ -30,3 +31,5 @@ app.get("/test", (req, res) => {
 app.use("/post", postRouter);
 app.use("/auth", authRouter);
 app.use("/user", userRouter);
+
+app.use(errorHandler);

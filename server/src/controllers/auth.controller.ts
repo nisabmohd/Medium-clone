@@ -5,13 +5,29 @@ import jwt from "jsonwebtoken";
 import qs from "qs";
 import env from "../utils/envalid";
 import Token from "../models/token";
+import { JWTPayload } from "../middlewares/auth";
+import ServerError from "../utils/ServerError";
 
 export const emailLogin = asyncHandler((req, res, next) => {});
 
-export const logout = asyncHandler((req, res, next) => {});
+export const tokenRefresh = asyncHandler((req, res, next) => {
+  const { token } = req.body;
+  const decoded = <JWTPayload>jwt.verify(token, env.JWT_REFRESH_SECRET);
+  const access_token = jwt.sign({ id: decoded._id }, env.JWT_SECRET, {
+    expiresIn: "30m",
+  });
+  res.json({ access_token });
+});
+
+export const logout = asyncHandler(async (req, res, next) => {
+  const { refresh_token } = req.body;
+  const loggedOut = await Token.deleteOne({ token: refresh_token });
+  if (!loggedOut.deletedCount)
+    throw new ServerError(4000, "Something went wrong!");
+  res.json({ message: "logged out succesfully" });
+});
 
 export const googleAuth = asyncHandler(async (req, res, next) => {
-  // console.log(req);
   const { id_token, access_token } = await getUserFromCode(
     req.query.code as string
   );
@@ -60,7 +76,6 @@ async function getUserFromCode(code: string) {
     return res.data;
   } catch (error) {
     console.error(error);
-    // throw new Error(error);
   }
 }
 
@@ -77,6 +92,5 @@ async function userDetails(access_token: string, id_token: string) {
     .then((res) => res.data)
     .catch((error) => {
       console.error(`Failed to fetch user`);
-      throw new Error(error.message);
     });
 }
