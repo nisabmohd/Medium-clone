@@ -70,7 +70,9 @@ export const unfollowUser = asyncHandler(async (req, res, next) => {
 
 export const suggestUsers = asyncHandler(async (req, res, next) => {
   const { userId } = req;
-  const users = await User.find({ followers: { $ne: userId } }).limit(3);
+  const users = await User.find({
+    $and: [{ _id: { $ne: userId } }, { followers: { $ne: userId } }],
+  }).limit(3);
   res.send(users);
 });
 

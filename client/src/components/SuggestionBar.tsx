@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { Link } from "react-router-dom";
 import { plusIcon } from "../assets/icons";
 export const OPTIONS = [
@@ -11,6 +12,7 @@ export const OPTIONS = [
 ];
 
 export default function SuggestionBar() {
+  const [options, setOptions] = useState<Array<any>>([]);
   return (
     <div
       style={{

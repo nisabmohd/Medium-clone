@@ -1,4 +1,10 @@
-export default function UserCard() {
+type UserCardProps = {
+  name: string;
+  bio?: string;
+  _id: string;
+  avatar: string;
+};
+export default function UserCard({ name, _id, avatar, bio }: UserCardProps) {
   return (
     <div
       style={{
@@ -12,7 +18,7 @@ export default function UserCard() {
     >
       <img
         style={{ width: "36px", borderRadius: "50%", marginTop: "-5px" }}
-        src="https://miro.medium.com/v2/resize:fill:176:176/1*UE3dW9kYPqYw5uaDS04iBg.jpeg"
+        src={avatar}
         alt=""
       />
       <div className="name_details">
@@ -23,7 +29,7 @@ export default function UserCard() {
             fontSize: "13.75px",
           }}
         >
-          Sergio Pereira
+          {name}
         </p>
         <p
           style={{
@@ -34,7 +40,7 @@ export default function UserCard() {
             color: "#606060",
           }}
         >
-          Entrepreneur | CTO | Remote Work Lover. Writing daily on..
+          {bio?.slice(0, 62) + "..."}
         </p>
       </div>
       <button

@@ -1,7 +1,13 @@
+import { useQuery } from "@tanstack/react-query";
+import { url } from "../baseUrl";
+import { httpRequest } from "../interceptor/axiosInterceptor";
 import Chip from "./Chip";
-import { OPTIONS } from "./SuggestionBar";
 
 export default function Topics() {
+  const { data } = useQuery({
+    queryFn: () => httpRequest.get(`${url}/post/suggest/topics`),
+    queryKey: [],
+  });
   return (
     <div style={{ width: "90%", marginLeft: "auto" }}>
       <h5
@@ -23,21 +29,19 @@ export default function Topics() {
           flexWrap: "wrap",
         }}
       >
-        {OPTIONS.map((item) => {
-          return (
-            <Chip
-              style={{
-                backgroundColor: "rgb(242, 242, 242)",
-                fontFamily: "Questrial",
-                padding: "10px 18px",
-                margin: "4.5px 3px",
-                fontSize: "13.8px",
-              }}
-              key={item}
-              text={item}
-            />
-          );
-        })}
+        {data?.data.map((item: { _id: string; name: string }) => (
+          <Chip
+            style={{
+              backgroundColor: "rgb(242, 242, 242)",
+              fontFamily: "Questrial",
+              padding: "10px 18px",
+              margin: "4.5px 3px",
+              fontSize: "13.8px",
+            }}
+            key={item._id}
+            text={item.name}
+          />
+        ))}
       </div>
     </div>
   );

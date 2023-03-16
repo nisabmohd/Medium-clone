@@ -16,11 +16,14 @@
 
 .markdown {
   white-space: break-spaces;
-  margin-top: -58px;
   font-size: 17.75px;
   line-height: 36px;
   font-family: 'Roboto Slab', serif;
   color: rgb(80 80 80) !important;
+}
+
+.markdown img {
+  margin: 14px 0px;
 }
 
 .markdown>h1,
