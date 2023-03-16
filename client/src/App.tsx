@@ -5,13 +5,14 @@ import Login from "./pages/Login";
 import AuthRedirect from "./pages/AuthRedirect";
 import Authentication from "./router/Authentication";
 import Post from "./pages/Post";
+import Notifications from "./pages/Notifications";
 
 export default function App() {
   return (
     <div className="App" style={{ height: "100vh" }}>
       <Routes>
         <Route
-          path="/"
+          path="/tag?/:tag?"
           element={
             <Authentication>
               <Home />
@@ -23,6 +24,14 @@ export default function App() {
           element={
             <Authentication>
               <Post />
+            </Authentication>
+          }
+        />
+        <Route
+          path="/notifications"
+          element={
+            <Authentication>
+              <Notifications />
             </Authentication>
           }
         />

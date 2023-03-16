@@ -6,7 +6,7 @@ type LinkProps = {
 };
 export default function Chip({ text, style }: LinkProps) {
   return (
-    <Link to={`/tags/${text}`} style={{ ...defaultStyle, ...style }}>
+    <Link to={`/tag/${text}`} style={{ ...defaultStyle, ...style }}>
       {text}
     </Link>
   );

@@ -1,4 +1,4 @@
-import {} from "react";
+import { Link } from "react-router-dom";
 import {
   carrotIcon,
   mediumLogo,
@@ -29,7 +29,7 @@ export default function Navbar() {
           gap: "17px",
         }}
       >
-        {mediumLogo}
+        <Link to="/">{mediumLogo}</Link>
         <Search />
       </div>
       <div
@@ -43,7 +43,8 @@ export default function Navbar() {
           height: "100%",
         }}
       >
-        <div
+        <Link
+          to="/write"
           className="writeBtn"
           style={{
             display: "flex",
@@ -51,17 +52,18 @@ export default function Navbar() {
             alignItems: "center",
             color: "gray",
             gap: "8px",
+            textDecoration: "none",
           }}
         >
           <span style={{ color: "rgba(117, 117, 117, 1)" }}>
             {writeBlogIcon}
           </span>
           <p style={{ fontSize: "14.5px", marginTop: "-4px" }}>Write</p>
-        </div>
+        </Link>
         <div className="notifactionBtn">
-          <span style={{ color: "rgba(117, 117, 117, 1)" }}>
+          <Link to="/notifications" style={{ color: "rgba(117, 117, 117, 1)" }}>
             {NotificationIcon}
-          </span>
+          </Link>
         </div>
         <div
           className="avatar"

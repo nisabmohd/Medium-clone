@@ -22,6 +22,7 @@ const userSchema = new Schema(
         comment: String,
       },
     ],
+    image: String,
   },
   { timestamps: true }
 );

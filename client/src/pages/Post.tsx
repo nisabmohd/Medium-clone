@@ -26,7 +26,7 @@ export default function Post() {
   if (error) return <p>{error.toString()}</p>;
   if (isLoading) return <p>Loading ...</p>;
 
-  document.title = data!.data.title;
+  document.title = data!.data.post.title;
   return (
     <div
       className="container"
@@ -60,10 +60,10 @@ export default function Post() {
               fontSize: "32px",
             }}
           >
-            {data?.data.title}
+            {data?.data.post.title}
           </h1>
           <div className="markdown">
-            <Markdown>{data?.data.markdown}</Markdown>
+            <Markdown>{data?.data.post.markdown}</Markdown>
           </div>
           <div
             className="bottomScreen"
@@ -72,7 +72,7 @@ export default function Post() {
             }}
           >
             <div className="relatedTags">
-              {data?.data.tags.map((item: string) => {
+              {data?.data.post.tags.map((item: string) => {
                 return (
                   <Chip
                     key={item}

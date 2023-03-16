@@ -1,32 +1,41 @@
 import asyncHandler from "express-async-handler";
+import post from "../models/post";
 import Post from "../models/post";
 import Tag from "../models/tag";
+import User from "../models/user";
 import ServerError from "../utils/ServerError";
 
 export const getUserPost = asyncHandler(async (req, res, next) => {
-  res.send(await Post.find({ userId: req.params.userId }));
+  const user = await User.findOne({ _id: req.params.userId });
+  res.send({ user, posts: await Post.find({ userId: req.params.userId }) });
 });
 
 // todo
 // pagination
 export const getHomePost = asyncHandler(async (req, res, next) => {
   const { userId } = req;
-  const posts = await Post.find({ userId: { $ne: userId } });
+  const posts = await getPostsWithUser(Post.find({ userId: { $ne: userId } }));
   res.send(posts);
 });
 
 export const getPost = asyncHandler(async (req, res, next) => {
   const post = await Post.findOne({ _id: req.params.postId });
   if (!post) throw new ServerError(400, "No such post found!");
-  res.send(post);
+  const user = await User.findOne({ _id: post.userId });
+  res.send({ post, user });
 });
 
 export const writePost = asyncHandler(async (req, res, next) => {
   const { userId } = req;
+  var myRegex = /<img[^>]+src="(https?:\/\/[^">]+)"/g;
+  var test = req.body.markdown ?? "";
+  const urls = myRegex.exec(test);
+  const imgUrl = urls?.at(1);
   const postRef = new Post({
     ...req.body,
     tags: req.body.tags.split(","),
     userId,
+    image: imgUrl,
   });
   const post = await postRef.save();
   Promise.all(
@@ -78,6 +87,17 @@ export const suggestTopics = asyncHandler(async (req, res, next) => {
   res.send(tags);
 });
 
+// pagination todo
 export const getPostOfTopic = asyncHandler(async (req, res, next) => {
-  res.send(await Post.find({ tags: req.params.topic }));
+  res.send(await getPostsWithUser(Post.find({ tags: req.params.topic })));
 });
+
+async function getPostsWithUser(q: any) {
+  const posts = await q;
+  return Promise.all(
+    posts.map(async (post: any) => {
+      const user = await User.findOne({ _id: post.userId });
+      return { post, user };
+    })
+  );
+}
