@@ -14,7 +14,7 @@ export const emailLogin = asyncHandler((req, res, next) => {});
 export const tokenRefresh = asyncHandler((req, res, next) => {
   const { token } = req.body;
   const decoded = <JWTPayload>jwt.verify(token, env.JWT_REFRESH_SECRET);
-  const access_token = jwt.sign({ id: decoded._id }, env.JWT_SECRET, {
+  const access_token = jwt.sign({ _id: decoded._id }, env.JWT_SECRET, {
     expiresIn: "30m",
   });
   res.json({ access_token });

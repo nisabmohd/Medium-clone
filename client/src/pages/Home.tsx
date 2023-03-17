@@ -18,6 +18,7 @@ export default function Home() {
     enabled: tag == undefined,
     onSuccess: (data) => {
       console.log(data.data, "home");
+      setposts(data.data);
     },
   });
   useQuery({
@@ -26,6 +27,7 @@ export default function Home() {
     enabled: tag != undefined,
     onSuccess: (data) => {
       console.log(data.data, "topic");
+      setposts(data.data);
     },
   });
 
@@ -48,12 +50,21 @@ export default function Home() {
         }}
       >
         <SuggestionBar />
-        <Post />
-        <Post />
-        <Post />
-        <Post />
-        <Post />
-        <Post />
+        {posts.map((item) => {
+          return (
+            <Post
+              postId={item.post._id}
+              timestamp={item.post.createdAt}
+              title={item.post.title}
+              username={item.user.name}
+              image={item.post.image}
+              tag={"Java"}
+              userImage={item.user.avatar}
+              key={item.post._id}
+              summary={item.post.summary}
+            />
+          );
+        })}
       </div>
       <div
         className="rightbar"

@@ -1,7 +1,28 @@
+import { Link } from "react-router-dom";
 import { moreIcon, mutePost, savePost } from "../assets/icons";
 import Chip from "./Chip";
 
-export default function Post() {
+type PostProps = {
+  title: string;
+  image?: string;
+  username: string;
+  userImage?: string;
+  timestamp: string;
+  postId: string;
+  tag?: string;
+  summary: string;
+};
+
+export default function Post({
+  postId,
+  timestamp,
+  title,
+  username,
+  image,
+  tag,
+  summary,
+  userImage,
+}: PostProps) {
   return (
     <div
       style={{
@@ -23,11 +44,11 @@ export default function Post() {
       >
         <img
           style={{ width: "26px", borderRadius: "50%" }}
-          src="https://miro.medium.com/v2/resize:fill:79:79/1*59QlNEVxLou5mkeqJANSAA.jpeg"
+          src={userImage}
           alt=""
         />
         <p style={{ fontSize: "15px", fontFamily: "Roboto Slab" }}>
-          Antonio Castillo .
+          {username}
         </p>
         <p
           style={{
@@ -48,10 +69,20 @@ export default function Post() {
         }}
       >
         <div className="left_post">
-          <h2 style={{ fontFamily: "Poppins" }}>
-            Simple ways to improve your React app performance without useMemo.
+          <h2 style={{ margin: "8px 0", marginTop: "2px" }}>
+            <Link
+              to={`/blog/${postId}`}
+              style={{
+                fontFamily: "Poppins",
+                color: "inherit",
+                textDecoration: "none",
+              }}
+            >
+              {title}
+            </Link>
           </h2>
-          <p
+          <Link
+            to={`/blog/${postId}`}
             style={{
               fontSize: "15.25px",
               marginTop: "10px",
@@ -59,12 +90,11 @@ export default function Post() {
               lineHeight: "25px",
               fontFamily: "Roboto Slab",
               color: "rgb(80 80 80)",
+              textDecoration: "none",
             }}
           >
-            Sometimes doing less is more, when it comes to optimizing
-            performance of a react application a lot of the times this is the
-            case,....
-          </p>
+            {summary.slice(0, 189) + "..."}
+          </Link>
 
           <div
             className="actions"
@@ -85,7 +115,7 @@ export default function Post() {
                 gap: "15px",
               }}
             >
-              <Chip text="Programming" />
+              {tag && <Chip text={tag} />}
               <p style={{ color: "gray", fontSize: "13.25px" }}>4 min read</p>
             </div>
             <div
@@ -116,11 +146,7 @@ export default function Post() {
           </div>
         </div>
         <div className="image">
-          <img
-            style={{ width: "110px" }}
-            src="https://miro.medium.com/v2/resize:fill:101:101/1*V_9YbY81qDz2-2pAxd8Y4A.jpeg"
-            alt=""
-          />
+          {image && <img style={{ width: "110px" }} src={image} alt="" />}
         </div>
       </div>
     </div>

@@ -27,15 +27,18 @@ export const getPost = asyncHandler(async (req, res, next) => {
 
 export const writePost = asyncHandler(async (req, res, next) => {
   const { userId } = req;
-  var myRegex = /<img[^>]+src="(https?:\/\/[^">]+)"/g;
-  var test = req.body.markdown ?? "";
-  const urls = myRegex.exec(test);
-  const imgUrl = urls?.at(1);
+  var test: string = req.body.markdown ?? "";
+  var imgRegex = /<img.*?src=['"](.*?)['"]/;
+  const imgUrl = imgRegex.exec(test)?.at(1);
+  const htmlRegexG = /<(?:"[^"]*"['"]*|'[^']*'['"]*|[^'">])+>/g;
+  const summary = test.replace(htmlRegexG, "");
+  console.log(imgRegex.exec(test)?.at(1));
   const postRef = new Post({
     ...req.body,
     tags: req.body.tags.split(","),
     userId,
     image: imgUrl,
+    summary,
   });
   const post = await postRef.save();
   Promise.all(

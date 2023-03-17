@@ -18,7 +18,10 @@ export default function UserCard({ name, _id, avatar, bio }: UserCardProps) {
     >
       <img
         style={{ width: "36px", borderRadius: "50%", marginTop: "-5px" }}
-        src={avatar}
+        src={
+          avatar ??
+          "https://firebasestorage.googleapis.com/v0/b/upload-pics-e599e.appspot.com/o/images%2F1_dmbNkD5D-u45r44go_cf0g.png?alt=media&token=3ef51503-f601-448b-a55b-0682607ddc8a"
+        }
         alt=""
       />
       <div className="name_details">
@@ -40,7 +43,7 @@ export default function UserCard({ name, _id, avatar, bio }: UserCardProps) {
             color: "#606060",
           }}
         >
-          {bio?.slice(0, 62) + "..."}
+          {bio && (bio.length > 62 ? bio?.slice(0, 62) + "..." : bio)}
         </p>
       </div>
       <button
@@ -51,6 +54,7 @@ export default function UserCard({ name, _id, avatar, bio }: UserCardProps) {
           borderRadius: "17px",
           padding: "7px 14px",
           cursor: "pointer",
+          marginLeft: "auto",
         }}
       >
         Follow
