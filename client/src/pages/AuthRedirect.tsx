@@ -2,21 +2,23 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { url } from "../baseUrl";
+import { useAuth } from "../contexts/Auth";
 import useLocalStorage, { clearLocalStorage } from "../hooks/useLocalStorage";
 
 export default function AuthRedirect() {
   const [err, setErr] = useState<string | undefined>(undefined);
   const [query] = useSearchParams();
   const navigate = useNavigate();
-  const [refreshToken, setRefreshToken] = useLocalStorage<string | undefined>(
+  const [_, setRefreshToken] = useLocalStorage<string | undefined>(
     "refresh_token",
     undefined
   );
-  const [accessToken, setAccessToken] = useLocalStorage<string | undefined>(
+  const [__, setAccessToken] = useLocalStorage<string | undefined>(
     "access_token",
     undefined
   );
-  const [user, setUser] = useLocalStorage<any>("user", undefined);
+  const [___, setUser] = useLocalStorage<any>("user", undefined);
+  const { handleUser } = useAuth();
 
   useEffect(() => {
     axios
@@ -30,6 +32,7 @@ export default function AuthRedirect() {
         setAccessToken(query.get("access_token") as string);
         setRefreshToken(query.get("refresh_token") as string);
         setUser(res.data);
+        handleUser(res.data);
         navigate("/");
       })
       .catch((err) => {

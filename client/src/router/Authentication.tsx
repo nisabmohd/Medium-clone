@@ -1,15 +1,12 @@
 import { ReactNode } from "react";
-import Navbar from "../components/Navbar";
+import { Navigate } from "react-router-dom";
+import { useAuth } from "../contexts/Auth";
 
 type AuthenticationProps = {
   children: ReactNode;
 };
 
 export default function Authentication({ children }: AuthenticationProps) {
-  return (
-    <>
-      <Navbar />
-      {children}
-    </>
-  );
+  const { isAuthenticated } = useAuth();
+  return isAuthenticated ? <>{children}</> : <Navigate to="/" />;
 }

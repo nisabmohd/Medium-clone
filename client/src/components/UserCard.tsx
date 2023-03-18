@@ -1,3 +1,5 @@
+import { Link } from "react-router-dom";
+
 type UserCardProps = {
   name: string;
   bio?: string;
@@ -16,24 +18,29 @@ export default function UserCard({ name, _id, avatar, bio }: UserCardProps) {
         margin: "12px 0",
       }}
     >
-      <img
-        style={{ width: "36px", borderRadius: "50%", marginTop: "-5px" }}
-        src={
-          avatar ??
-          "https://firebasestorage.googleapis.com/v0/b/upload-pics-e599e.appspot.com/o/images%2F1_dmbNkD5D-u45r44go_cf0g.png?alt=media&token=3ef51503-f601-448b-a55b-0682607ddc8a"
-        }
-        alt=""
-      />
+      <Link to={`/user/${_id}`}>
+        <img
+          style={{ width: "36px", borderRadius: "50%", marginTop: "-5px" }}
+          src={
+            avatar ??
+            "https://firebasestorage.googleapis.com/v0/b/upload-pics-e599e.appspot.com/o/images%2F1_dmbNkD5D-u45r44go_cf0g.png?alt=media&token=3ef51503-f601-448b-a55b-0682607ddc8a"
+          }
+          alt=""
+        />
+      </Link>
       <div className="name_details">
-        <p
+        <Link
+          to={`/user/${_id}`}
           style={{
             fontWeight: "bold",
             fontFamily: "Poppins",
             fontSize: "13.75px",
+            textDecoration: "none",
+            color: "inherit",
           }}
         >
           {name}
-        </p>
+        </Link>
         <p
           style={{
             fontSize: "12.75px",

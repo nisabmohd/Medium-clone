@@ -12,6 +12,7 @@ import { httpRequest } from "../interceptor/axiosInterceptor";
 export default function Home() {
   const { tag } = useParams();
   const [posts, setposts] = useState<Array<any>>([]);
+  document.title = "Medium";
   useQuery({
     queryFn: () => httpRequest.get(`${url}/post/home`),
     queryKey: ["home", "no"],

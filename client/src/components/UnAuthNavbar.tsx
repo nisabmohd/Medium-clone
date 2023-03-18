@@ -1,15 +1,14 @@
 import { Link } from "react-router-dom";
+import { DEFAULT_IMG } from "../App";
 import {
   carrotIcon,
   mediumLogo,
   NotificationIcon,
   writeBlogIcon,
 } from "../assets/icons";
-import { useAuth } from "../contexts/Auth";
 import Search from "./Search";
 
-export default function Navbar() {
-  const { user } = useAuth();
+export default function UnAuthNavbar() {
   return (
     <nav
       style={{
@@ -46,7 +45,7 @@ export default function Navbar() {
         }}
       >
         <Link
-          to="/write"
+          to="/signin/write"
           className="writeBtn"
           style={{
             display: "flex",
@@ -62,9 +61,45 @@ export default function Navbar() {
           </span>
           <p style={{ fontSize: "14.5px", marginTop: "-4px" }}>Write</p>
         </Link>
-        <div className="notifactionBtn">
-          <Link to="/notifications" style={{ color: "rgba(117, 117, 117, 1)" }}>
-            {NotificationIcon}
+        <div
+          className="btns"
+          style={{
+            display: "flex",
+            flexDirection: "row",
+            alignItems: "center",
+            gap: "10px",
+          }}
+        >
+          <Link
+            to="/signin/new"
+            style={{
+              backgroundColor: "#1a8917",
+              color: "white",
+              border: "none",
+              outline: "none",
+              borderRadius: "17px",
+              padding: "8px 12px",
+              fontSize: "14px",
+              textDecoration: "none",
+            }}
+          >
+            Sign up
+          </Link>
+          <Link
+            to="/signin/in"
+            style={{
+              border: "none",
+              outline: "transparent",
+              background: "transparent",
+              borderRadius: "17px",
+              padding: "8px 12px",
+              color: "gray",
+              marginRight: "-5px",
+              fontSize: "14px",
+              textDecoration: "none",
+            }}
+          >
+            Sign In
           </Link>
         </div>
         <div
@@ -82,7 +117,7 @@ export default function Navbar() {
               borderRadius: "50%",
               border: "1px solid #d9d9d9",
             }}
-            src={user?.avatar}
+            src={DEFAULT_IMG}
             alt=""
           />
           <span style={{ color: "rgba(117, 117, 117, 1)" }}>{carrotIcon}</span>
