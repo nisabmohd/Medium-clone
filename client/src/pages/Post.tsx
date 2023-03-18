@@ -1,9 +1,7 @@
-import React from "react";
 import { useParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { httpRequest } from "../interceptor/axiosInterceptor";
 import { url } from "../baseUrl";
-import { useEffect } from "react";
 import Markdown from "../components/Markdown";
 import Chip from "../components/Chip";
 import {
@@ -22,11 +20,13 @@ export default function Post() {
   const { isLoading, error, data } = useQuery({
     queryFn: () => httpRequest.get(`${url}/post/${id}`),
     queryKey: ["blog", id],
+    onSuccess: (data) => {
+      document.title = data.data.post.title + " - Medium";
+    },
   });
-  if (error) return <p>{error.toString()}</p>;
+  if (error) return <p>Something went wrong ...</p>;
   if (isLoading) return <p>Loading ...</p>;
 
-  document.title = data!.data.post.title;
   return (
     <div
       className="container"
@@ -52,12 +52,21 @@ export default function Post() {
             marginRight: "auto",
           }}
         >
-          <PostAuthor />
+          {data?.data && (
+            <PostAuthor
+              avatar={data.data.user.avatar}
+              postId={data.data.post._id}
+              timestamp={data.data.post.createdAt}
+              username={data.data.user.name}
+              userId={data.data.user._id}
+            />
+          )}
           <h1
             style={{
               fontWeight: "bolder",
               fontFamily: "Poppins",
               fontSize: "32px",
+              marginBottom: "18px",
             }}
           >
             {data?.data.post.title}
@@ -139,7 +148,15 @@ export default function Post() {
           gap: "38px",
         }}
       >
-        <UserPostCard />
+        {data?.data.user && (
+          <UserPostCard
+            followers={data.data.user.followers.length}
+            userId={data.data.user._id}
+            username={data.data.user.name}
+            bio={data.data.user.bio}
+            image={data.data.user.avatar}
+          />
+        )}
         <TopPicks text="More from Medium" showImg={true} />
       </div>
     </div>

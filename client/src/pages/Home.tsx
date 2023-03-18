@@ -50,21 +50,29 @@ export default function Home() {
         }}
       >
         <SuggestionBar />
-        {posts.map((item) => {
-          return (
-            <Post
-              postId={item.post._id}
-              timestamp={item.post.createdAt}
-              title={item.post.title}
-              username={item.user.name}
-              image={item.post.image}
-              tag={"Java"}
-              userImage={item.user.avatar}
-              key={item.post._id}
-              summary={item.post.summary}
-            />
-          );
-        })}
+        <div
+          style={{
+            width: "90%",
+            marginRight: "auto",
+          }}
+        >
+          {posts.map((item) => {
+            return (
+              <Post
+                postId={item.post._id}
+                timestamp={item.post.createdAt}
+                title={item.post.title}
+                username={item.user.name}
+                userId={item.user._id}
+                image={item.post.image}
+                tag={"Java"}
+                userImage={item.user.avatar}
+                key={item.post._id}
+                summary={item.post.summary}
+              />
+            );
+          })}
+        </div>
       </div>
       <div
         className="rightbar"

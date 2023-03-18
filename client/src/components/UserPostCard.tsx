@@ -1,6 +1,20 @@
-import React from "react";
+import { Link } from "react-router-dom";
 
-export default function UserPostCard() {
+type UserPostCardProps = {
+  image?: string;
+  username: string;
+  followers: number;
+  bio?: string;
+  userId: string;
+};
+
+export default function UserPostCard({
+  followers,
+  userId,
+  username,
+  bio,
+  image,
+}: UserPostCardProps) {
   return (
     <div
       style={{
@@ -8,31 +22,51 @@ export default function UserPostCard() {
         marginLeft: "auto",
         display: "flex",
         flexDirection: "column",
-        gap: "12px",
+        gap: "10px",
         marginTop: "12px",
       }}
     >
-      <img
+      <Link to={`/user/${userId}`}>
+        <img
+          style={{
+            width: "90px",
+            borderRadius: "50%",
+            marginBottom: "8px",
+            marginLeft: "8px",
+          }}
+          src={image}
+          alt=""
+        />
+      </Link>
+      <Link
+        to={`/user/${userId}`}
         style={{
-          width: "90px",
-          borderRadius: "50%",
-          marginBottom: "8px",
           marginLeft: "8px",
+          fontFamily: "Roboto Slab",
+          fontSize: "15px",
+          color: "inherit",
+          textDecoration: "none",
         }}
-        src="https://miro.medium.com/v2/resize:fill:79:79/1*P6uaAR9_2rfvtxKlNmyGcg.jpeg"
-        alt=""
-      />
-      <p style={{ marginLeft: "8px" }}>Nisabmohd</p>
-      <span style={{ color: "gray", marginLeft: "8px" }}>14 Followers</span>
-      <p style={{ color: "gray", marginLeft: "8px" }}>
-        I am a software engineer with a strong background in full-stack
-        development and data structures.
-      </p>
+      >
+        {username}
+      </Link>
+      <span
+        style={{
+          marginLeft: "8px",
+          marginTop: "-7px",
+          fontSize: "14px",
+          fontFamily: "Roboto",
+          color: "#4b4a4a",
+        }}
+      >
+        {followers > 0 ? followers + " Followers" : ""}
+      </span>
+      {bio && <p style={{ color: "gray", marginLeft: "8px" }}>{bio}</p>}
       <p
         style={{
           color: "rgba(26, 137, 23, 1)",
           marginLeft: "8px",
-          marginTop: "12px",
+          marginTop: !bio ? "5px" : "12px",
           fontSize: "13.4px",
         }}
       >

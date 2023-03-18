@@ -6,6 +6,7 @@ import AuthRedirect from "./pages/AuthRedirect";
 import Authentication from "./router/Authentication";
 import Post from "./pages/Post";
 import Notifications from "./pages/Notifications";
+import User from "./pages/User";
 
 export default function App() {
   return (
@@ -24,6 +25,14 @@ export default function App() {
           element={
             <Authentication>
               <Post />
+            </Authentication>
+          }
+        />
+        <Route
+          path="/user/:id/:tab?"
+          element={
+            <Authentication>
+              <User />
             </Authentication>
           }
         />

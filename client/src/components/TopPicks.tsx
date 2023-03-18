@@ -27,6 +27,7 @@ export default function TopPicks({ text, showImg = false }: TopPicksProps) {
         <StoryCard showImg={showImg} />
         <StoryCard showImg={showImg} />
         <StoryCard showImg={showImg} />
+        <StoryCard showImg={showImg} />
       </div>
     </div>
   );

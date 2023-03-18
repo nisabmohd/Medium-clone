@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import ReactTimeAgo from "react-time-ago";
 import { moreIcon, mutePost, savePost } from "../assets/icons";
 import Chip from "./Chip";
 
@@ -11,6 +12,7 @@ type PostProps = {
   postId: string;
   tag?: string;
   summary: string;
+  userId: string;
 };
 
 export default function Post({
@@ -22,13 +24,13 @@ export default function Post({
   tag,
   summary,
   userImage,
+  userId,
 }: PostProps) {
   return (
     <div
       style={{
         borderBottom: "solid 1px rgba(242, 242, 242, 1)",
         paddingBottom: "40px",
-        width: "90%",
         marginRight: "auto",
       }}
     >
@@ -42,22 +44,36 @@ export default function Post({
           marginBottom: "13px",
         }}
       >
-        <img
-          style={{ width: "26px", borderRadius: "50%" }}
-          src={userImage}
-          alt=""
-        />
-        <p style={{ fontSize: "15px", fontFamily: "Roboto Slab" }}>
+        <Link to={`/user/${userId}`}>
+          <img
+            style={{ width: "26px", borderRadius: "50%" }}
+            src={userImage}
+            alt=""
+          />
+        </Link>
+        <Link
+          to={`/user/${userId}`}
+          style={{
+            fontSize: "14.45px",
+            fontFamily: "Roboto",
+            color: "inherit",
+            textDecoration: "none",
+          }}
+        >
           {username}
-        </p>
+        </Link>
         <p
           style={{
-            fontSize: "13.5px",
+            fontSize: "13.15px",
             color: "gray",
             fontFamily: "Roboto Slab",
           }}
         >
-          Feb 17
+          <ReactTimeAgo
+            date={Date.parse(timestamp)}
+            locale="en-US"
+            timeStyle="round"
+          />
         </p>
       </div>
       <div
@@ -145,9 +161,15 @@ export default function Post({
             </div>
           </div>
         </div>
-        <div className="image">
-          {image && <img style={{ width: "110px" }} src={image} alt="" />}
-        </div>
+        <Link to={`/blog/${postId}`} className="image">
+          {image && (
+            <img
+              style={{ width: "112px", height: "112px", objectFit: "cover" }}
+              src={image}
+              alt=""
+            />
+          )}
+        </Link>
       </div>
     </div>
   );

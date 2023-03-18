@@ -38,7 +38,9 @@ export const googleAuth = asyncHandler(async (req, res, next) => {
     const temp = new User({
       name: user.name,
       email: user.email,
-      avatar: user.picture,
+      avatar:
+        user.picture ??
+        "https://firebasestorage.googleapis.com/v0/b/upload-pics-e599e.appspot.com/o/images%2F1_dmbNkD5D-u45r44go_cf0g.png?alt=media&token=3ef51503-f601-448b-a55b-0682607ddc8a",
     });
     isUser = await temp.save();
   }

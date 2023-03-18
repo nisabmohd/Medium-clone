@@ -6,8 +6,7 @@ import User from "../models/user";
 import ServerError from "../utils/ServerError";
 
 export const getUserPost = asyncHandler(async (req, res, next) => {
-  const user = await User.findOne({ _id: req.params.userId });
-  res.send({ user, posts: await Post.find({ userId: req.params.userId }) });
+  res.send(await Post.find({ userId: req.params.userId }));
 });
 
 // todo
@@ -28,11 +27,12 @@ export const getPost = asyncHandler(async (req, res, next) => {
 export const writePost = asyncHandler(async (req, res, next) => {
   const { userId } = req;
   var test: string = req.body.markdown ?? "";
+  const codeRegex = /<code>(.*?)<\/code>/g;
+  const withoutCode = req.body.markdown.replace(codeRegex, "");
   var imgRegex = /<img.*?src=['"](.*?)['"]/;
   const imgUrl = imgRegex.exec(test)?.at(1);
   const htmlRegexG = /<(?:"[^"]*"['"]*|'[^']*'['"]*|[^'">])+>/g;
-  const summary = test.replace(htmlRegexG, "");
-  console.log(imgRegex.exec(test)?.at(1));
+  const summary = withoutCode.replace(htmlRegexG, "");
   const postRef = new Post({
     ...req.body,
     tags: req.body.tags.split(","),

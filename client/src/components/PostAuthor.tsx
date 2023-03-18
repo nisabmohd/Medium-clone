@@ -1,4 +1,3 @@
-import React from "react";
 import {
   copyurlIcon,
   facebookIcon,
@@ -7,8 +6,24 @@ import {
   savePost,
   twitterIcon,
 } from "../assets/icons";
+import ReactTimeAgo from "react-time-ago";
+import { Link } from "react-router-dom";
 
-export default function PostAuthor() {
+type PostAuthorProps = {
+  postId: string;
+  username: string;
+  avatar: string;
+  timestamp: string;
+  userId: string;
+};
+
+export default function PostAuthor({
+  avatar,
+  postId,
+  timestamp,
+  userId,
+  username,
+}: PostAuthorProps) {
   return (
     <div
       style={{
@@ -25,11 +40,13 @@ export default function PostAuthor() {
         className="author_post_details"
         style={{ display: "flex", flexDirection: "row", alignItems: "center" }}
       >
-        <img
-          style={{ width: "50px", borderRadius: "50%" }}
-          src="https://miro.medium.com/v2/resize:fill:79:79/1*P6uaAR9_2rfvtxKlNmyGcg.jpeg"
-          alt=""
-        />
+        <Link to={`/user/${userId}`}>
+          <img
+            style={{ width: "50px", borderRadius: "50%" }}
+            src={avatar}
+            alt=""
+          />
+        </Link>
         <div
           className="details-sameline"
           style={{
@@ -39,7 +56,12 @@ export default function PostAuthor() {
             gap: "10px",
           }}
         >
-          <p>Nisabmohd</p>
+          <Link
+            style={{ color: "inherit", textDecoration: "none" }}
+            to={`/user/${userId}`}
+          >
+            {username}
+          </Link>
           <div
             className="sameline"
             style={{
@@ -49,7 +71,13 @@ export default function PostAuthor() {
               gap: "18px",
             }}
           >
-            <p style={{ fontSize: "13px", color: "gray" }}> Dec 22, 2022 </p>
+            <p style={{ fontSize: "13px", color: "gray" }}>
+              <ReactTimeAgo
+                date={Date.parse(timestamp)}
+                locale="en-US"
+                timeStyle="round"
+              />
+            </p>
             <p style={{ fontSize: "13px", color: "gray" }}>3 min read</p>
           </div>
         </div>
