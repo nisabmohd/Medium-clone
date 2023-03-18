@@ -54,6 +54,9 @@ export default function Home() {
           style={{
             width: "90%",
             marginRight: "auto",
+            display: "flex",
+            flexDirection: "column",
+            gap: "30px",
           }}
         >
           {posts.map((item) => {

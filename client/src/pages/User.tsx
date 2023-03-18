@@ -44,6 +44,9 @@ export default function User() {
           style={{
             width: "90%",
             marginRight: "auto",
+            display: "flex",
+            flexDirection: "column",
+            gap: "30px",
           }}
         >
           <div

@@ -6,7 +6,7 @@ import User from "../models/user";
 import ServerError from "../utils/ServerError";
 
 export const getUserPost = asyncHandler(async (req, res, next) => {
-  res.send(await Post.find({ userId: req.params.userId }));
+  res.send(await Post.find({ userId: req.params.userId }).sort({ _id: -1 }));
 });
 
 // todo
@@ -96,7 +96,7 @@ export const getPostOfTopic = asyncHandler(async (req, res, next) => {
 });
 
 async function getPostsWithUser(q: any) {
-  const posts = await q;
+  const posts = await q.sort({ _id: -1 });
   return Promise.all(
     posts.map(async (post: any) => {
       const user = await User.findOne({ _id: post.userId });

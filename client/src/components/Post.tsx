@@ -85,7 +85,7 @@ export default function Post({
         }}
       >
         <div className="left_post">
-          <h2 style={{ margin: "8px 0", marginTop: "2px" }}>
+          <h3 style={{ margin: "8px 0", marginTop: "-2px", fontSize: "22px" }}>
             <Link
               to={`/blog/${postId}`}
               style={{
@@ -96,7 +96,7 @@ export default function Post({
             >
               {title}
             </Link>
-          </h2>
+          </h3>
           <Link
             to={`/blog/${postId}`}
             style={{
