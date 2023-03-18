@@ -72,7 +72,7 @@ export default function User() {
                 username={data?.data.name}
                 userId={data?.data.name._id}
                 image={item.image}
-                tag={"Java"}
+                tag={item.tags.at(0)}
                 userImage={data?.data.avatar}
                 key={item._id}
                 summary={item.summary}

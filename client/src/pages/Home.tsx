@@ -68,7 +68,7 @@ export default function Home() {
                 username={item.user.name}
                 userId={item.user._id}
                 image={item.post.image}
-                tag={"Java"}
+                tag={item.post.tags.at(0)}
                 userImage={item.user.avatar}
                 key={item.post._id}
                 summary={item.post.summary}
