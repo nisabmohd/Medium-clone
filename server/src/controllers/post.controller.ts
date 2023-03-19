@@ -92,7 +92,7 @@ export const suggestTopPosts = asyncHandler(async (req, res, next) => {
 });
 
 export const suggestTopics = asyncHandler(async (req, res, next) => {
-  const tags = await Tag.find({}, { name: 1 }).limit(7);
+  const tags = await Tag.find({}, { name: 1 }).sort({ _id: -1 }).limit(7);
   res.send(tags);
 });
 
