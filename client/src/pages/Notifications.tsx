@@ -15,7 +15,7 @@ export default function Notifications() {
           borderRight: "solid 1px rgba(242, 242, 242, 1)",
           width: "69%",
           paddingTop: "3vh",
-          height: "100%",
+          minHeight: "97vh",
           display: "flex",
           flexDirection: "column",
           gap: "38px",

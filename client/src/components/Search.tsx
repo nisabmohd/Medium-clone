@@ -1,4 +1,3 @@
-import SearchIcon from "@mui/icons-material/Search";
 import { searchIcon } from "../assets/icons";
 
 export default function Search() {

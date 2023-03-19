@@ -3,6 +3,10 @@
   padding: 0;
 }
 
+body {
+  overflow-y: scroll;
+}
+
 :root {
   --borderColor: rgba(242, 242, 242, 1)
 }
