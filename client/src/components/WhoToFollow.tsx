@@ -32,6 +32,7 @@ export default function WhoToFollow() {
             _id: string;
             name: string;
             bio: string;
+            followers: Array<string>;
           }) => {
             return (
               <UserCard
@@ -40,6 +41,7 @@ export default function WhoToFollow() {
                 name={item.name}
                 bio={item.bio}
                 key={item._id}
+                followers={item.followers}
               />
             );
           }

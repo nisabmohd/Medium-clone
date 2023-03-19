@@ -21,6 +21,7 @@ const userSchema = new Schema(
       },
     ],
     intrests: [{ type: String, required: true }],
+    ignore: [{ type: Schema.Types.ObjectId, ref: "posts" }],
   },
   { timestamps: true }
 );

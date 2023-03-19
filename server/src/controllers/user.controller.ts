@@ -87,3 +87,5 @@ export const getUserIntrests = asyncHandler(async (req, res, next) => {
   const intrests = await User.findOne({ _id: req.userId }, { intrests: 1 });
   res.send(intrests);
 });
+
+//user notifications

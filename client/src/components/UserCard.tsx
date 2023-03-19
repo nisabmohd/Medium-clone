@@ -1,12 +1,47 @@
+import { useQuery } from "@tanstack/react-query";
 import { Link } from "react-router-dom";
+import { useState } from "react";
+import { useAuth } from "../contexts/Auth";
+import { httpRequest } from "../interceptor/axiosInterceptor";
+import { url } from "../baseUrl";
 
 type UserCardProps = {
   name: string;
   bio?: string;
   _id: string;
   avatar: string;
+  followers: Array<string>;
 };
-export default function UserCard({ name, _id, avatar, bio }: UserCardProps) {
+export default function UserCard({
+  name,
+  _id,
+  avatar,
+  bio,
+  followers,
+}: UserCardProps) {
+  const { user } = useAuth();
+  const [iFollow, setIFollow] = useState<boolean>(
+    () => followers.includes(user!._id) ?? false
+  );
+  const { refetch: follow } = useQuery({
+    queryFn: () => httpRequest.put(`${url}/user/follow/${_id}`),
+    queryKey: ["handle", "follow", _id],
+    enabled: false,
+  });
+  const { refetch: unfollow } = useQuery({
+    queryFn: () => httpRequest.put(`${url}/user/unfollow/${_id}`),
+    queryKey: ["handle", "unfollow", _id],
+    enabled: false,
+  });
+  function handleFollowUnfollow() {
+    if (iFollow) {
+      setIFollow(false);
+      unfollow();
+    } else {
+      setIFollow(true);
+      follow();
+    }
+  }
   return (
     <div
       style={{
@@ -28,9 +63,12 @@ export default function UserCard({ name, _id, avatar, bio }: UserCardProps) {
           alt=""
         />
       </Link>
-      <div className="name_details">
-        <Link
-          to={`/user/${_id}`}
+      <Link
+        to={`/user/${_id}`}
+        className="name_details"
+        style={{ color: "inherit", textDecoration: "none" }}
+      >
+        <p
           style={{
             fontWeight: "bold",
             fontFamily: "Poppins",
@@ -40,7 +78,7 @@ export default function UserCard({ name, _id, avatar, bio }: UserCardProps) {
           }}
         >
           {name}
-        </Link>
+        </p>
         <p
           style={{
             fontSize: "12.75px",
@@ -50,21 +88,23 @@ export default function UserCard({ name, _id, avatar, bio }: UserCardProps) {
             color: "#606060",
           }}
         >
-          {bio && (bio.length > 62 ? bio?.slice(0, 62) + "..." : bio)}
+          {bio && (bio.length > 62 ? bio?.slice(0, 51) + "..." : bio)}
         </p>
-      </div>
+      </Link>
       <button
+        onClick={() => handleFollowUnfollow()}
         style={{
-          backgroundColor: "transparent",
+          backgroundColor: iFollow ? "black" : "transparent",
           outline: "transparent",
-          border: "1px solid gray",
+          border: `1px solid ${iFollow ? "black" : "gray"}`,
           borderRadius: "17px",
           padding: "7px 14px",
           cursor: "pointer",
           marginLeft: "auto",
+          color: iFollow ? "white" : "black",
         }}
       >
-        Follow
+        {iFollow ? "Following" : "Follow"}
       </button>
     </div>
   );

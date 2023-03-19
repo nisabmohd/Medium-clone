@@ -24,6 +24,7 @@ const userSchema = new Schema(
     ],
     image: String,
     summary: String,
+    savedBy: [{ type: Schema.Types.ObjectId, ref: "users" }],
   },
   { timestamps: true }
 );

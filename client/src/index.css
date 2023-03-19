@@ -24,6 +24,7 @@
 
 .markdown img {
   margin: 24px 0px;
+  width: 100%;
 }
 
 .markdown>h1,
@@ -54,4 +55,14 @@ h6 {
 
 .code {
   font-size: 16px !important;
+}
+
+
+.hide_scroll::-webkit-scrollbar {
+  display: none;
+}
+
+.hide_scroll {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 }

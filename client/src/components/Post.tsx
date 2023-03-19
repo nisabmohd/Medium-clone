@@ -1,6 +1,10 @@
+import { useQuery } from "@tanstack/react-query";
 import { Link } from "react-router-dom";
 import ReactTimeAgo from "react-time-ago";
+import { useAppContext } from "../App";
 import { moreIcon, mutePost, savePost } from "../assets/icons";
+import { url } from "../baseUrl";
+import { httpRequest } from "../interceptor/axiosInterceptor";
 import Chip from "./Chip";
 
 type PostProps = {
@@ -13,6 +17,8 @@ type PostProps = {
   tag?: string;
   summary: string;
   userId: string;
+  filterPost?: (postId: string) => void;
+  showMuteicon?: boolean;
 };
 
 export default function Post({
@@ -25,7 +31,24 @@ export default function Post({
   summary,
   userImage,
   userId,
+  filterPost,
+  showMuteicon = true,
 }: PostProps) {
+  const { handleToast } = useAppContext();
+
+  const { refetch: ignorePostCall } = useQuery({
+    queryFn: () => httpRequest.patch(`${url}/post/ignore/${postId}`),
+    queryKey: ["ignore", postId],
+    enabled: false,
+    onSuccess: (data) => {},
+  });
+
+  function ignorePost() {
+    ignorePostCall();
+    handleToast("Got it. You will not see this story again");
+    filterPost && filterPost(postId);
+  }
+
   return (
     <div
       style={{
@@ -109,7 +132,7 @@ export default function Post({
               textDecoration: "none",
             }}
           >
-            {summary.slice(0, 189) + "..."}
+            {summary.slice(0, 194) + "..."}
           </Link>
 
           <div
@@ -148,11 +171,14 @@ export default function Post({
               >
                 {savePost}
               </span>
-              <span
-                style={{ color: "rgba(117, 117, 117, 1)", cursor: "pointer" }}
-              >
-                {mutePost}
-              </span>
+              {showMuteicon && (
+                <span
+                  onClick={() => ignorePost()}
+                  style={{ color: "rgba(117, 117, 117, 1)", cursor: "pointer" }}
+                >
+                  {mutePost}
+                </span>
+              )}
               <span
                 style={{ color: "rgba(117, 117, 117, 1)", cursor: "pointer" }}
               >

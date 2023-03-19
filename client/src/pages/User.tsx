@@ -76,6 +76,7 @@ export default function User() {
                 userImage={data?.data.avatar}
                 key={item._id}
                 summary={item.summary}
+                showMuteicon={false}
               />
             );
           })}

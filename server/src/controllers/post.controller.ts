@@ -13,7 +13,13 @@ export const getUserPost = asyncHandler(async (req, res, next) => {
 // pagination
 export const getHomePost = asyncHandler(async (req, res, next) => {
   const { userId } = req;
-  const posts = await getPostsWithUser(Post.find({ userId: { $ne: userId } }));
+  const user = await User.findOne({ _id: userId });
+  const ignoreList = user?.ignore ?? [];
+  const posts = await getPostsWithUser(
+    Post.find({
+      $and: [{ userId: { $ne: userId } }, { _id: { $nin: ignoreList } }],
+    })
+  );
   res.send(posts);
 });
 
@@ -92,7 +98,30 @@ export const suggestTopics = asyncHandler(async (req, res, next) => {
 
 // pagination todo
 export const getPostOfTopic = asyncHandler(async (req, res, next) => {
+  if (req.params.topic === "Following") {
+    const user = await User.findOne({ _id: req.userId });
+    const posts: Array<any> = [];
+    await Promise.all(
+      (user?.followings ?? []).map(async (userId) => {
+        posts.push(...(await getPostsWithUser(Post.find({ userId }))));
+        return null;
+      })
+    );
+    posts.sort((a, b) => Date.parse(b.createdAt) - Date.parse(a.createdAt));
+    res.send(posts);
+    return;
+  }
   res.send(await getPostsWithUser(Post.find({ tags: req.params.topic })));
+});
+
+export const ignorePost = asyncHandler(async function (req, res, next) {
+  const { userId } = req;
+  const { postId } = req.params;
+  const updated = await User.updateOne(
+    { _id: userId },
+    { $push: { ignore: postId } }
+  );
+  res.send({ success: updated.modifiedCount == 1 });
 });
 
 async function getPostsWithUser(q: any) {

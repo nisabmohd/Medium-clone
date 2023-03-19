@@ -6,6 +6,7 @@ import {
   getPost,
   getPostOfTopic,
   getUserPost,
+  ignorePost,
   savePost,
   suggestTopics,
   suggestTopPosts,
@@ -28,6 +29,8 @@ router
 router.route("/topic/:topic").get(isAuthenticated, getPostOfTopic);
 
 router.route("/user/:userId").get(isAuthenticated, getUserPost);
+
+router.route("/ignore/:postId").patch(isAuthenticated, ignorePost);
 
 router.route("/suggest/topics").get(suggestTopics);
 

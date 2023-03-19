@@ -32,6 +32,10 @@ export default function Home() {
     },
   });
 
+  function filterPost(postId: string) {
+    setposts((prev) => prev.filter((item) => item.post._id !== postId));
+  }
+
   return (
     <div
       className="container"
@@ -50,7 +54,7 @@ export default function Home() {
           marginRight: "auto",
         }}
       >
-        <SuggestionBar />
+        <SuggestionBar activeTab={tag ?? "For you"} />
         <div
           style={{
             width: "90%",
@@ -63,6 +67,7 @@ export default function Home() {
           {posts.map((item) => {
             return (
               <Post
+                filterPost={filterPost}
                 postId={item.post._id}
                 timestamp={item.post.createdAt}
                 title={item.post.title}
