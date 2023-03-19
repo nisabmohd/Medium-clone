@@ -41,9 +41,11 @@ export default function WriteNavbar() {
           Publish
         </button>
         <span style={{ color: "gray", cursor: "pointer" }}>{moreIcon}</span>
-        <span style={{ color: "gray", cursor: "pointer" }}>
-          {NotificationIcon}
-        </span>
+        <Link to="/notifications">
+          <span style={{ color: "gray", cursor: "pointer" }}>
+            {NotificationIcon}
+          </span>
+        </Link>
         <AvatarMenu />
       </div>
     </div>

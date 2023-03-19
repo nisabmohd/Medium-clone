@@ -123,11 +123,26 @@ export const ignorePost = asyncHandler(async function (req, res, next) {
   res.send({ success: updated.modifiedCount == 1 });
 });
 
-// vote post todo
-export const vote = asyncHandler(async (req, res, next) => {});
+export const vote = asyncHandler(async (req, res, next) => {
+  const { postId } = req.params;
+  const { userId } = req;
+  const post = await Post.updateOne(
+    { _id: postId },
+    { $push: { votes: userId } }
+  );
+  res.send({ success: post.modifiedCount == 1 });
+});
 
-//comment post todo
-export const comment = asyncHandler(async (req, res, next) => {});
+export const comment = asyncHandler(async (req, res, next) => {
+  const { postId } = req.params;
+  const { userId } = req;
+  const { comment } = req.body;
+  const post = await Post.updateOne(
+    { _id: postId },
+    { $push: { comments: { userId, comment } } }
+  );
+  res.send({ success: post.modifiedCount == 1 });
+});
 
 async function getPostsWithUser(q: any) {
   const posts = await q.sort({ _id: -1 });
