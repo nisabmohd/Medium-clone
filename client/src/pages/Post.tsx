@@ -14,9 +14,14 @@ import {
 import TopPicks from "../components/TopPicks";
 import UserPostCard from "../components/UserPostCard";
 import PostAuthor from "../components/PostAuthor";
+import useShare from "../hooks/useShare";
+import { useMemo } from "react";
 
 export default function Post() {
+  const { webShare } = useShare();
   const { id } = useParams();
+  const postUrl = useMemo(() => window.location.href, [id]);
+
   const { isLoading, error, data } = useQuery({
     queryFn: () => httpRequest.get(`${url}/post/${id}`),
     queryKey: ["blog", id],
@@ -54,11 +59,13 @@ export default function Post() {
         >
           {data?.data && (
             <PostAuthor
+              title={data.data.post.title}
               avatar={data.data.user.avatar}
               postId={data.data.post._id}
               timestamp={data.data.post.createdAt}
               username={data.data.user.name}
               userId={data.data.user._id}
+              postUrl={postUrl}
             />
           )}
           <h1
@@ -130,7 +137,18 @@ export default function Post() {
                   gap: "25px",
                 }}
               >
-                <span style={iconColor}>{shareicon}</span>
+                <span
+                  onClick={() =>
+                    webShare({
+                      title: data?.data.post.title,
+                      text: "Check out this Medium blog",
+                      url: postUrl,
+                    })
+                  }
+                  style={iconColor}
+                >
+                  {shareicon}
+                </span>
                 <span style={iconColor}>{savePost}</span>
                 <span style={iconColor}>{moreIcon}</span>
               </div>

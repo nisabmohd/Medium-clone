@@ -9,8 +9,7 @@ export const getUserPost = asyncHandler(async (req, res, next) => {
   res.send(await Post.find({ userId: req.params.userId }).sort({ _id: -1 }));
 });
 
-// todo
-// pagination
+// todo pagination
 export const getHomePost = asyncHandler(async (req, res, next) => {
   const { userId } = req;
   const user = await User.findOne({ _id: userId });
@@ -123,6 +122,12 @@ export const ignorePost = asyncHandler(async function (req, res, next) {
   );
   res.send({ success: updated.modifiedCount == 1 });
 });
+
+// vote post todo
+export const vote = asyncHandler(async (req, res, next) => {});
+
+//comment post todo
+export const comment = asyncHandler(async (req, res, next) => {});
 
 async function getPostsWithUser(q: any) {
   const posts = await q.sort({ _id: -1 });

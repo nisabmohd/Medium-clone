@@ -22,7 +22,6 @@ export default function SignIn() {
   }, []);
 
   const { tab } = useParams();
-  console.log(tab);
   return (
     <div
       style={{

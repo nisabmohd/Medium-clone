@@ -1,5 +1,4 @@
 import { useQuery } from "@tanstack/react-query";
-import { useState } from "react";
 import { Link } from "react-router-dom";
 import { plusIcon } from "../assets/icons";
 import { url } from "../baseUrl";
@@ -20,8 +19,6 @@ const DEFAULT_OPTIONS = [
 ];
 
 export default function SuggestionBar({ activeTab }: { activeTab: string }) {
-  console.log(activeTab, "   Active");
-
   const { user } = useAuth();
   const { data: response } = useQuery({
     queryFn: () => httpRequest.get(`${url}/user/intrests`),

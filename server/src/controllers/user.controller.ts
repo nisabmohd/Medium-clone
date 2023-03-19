@@ -88,4 +88,4 @@ export const getUserIntrests = asyncHandler(async (req, res, next) => {
   res.send(intrests);
 });
 
-//user notifications
+//user notifications - pagination

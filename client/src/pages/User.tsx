@@ -20,7 +20,6 @@ export default function User() {
     enabled: data?.data != undefined,
     queryKey: ["post", "user", id],
   });
-  console.log(postData);
 
   return (
     <div

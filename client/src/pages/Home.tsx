@@ -18,7 +18,6 @@ export default function Home() {
     queryKey: ["home", "no"],
     enabled: tag == undefined,
     onSuccess: (data) => {
-      console.log(data.data, "home");
       setposts(data.data);
     },
   });
@@ -27,7 +26,6 @@ export default function Home() {
     queryKey: ["home", "topic", tag],
     enabled: tag != undefined,
     onSuccess: (data) => {
-      console.log(data.data, "topic");
       setposts(data.data);
     },
   });

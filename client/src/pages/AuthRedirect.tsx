@@ -25,7 +25,6 @@ export default function AuthRedirect() {
       .get(`${url}/user/${query.get("uid")}`)
       .then((res) => {
         if (!res.data.success) {
-          console.log(res.data);
           setErr("Something unexpected happened");
           clearLocalStorage();
         }

@@ -8,6 +8,8 @@ import {
 } from "../assets/icons";
 import ReactTimeAgo from "react-time-ago";
 import { Link } from "react-router-dom";
+import useShare from "../hooks/useShare";
+import useClipboard from "../hooks/useClipboard";
 
 type PostAuthorProps = {
   postId: string;
@@ -15,6 +17,8 @@ type PostAuthorProps = {
   avatar: string;
   timestamp: string;
   userId: string;
+  title: string;
+  postUrl: string;
 };
 
 export default function PostAuthor({
@@ -23,7 +27,11 @@ export default function PostAuthor({
   timestamp,
   userId,
   username,
+  title,
+  postUrl,
 }: PostAuthorProps) {
+  const { socialShare } = useShare();
+  const [_, copy] = useClipboard();
   return (
     <div
       style={{
@@ -100,10 +108,39 @@ export default function PostAuthor({
             gap: "10px",
           }}
         >
-          <span style={iconStyle}>{twitterIcon}</span>
-          <span style={iconStyle}>{facebookIcon}</span>
-          <span style={iconStyle}>{linkedinIcon}</span>
-          <span style={iconStyle}>{copyurlIcon}</span>
+          <span
+            onClick={() =>
+              socialShare(
+                `https://twitter.com/intent/tweet?url=${postUrl}&text=${title}`
+              )
+            }
+            style={iconStyle}
+          >
+            {twitterIcon}
+          </span>
+          <span
+            onClick={() =>
+              socialShare(
+                `https://www.facebook.com/sharer/sharer.php?u=${postUrl}`
+              )
+            }
+            style={iconStyle}
+          >
+            {facebookIcon}
+          </span>
+          <span
+            onClick={() =>
+              socialShare(
+                `https://www.linkedin.com/shareArticle?mini=true&url=${postUrl}&title=${title}`
+              )
+            }
+            style={iconStyle}
+          >
+            {linkedinIcon}
+          </span>
+          <span onClick={() => copy(postUrl, "Link copied")} style={iconStyle}>
+            {copyurlIcon}
+          </span>
         </div>
         <div
           className="other_side"
