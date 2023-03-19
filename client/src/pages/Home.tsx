@@ -65,6 +65,7 @@ export default function Home() {
           {posts.map((item) => {
             return (
               <Post
+                showUserList={true}
                 filterPost={filterPost}
                 postId={item.post._id}
                 timestamp={item.post.createdAt}

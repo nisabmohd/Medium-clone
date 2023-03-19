@@ -225,7 +225,7 @@ export default function Post() {
       >
         {data?.data.user && (
           <UserPostCard
-            followers={data.data.user.followers.length}
+            followers={data.data.user.followers}
             userId={data.data.user._id}
             username={data.data.user.name}
             bio={data.data.user.bio}

@@ -1,4 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
+import { useState } from "react";
 import { Link } from "react-router-dom";
 import { plusIcon } from "../assets/icons";
 import { url } from "../baseUrl";
@@ -24,6 +25,7 @@ export default function SuggestionBar({ activeTab }: { activeTab: string }) {
     queryFn: () => httpRequest.get(`${url}/user/intrests`),
     queryKey: ["intrests", "get", user?._id],
   });
+  const [options, setOptions] = useState(DEFAULT_OPTIONS);
   return (
     <div
       className="hide_scroll"
@@ -54,7 +56,7 @@ export default function SuggestionBar({ activeTab }: { activeTab: string }) {
             {plusIcon}
           </Link>
         }
-        {DEFAULT_OPTIONS.map((option) => {
+        {options.map((option) => {
           return (
             <Link
               to={`${option.url}`}
