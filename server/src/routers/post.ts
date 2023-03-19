@@ -34,6 +34,6 @@ router.route("/ignore/:postId").patch(isAuthenticated, ignorePost);
 
 router.route("/suggest/topics").get(suggestTopics);
 
-router.route("/suggest/posts").get(suggestTopPosts);
+router.route("/suggest/posts").get(isAuthenticated, suggestTopPosts);
 
 export default router;

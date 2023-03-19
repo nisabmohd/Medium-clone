@@ -1,8 +1,24 @@
+import { Link } from "react-router-dom";
+import "./storyCard.css";
 type StoryCardProps = {
   showImg: boolean;
+  username: string;
+  title: string;
+  userId: string;
+  postId: string;
+  image: string;
+  avatar: string;
 };
 
-export default function StoryCard({ showImg }: StoryCardProps) {
+export default function StoryCard({
+  showImg,
+  image,
+  postId,
+  title,
+  userId,
+  username,
+  avatar,
+}: StoryCardProps) {
   return (
     <div style={{ marginLeft: "8px", marginBottom: showImg ? "15px" : "0px" }}>
       <div
@@ -14,41 +30,56 @@ export default function StoryCard({ showImg }: StoryCardProps) {
           gap: "8px",
         }}
       >
-        <img
-          style={{ width: "22px", borderRadius: "50%" }}
-          src="https://miro.medium.com/v2/resize:fill:176:176/1*o4o2K-ND_COV5CXRaNorig@2x.jpeg"
-          alt=""
-        />
-        <p
+        <Link to={`/user/${userId}`}>
+          <img
+            style={{ width: "22px", borderRadius: "50%" }}
+            src={avatar}
+            alt=""
+          />
+        </Link>
+        <Link
+          className="font"
+          to={`/user/${userId}`}
           style={{
-            fontFamily: "Roboto",
-            fontSize: "13.95px",
-            fontWeight: "500",
-            color: "rgb(64 64 64)",
+            fontFamily: "Roboto Slab",
+            fontSize: "12.75px",
+            letterSpacing: "0.25px",
+            color: "rgb(29 29 29)",
+            textDecoration: "none",
+            marginTop: "-4px",
           }}
         >
-          Manish Salunke
-        </p>
+          {username}
+        </Link>
       </div>
       <div
         className="post_details"
         style={{ display: "flex", flexDirection: "row" }}
       >
-        <p
+        <Link
+          to={`/blog/${postId}`}
           style={{
             fontFamily: "Poppins",
             fontWeight: "bolder",
             fontSize: "14px",
-            marginTop: "8px",
+            marginTop: "5px",
+            marginRight: showImg ? "10px" : 0,
+            color: "inherit",
+            textDecoration: "none",
           }}
         >
-          Functional Programming with React and Redux
-        </p>
+          {title}
+        </Link>
         {showImg && (
           <div className="img">
             <img
-              style={{ marginTop: "-12px", width: "51px" }}
-              src="https://miro.medium.com/v2/resize:fill:101:101/1*sKKbnXiHhuHwgJxosQLaQQ.png"
+              style={{
+                marginTop: "-12px",
+                width: "55px",
+                height: "55px",
+                objectFit: "cover",
+              }}
+              src={image}
               alt=""
             />
           </div>

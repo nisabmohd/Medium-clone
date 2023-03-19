@@ -86,7 +86,16 @@ export const savePost = asyncHandler(async (req, res, next) => {
 });
 
 export const suggestTopPosts = asyncHandler(async (req, res, next) => {
-  const posts = await Post.find({}).sort({ votes: -1 }).limit(3);
+  const { userId } = req;
+  const user = await User.findOne({ _id: userId });
+  const ignoreList = user?.ignore ?? [];
+  const posts = await getPostsWithUser(
+    Post.find({
+      $and: [{ userId: { $ne: userId } }, { _id: { $nin: ignoreList } }],
+    })
+      .sort({ votes: -1 })
+      .limit(3)
+  );
   res.send(posts);
 });
 
@@ -133,6 +142,7 @@ export const vote = asyncHandler(async (req, res, next) => {
   res.send({ success: post.modifiedCount == 1 });
 });
 
+// pagination + sort todo
 export const comment = asyncHandler(async (req, res, next) => {
   const { postId } = req.params;
   const { userId } = req;
@@ -143,6 +153,9 @@ export const comment = asyncHandler(async (req, res, next) => {
   );
   res.send({ success: post.modifiedCount == 1 });
 });
+
+// more from todo
+export const morefrom = asyncHandler((req, res, next) => {});
 
 async function getPostsWithUser(q: any) {
   const posts = await q.sort({ _id: -1 });
