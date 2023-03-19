@@ -54,6 +54,8 @@ export default function MoreFrom({
         backgroundColor: "#fafafa",
         padding: "22px 25px",
         borderRadius: "3px",
+        width: "96.5%",
+        marginLeft: "-10px",
       }}
     >
       <div

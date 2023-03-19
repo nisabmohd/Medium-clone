@@ -89,7 +89,18 @@ export default function UserPostCard({
       >
         {followers.length > 0 ? followers.length + " Followers" : ""}
       </span>
-      {bio && <p style={{ color: "gray", marginLeft: "8px" }}>{bio}</p>}
+      {bio && (
+        <p
+          style={{
+            color: "gray",
+            marginLeft: "8px",
+            fontSize: "15px",
+            lineHeight: "21px",
+          }}
+        >
+          {bio}
+        </p>
+      )}
 
       {user?._id !== userId ? (
         <button
@@ -97,7 +108,7 @@ export default function UserPostCard({
           style={{
             width: "fit-content",
             padding: "10px 18px",
-            marginLeft: "8px",
+            marginLeft: "6px",
             borderRadius: "17px",
             border: iFollow ? "1px solid gray" : "none",
             backgroundColor: iFollow ? "transparent" : "rgba(26, 137, 23, 1)",
