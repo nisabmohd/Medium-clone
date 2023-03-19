@@ -8,6 +8,7 @@ export default function Write() {
 
   useEffect(() => {
     hideNavbar(true);
+    document.title = "New story -Medium";
     return () => hideNavbar(false);
   }, []);
 
@@ -25,6 +26,7 @@ export default function Write() {
       }}
     >
       <TextareaAutosize
+        autoFocus={true}
         onChange={(e) =>
           setPost((prev) => {
             return { ...prev, title: e.target.value };

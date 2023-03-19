@@ -6,6 +6,7 @@ import {
   NotificationIcon,
   writeBlogIcon,
 } from "../assets/icons";
+import AvatarMenu from "./AvatarMenu";
 import Search from "./Search";
 
 export default function UnAuthNavbar() {
@@ -102,7 +103,7 @@ export default function UnAuthNavbar() {
             Sign In
           </Link>
         </div>
-        <AvatarDropDown />
+        <AvatarMenu />
       </div>
     </nav>
   );
