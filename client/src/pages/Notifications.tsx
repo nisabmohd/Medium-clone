@@ -57,7 +57,7 @@ export default function Notifications() {
           gap: "38px",
         }}
       >
-        <TopPicks text="Top picks" />
+        <TopPicks text="Top Picks" />
         <Topics />
         <WhoToFollow />
       </div>

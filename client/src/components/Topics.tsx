@@ -6,7 +6,7 @@ import Chip from "./Chip";
 export default function Topics() {
   const { data } = useQuery({
     queryFn: () => httpRequest.get(`${url}/post/suggest/topics`),
-    queryKey: [],
+    queryKey: ["suggest", "topics"],
   });
   return (
     <div style={{ width: "90%", marginLeft: "auto" }}>
@@ -29,7 +29,7 @@ export default function Topics() {
           flexWrap: "wrap",
         }}
       >
-        {data?.data.map((item: { _id: string; name: string }) => (
+        {data?.data?.map((item: { _id: string; name: string }) => (
           <Chip
             style={{
               backgroundColor: "rgb(242, 242, 242)",

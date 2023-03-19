@@ -11,15 +11,16 @@ import Chip from "./Chip";
 type PostProps = {
   title: string;
   image?: string;
-  username: string;
+  username?: string;
   userImage?: string;
   timestamp: string;
   postId: string;
   tag?: string;
   summary: string;
-  userId: string;
+  userId?: string;
   filterPost?: (postId: string) => void;
   showMuteicon?: boolean;
+  showUserList: boolean;
 };
 
 export default function Post({
@@ -34,6 +35,7 @@ export default function Post({
   userId,
   filterPost,
   showMuteicon = true,
+  showUserList = true,
 }: PostProps) {
   const { handleToast } = useAppContext();
 
@@ -58,39 +60,57 @@ export default function Post({
         marginRight: "auto",
       }}
     >
-      <div
-        className="user_post_details"
-        style={{
-          display: "flex",
-          flexDirection: "row",
-          alignItems: "center",
-          gap: "12px",
-          marginBottom: "13px",
-        }}
-      >
-        <Link to={`/user/${userId}`}>
-          <img
-            style={{ width: "26px", borderRadius: "50%" }}
-            src={userImage}
-            alt=""
-          />
-        </Link>
-        <Link
-          to={`/user/${userId}`}
+      {showUserList && (
+        <div
+          className="user_post_details"
           style={{
-            fontSize: "14.45px",
-            fontFamily: "Roboto",
-            color: "inherit",
-            textDecoration: "none",
+            display: "flex",
+            flexDirection: "row",
+            alignItems: "center",
+            gap: "12px",
+            marginBottom: "13px",
           }}
         >
-          {username}
-        </Link>
+          <Link to={`/user/${userId}`}>
+            <img
+              style={{ width: "26px", borderRadius: "50%" }}
+              src={userImage}
+              alt=""
+            />
+          </Link>
+          <Link
+            to={`/user/${userId}`}
+            style={{
+              fontSize: "14.45px",
+              fontFamily: "Roboto",
+              color: "inherit",
+              textDecoration: "none",
+            }}
+          >
+            {username}
+          </Link>
+          <p
+            style={{
+              fontSize: "13.15px",
+              color: "gray",
+              fontFamily: "Roboto Slab",
+            }}
+          >
+            <ReactTimeAgo
+              date={Date.parse(timestamp)}
+              locale="en-US"
+              timeStyle="round"
+            />
+          </p>
+        </div>
+      )}
+      {!showUserList && (
         <p
           style={{
             fontSize: "13.15px",
             color: "gray",
             fontFamily: "Roboto Slab",
+            marginBottom: "10px",
           }}
         >
           <ReactTimeAgo
@@ -99,7 +119,7 @@ export default function Post({
             timeStyle="round"
           />
         </p>
-      </div>
+      )}
       <div
         style={{
           display: "flex",
@@ -133,7 +153,7 @@ export default function Post({
               textDecoration: "none",
             }}
           >
-            {summary.slice(0, 194) + "..."}
+            {summary.slice(0, 190) + "..."}
           </Link>
 
           <div

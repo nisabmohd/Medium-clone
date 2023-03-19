@@ -53,7 +53,7 @@ export default function UserPostCard({
       <span
         style={{
           marginLeft: "8px",
-          marginTop: "-7px",
+          marginTop: "-4px",
           fontSize: "14px",
           fontFamily: "Roboto",
           color: "#4b4a4a",

@@ -58,7 +58,7 @@ export default function User() {
               marginBottom: "78px",
             }}
           >
-            <h1 style={{ fontSize: "40px" }}>{data?.data.name}</h1>
+            <h1 style={{ fontSize: "40px" }}>{data?.data?.name}</h1>
             <span style={{ color: "gray" }}>{moreIcon}</span>
           </div>
 
@@ -68,11 +68,11 @@ export default function User() {
                 postId={item._id}
                 timestamp={item.createdAt}
                 title={item.title}
-                username={data?.data.name}
-                userId={data?.data.name._id}
+                username={data?.data?.name}
+                userId={data?.data?.name._id}
                 image={item.image}
                 tag={item.tags.at(0)}
-                userImage={data?.data.avatar}
+                userImage={data?.data?.avatar}
                 key={item._id}
                 summary={item.summary}
                 showMuteicon={false}

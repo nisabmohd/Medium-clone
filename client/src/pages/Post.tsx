@@ -15,20 +15,43 @@ import TopPicks from "../components/TopPicks";
 import UserPostCard from "../components/UserPostCard";
 import PostAuthor from "../components/PostAuthor";
 import useShare from "../hooks/useShare";
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
+import { useAuth } from "../contexts/Auth";
+import MoreFrom from "../components/MoreFrom";
 
 export default function Post() {
   const { webShare } = useShare();
+  const { user } = useAuth();
   const { id } = useParams();
   const postUrl = useMemo(() => window.location.href, [id]);
+  const [votes, setVotes] = useState(0);
+  const [turnBlack, setTurnBlack] = useState(false);
 
   const { isLoading, error, data } = useQuery({
     queryFn: () => httpRequest.get(`${url}/post/${id}`),
     queryKey: ["blog", id],
     onSuccess: (data) => {
       document.title = data.data.post.title + " - Medium";
+      setVotes(data.data.post.votes.length ?? 0);
+      setTurnBlack(data.data.post.votes.includes(user?._id));
     },
   });
+
+  const { refetch: clap } = useQuery({
+    queryFn: () => httpRequest.patch(`${url}/post/vote/${id}`),
+    queryKey: ["vote", id],
+    enabled: false,
+    onSuccess: (res) => {
+      if (res.data.success) {
+        setVotes((prev) => prev + 1);
+      }
+    },
+  });
+  function votePost() {
+    setTurnBlack(true);
+    clap();
+  }
+
   if (error) return <p>Something went wrong ...</p>;
   if (isLoading) return <p>Loading ...</p>;
 
@@ -76,10 +99,10 @@ export default function Post() {
               marginBottom: "18px",
             }}
           >
-            {data?.data.post.title}
+            {data?.data?.post.title}
           </h1>
           <div className="markdown">
-            <Markdown>{data?.data.post.markdown}</Markdown>
+            <Markdown>{data?.data?.post?.markdown}</Markdown>
           </div>
           <div
             className="bottomScreen"
@@ -88,7 +111,7 @@ export default function Post() {
             }}
           >
             <div className="relatedTags">
-              {data?.data.post.tags.map((item: string) => {
+              {data?.data?.post.tags.map((item: string) => {
                 return (
                   <Chip
                     key={item}
@@ -123,9 +146,33 @@ export default function Post() {
                   gap: "25px",
                 }}
               >
-                <span style={{ ...iconColor, color: "rgb(171 169 169)" }}>
-                  {clapIcon}
-                </span>
+                <div
+                  style={{
+                    display: "flex",
+                    flexDirection: "row",
+                    gap: "8px",
+                    alignItems: "center",
+                  }}
+                >
+                  <span
+                    onClick={() => votePost()}
+                    style={{
+                      ...iconColor,
+                      color: turnBlack ? "black" : "rgb(171 169 169)",
+                    }}
+                  >
+                    {clapIcon}
+                  </span>
+                  <p
+                    style={{
+                      fontSize: "12px",
+                      color: "gray",
+                      fontFamily: "Roboto",
+                    }}
+                  >
+                    {votes || ""}
+                  </p>
+                </div>
                 <span style={iconColor}>{commentIcon}</span>
               </div>
               <div
@@ -154,6 +201,16 @@ export default function Post() {
               </div>
             </div>
           </div>
+          {id && data?.data?.user._id && (
+            <MoreFrom
+              userId={data?.data?.user._id}
+              postId={id}
+              avatar={data?.data?.user.avatar}
+              username={data?.data?.user.name}
+              bio={data.data?.user?.bio}
+              followers={data.data?.user?.followers}
+            />
+          )}
         </div>
       </div>
       <div

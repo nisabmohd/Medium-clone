@@ -154,8 +154,17 @@ export const comment = asyncHandler(async (req, res, next) => {
   res.send({ success: post.modifiedCount == 1 });
 });
 
-// more from todo
-export const morefrom = asyncHandler((req, res, next) => {});
+export const morefrom = asyncHandler(async (req, res, next) => {
+  const { userId, postId } = req.params;
+  res.send(
+    await Post.find({ $and: [{ userId }, { _id: { $ne: postId } }] }).limit(3)
+  );
+});
+
+// todo pagination
+export const explorePost = asyncHandler(async (req, res, next) => {
+  res.send(await getPostsWithUser(Post.find({}).sort({ _id: -1 })));
+});
 
 async function getPostsWithUser(q: any) {
   const posts = await q.sort({ _id: -1 });
