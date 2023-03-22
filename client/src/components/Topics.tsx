@@ -5,8 +5,10 @@ import Chip from "./Chip";
 
 export default function Topics({
   text = "Recommended topics",
+  style,
 }: {
   text?: string;
+  style?: object;
 }) {
   const { data } = useQuery({
     queryFn: () => httpRequest.get(`${url}/post/suggest/topics`),
@@ -42,6 +44,7 @@ export default function Topics({
               padding: "10px 18px",
               margin: "4.5px 3px",
               fontSize: "13.8px",
+              ...style,
             }}
             key={item._id}
             text={item.name}

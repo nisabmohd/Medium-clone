@@ -82,53 +82,7 @@ function UnAuthMenu() {
           "aria-labelledby": "basic-button",
         }}
       >
-        <div
-          style={{
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-            gap: "10px",
-            paddingBottom: "8px",
-            paddingTop: "7px",
-          }}
-        >
-          <p style={{ marginBottom: "12px" }}>Get started on Medium</p>
-          <Link
-            to="/signin/new"
-            style={{
-              backgroundColor: "#1a8917",
-              color: "white",
-              border: "none",
-              outline: "none",
-              borderRadius: "17px",
-              padding: "8px 12px",
-              fontSize: "14px",
-              textDecoration: "none",
-              width: "170px",
-              textAlign: "center",
-            }}
-          >
-            Sign up
-          </Link>
-          <Link
-            to="/signin/in"
-            style={{
-              border: "1px solid gray",
-              outline: "transparent",
-              background: "transparent",
-              borderRadius: "17px",
-              padding: "7px 12px",
-              color: "gray",
-              marginRight: "-5px",
-              fontSize: "14px",
-              textDecoration: "none",
-              width: "170px",
-              textAlign: "center",
-            }}
-          >
-            Sign In
-          </Link>
-        </div>
+        <GetStarted />
       </Menu>
     </div>
   );
@@ -312,6 +266,67 @@ function AuthMenu({
           </span>
         </MenuItem>
       </Menu>
+    </div>
+  );
+}
+
+export function GetStarted({
+  style,
+  topStyle,
+}: {
+  style?: object;
+  topStyle?: object;
+}) {
+  return (
+    <div
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        gap: "10px",
+        paddingBottom: "8px",
+        paddingTop: "7px",
+        ...style,
+      }}
+    >
+      <p style={{ marginBottom: "12px", ...topStyle }}>Get started on Medium</p>
+      <Link
+        to="/signin/new"
+        style={{
+          backgroundColor: "#1a8917",
+          color: "white",
+          border: "none",
+          outline: "none",
+          borderRadius: "17px",
+          padding: "8px 12px",
+          fontSize: "14px",
+          textDecoration: "none",
+          width: "170px",
+          textAlign: "center",
+          ...style,
+        }}
+      >
+        Sign up
+      </Link>
+      <Link
+        to="/signin/in"
+        style={{
+          border: "1px solid gray",
+          outline: "transparent",
+          background: "transparent",
+          borderRadius: "17px",
+          padding: "7px 12px",
+          color: "gray",
+          marginRight: "-5px",
+          fontSize: "14px",
+          textDecoration: "none",
+          width: "170px",
+          textAlign: "center",
+          ...style,
+        }}
+      >
+        Sign In
+      </Link>
     </div>
   );
 }

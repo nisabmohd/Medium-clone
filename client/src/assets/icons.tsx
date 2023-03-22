@@ -197,7 +197,7 @@ export const copyurlIcon = (
 
 export const googleIcon = (
   <svg width="25" height="25" className="co ak">
-    <g fill="none" fill-rule="evenodd">
+    <g fill="none" fillRule="evenodd">
       <path
         d="M20.66 12.7c0-.61-.05-1.19-.15-1.74H12.5v3.28h4.58a3.91 3.91 0 0 1-1.7 2.57v2.13h2.74a8.27 8.27 0 0 0 2.54-6.24z"
         fill="#4285F4"

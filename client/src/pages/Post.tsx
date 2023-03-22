@@ -18,10 +18,11 @@ import useShare from "../hooks/useShare";
 import { useMemo, useState } from "react";
 import { useAuth } from "../contexts/Auth";
 import MoreFrom from "../components/MoreFrom";
+import { GetStarted } from "../components/AvatarMenu";
 
 export default function Post() {
   const { webShare } = useShare();
-  const { user } = useAuth();
+  const { user, isAuthenticated } = useAuth();
   const { id } = useParams();
   const postUrl = useMemo(() => window.location.href, [id]);
   const [votes, setVotes] = useState(0);
@@ -238,7 +239,14 @@ export default function Post() {
             image={data.data.user.avatar}
           />
         )}
-        <TopPicks text="More from Medium" showImg={true} />
+        {isAuthenticated ? (
+          <TopPicks text="More from Medium" showImg={true} />
+        ) : (
+          <GetStarted
+            style={{ width: "83%", marginLeft: "20px" }}
+            topStyle={{ marginTop: "22px" }}
+          />
+        )}
       </div>
     </div>
   );

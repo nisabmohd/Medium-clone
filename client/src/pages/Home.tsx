@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { url } from "../baseUrl";
 import Post from "../components/Post";
@@ -7,10 +7,22 @@ import SuggestionBar from "../components/SuggestionBar";
 import Topics from "../components/Topics";
 import TopPicks from "../components/TopPicks";
 import WhoToFollow from "../components/WhoToFollow";
+import { useAuth } from "../contexts/Auth";
 import { httpRequest } from "../interceptor/axiosInterceptor";
+import UnAuthHome from "./UnAuthHome";
 
 export default function Home() {
   const { tag } = useParams();
+  const { isAuthenticated } = useAuth();
+  return !isAuthenticated && !tag ? (
+    <UnAuthHome />
+  ) : (
+    <HomeContainer tag={tag as string} />
+  );
+}
+
+function HomeContainer({ tag }: { tag: string }) {
+  const { isAuthenticated } = useAuth();
   const [posts, setposts] = useState<Array<any>>([]);
   document.title = "Medium";
   useQuery({
@@ -33,7 +45,6 @@ export default function Home() {
   function filterPost(postId: string) {
     setposts((prev) => prev.filter((item) => item.post._id !== postId));
   }
-
   return (
     <div
       className="container"
@@ -52,7 +63,7 @@ export default function Home() {
           marginRight: "auto",
         }}
       >
-        <SuggestionBar activeTab={tag ?? "For you"} />
+        {isAuthenticated && <SuggestionBar activeTab={tag ?? "For you"} />}
         <div
           style={{
             width: "90%",
@@ -60,6 +71,7 @@ export default function Home() {
             display: "flex",
             flexDirection: "column",
             gap: "30px",
+            marginTop: !isAuthenticated ? "22px" : 0,
           }}
         >
           {posts.map((item) => {
@@ -92,9 +104,9 @@ export default function Home() {
           gap: "38px",
         }}
       >
-        <TopPicks text="Top Picks" />
+        {isAuthenticated && <TopPicks text="Top Picks" />}
         <Topics />
-        <WhoToFollow />
+        {isAuthenticated && <WhoToFollow />}
       </div>
     </div>
   );

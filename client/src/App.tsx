@@ -59,10 +59,7 @@ export default function App() {
       <div className="App" style={{ height: "100vh" }}>
         {showNav && (isAuthenticated ? <Navbar /> : <UnAuthNavbar />)}
         <Routes>
-          <Route
-            path="/tag?/:tag?"
-            element={isAuthenticated ? <Home /> : <UnAuthHome />}
-          />
+          <Route path="/tag?/:tag?" element={<Home />} />
           <Route path="/signin/:tab" element={<SignIn />} />
           <Route path="/blog/:id" element={<Post />} />
           <Route path="/user/:id/:tab?" element={<User />} />

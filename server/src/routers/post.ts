@@ -36,9 +36,9 @@ router.route("/vote/:postId").patch(isAuthenticated, vote);
 
 router.route("/comment/:postId").put(isAuthenticated, comment);
 
-router.route("/topic/:topic").get(isAuthenticated, getPostOfTopic);
+router.route("/topic/:topic").get(getPostOfTopic);
 
-router.route("/user/:userId").get(isAuthenticated, getUserPost);
+router.route("/user/:userId").get(getUserPost);
 
 router.route("/ignore/:postId").patch(isAuthenticated, ignorePost);
 

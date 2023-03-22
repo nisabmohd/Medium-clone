@@ -9,7 +9,6 @@ export default function Explore() {
     queryFn: () => httpRequest.get(`${url}/post/explore`),
     queryKey: ["explore", "unauth"],
   });
-  console.log(data?.data);
 
   return (
     <div>
@@ -48,7 +47,6 @@ export default function Explore() {
               />
             );
           })}
-          v
         </div>
         <div
           className="rightbar"
@@ -61,7 +59,14 @@ export default function Explore() {
             marginTop: "30px",
           }}
         >
-          <Topics text="Discover more of what matters to you" />
+          <Topics
+            text="Discover more of what matters to you"
+            style={{
+              backgroundColor: "transparent",
+              border: "1px solid gray",
+              borderRadius: "6px",
+            }}
+          />
         </div>
       </div>
     </div>

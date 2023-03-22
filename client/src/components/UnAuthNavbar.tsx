@@ -108,7 +108,3 @@ export default function UnAuthNavbar() {
     </nav>
   );
 }
-
-function AvatarDropDown() {
-  return <></>;
-}

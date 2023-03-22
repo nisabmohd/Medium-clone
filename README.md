@@ -61,5 +61,6 @@ $ npm run dev
 
 ### Overview
 
+<img src="./screenshots/unauth.png" />
 <img src="./screenshots/home.png" />
 <img src="./screenshots/post.png" />
