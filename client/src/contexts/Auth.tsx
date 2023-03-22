@@ -1,5 +1,8 @@
+import { useQuery } from "@tanstack/react-query";
 import { createContext, ReactNode, useContext, useState } from "react";
+import { url } from "../baseUrl";
 import useLocalStorage, { clearLocalStorage } from "../hooks/useLocalStorage";
+import { httpRequest } from "../interceptor/axiosInterceptor";
 
 export type User = {
   avatar: string;
@@ -28,8 +31,19 @@ export default function Auth({ children }: AuthProps) {
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(
     user != undefined
   );
+  const [refreshToken] = useLocalStorage<string | undefined>(
+    "refresh_token",
+    undefined
+  );
+  const { refetch: logoutCall } = useQuery({
+    queryFn: () =>
+      httpRequest.post(`${url}/auth/logout`, { refresh_token: refreshToken }),
+    queryKey: ["logout", user?._id],
+    enabled: false,
+  });
 
   function logout() {
+    logoutCall();
     setUser(undefined);
     setIsAuthenticated(false);
     clearLocalStorage();
