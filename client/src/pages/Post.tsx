@@ -155,10 +155,16 @@ export default function Post() {
                   }}
                 >
                   <span
-                    onClick={() => votePost()}
+                    onClick={() =>
+                      data?.data.post.userId !== user?._id && votePost()
+                    }
                     style={{
                       ...iconColor,
                       color: turnBlack ? "black" : "rgb(171 169 169)",
+                      cursor:
+                        data?.data.post.userId == user?._id
+                          ? "not-allowed"
+                          : "pointer",
                     }}
                   >
                     {clapIcon}

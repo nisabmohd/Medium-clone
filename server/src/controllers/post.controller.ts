@@ -36,6 +36,8 @@ export const getPost = asyncHandler(async (req, res, next) => {
 
 export const writePost = asyncHandler(async (req, res, next) => {
   const { userId } = req;
+  console.log(req.body.tags);
+
   var test: string = req.body.markdown ?? "";
   const codeRegex = /<code>(.*?)<\/code>/g;
   const withoutCode = req.body.markdown.replace(codeRegex, "");
@@ -64,12 +66,11 @@ export const editPost = asyncHandler(async (req, res, next) => {
   const { userId } = req;
   const post = await Post.findOne({ _id: req.params.postId });
   if (!post) throw new ServerError(400, "No such post found");
-  console.log(post.userId.toString(), userId);
   if (post.userId.toString() != userId)
     throw new ServerError(403, "Not Allowed");
   const updatedRef = await Post.updateOne(
     { _id: req.params.postId },
-    { $set: req.body }
+    { $set: { ...req.body, tags: req.body.tags.split(",") } }
   );
   res.send({ success: updatedRef.modifiedCount == 1 });
 });

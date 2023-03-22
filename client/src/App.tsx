@@ -75,7 +75,7 @@ export default function App() {
             }
           />
           <Route
-            path="/write"
+            path="/write/:postId?"
             element={
               <Authentication>
                 <Container

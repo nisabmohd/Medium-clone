@@ -5,9 +5,14 @@ import AvatarMenu from "./AvatarMenu";
 type WriteNavType = {
   onClick(): void;
   disabled: boolean;
+  buttonText: string;
 };
 
-export default function WriteNavbar({ onClick, disabled }: WriteNavType) {
+export default function WriteNavbar({
+  onClick,
+  disabled,
+  buttonText,
+}: WriteNavType) {
   return (
     <div
       style={{
@@ -47,7 +52,7 @@ export default function WriteNavbar({ onClick, disabled }: WriteNavType) {
             cursor: "pointer",
           }}
         >
-          Publish
+          {buttonText}
         </button>
         <span style={{ color: "gray", cursor: "pointer" }}>{moreIcon}</span>
         <Link to="/notifications">

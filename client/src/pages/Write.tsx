@@ -10,12 +10,19 @@ import { useAuth } from "../contexts/Auth";
 import { useQuery } from "@tanstack/react-query";
 import { httpRequest } from "../interceptor/axiosInterceptor";
 import { url } from "../baseUrl";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 export default function Write() {
   const { hideNavbar } = useAppContext();
   const [post, setPost] = useState({ title: "", markdown: "", tags: "" });
   const navigate = useNavigate();
+  const { postId } = useParams();
+  const [hasPostId, setHasPostId] = useState(false);
+
+  useEffect(() => {
+    if (postId) setHasPostId(true);
+    () => setHasPostId(false);
+  }, [postId]);
 
   useEffect(() => {
     hideNavbar(true);
@@ -35,6 +42,34 @@ export default function Write() {
     enabled: false,
     onSuccess(data) {
       navigate(`/blog/${data.data._id}`);
+    },
+  });
+
+  useQuery({
+    queryFn: () => httpRequest.get(`${url}/post/${postId}`),
+    queryKey: ["edit", "blog", "post", postId],
+    enabled: hasPostId,
+    onSuccess: (data) => {
+      setPost({
+        title: data.data.post.title,
+        markdown: data.data.post.markdown,
+        tags: data.data.post.tags,
+      });
+    },
+  });
+
+  const { refetch: updatePost } = useQuery({
+    queryFn: () => {
+      const params = new URLSearchParams();
+      params.append("title", post.title);
+      params.append("tags", post.tags);
+      params.append("markdown", post.markdown);
+      return httpRequest.put(`${url}/post/${postId}`, params);
+    },
+    queryKey: ["blog", "post", "update", postId],
+    enabled: false,
+    onSuccess() {
+      navigate(`/blog/${postId}`);
     },
   });
 
@@ -58,13 +93,17 @@ export default function Write() {
   };
 
   const handlePublish = () => {
-    // new post
-    makePost();
+    if (hasPostId) {
+      updatePost();
+    } else {
+      makePost();
+    }
   };
 
   return (
     <>
       <WriteNavbar
+        buttonText={hasPostId ? "Save" : "Publish"}
         onClick={handleClickOpen}
         disabled={!(post.title.length > 6 && post.markdown.length > 15)}
       />
@@ -87,6 +126,7 @@ export default function Write() {
               return { ...prev, title: e.target.value };
             })
           }
+          value={post.title}
           placeholder="Title"
           style={{
             width: "100%",
@@ -102,6 +142,7 @@ export default function Write() {
               return { ...prev, markdown: e.target.value };
             })
           }
+          value={post.markdown}
           className="hide_scroll"
           placeholder="Tell your story..."
           style={{
@@ -124,6 +165,8 @@ export default function Write() {
             markdown={post.markdown}
             handletags={handletags}
             handlePublish={handlePublish}
+            tags={post.tags}
+            buttonText={hasPostId ? "Save now" : "Publish now"}
           />
         </Dialog>
       </div>
@@ -146,14 +189,18 @@ const DialogComponent = ({
   markdown,
   handletags,
   handlePublish,
+  tags: tagsGiven,
+  buttonText,
 }: {
   handleClose(): void;
   title: string;
   markdown: string;
   handletags(val: string): void;
   handlePublish(): void;
+  tags: string;
+  buttonText: string;
 }) => {
-  const [tags, setTags] = useState("");
+  const [tags, setTags] = useState(tagsGiven);
   const { user } = useAuth();
   const test: string = markdown ?? "";
   const codeRegex = /<code>(.*?)<\/code>/g;
@@ -312,7 +359,7 @@ const DialogComponent = ({
                 cursor: "pointer",
               }}
             >
-              Publish now
+              {buttonText}
             </button>
           </div>
         </div>
