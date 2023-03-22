@@ -31,14 +31,14 @@ export default function Auth({ children }: AuthProps) {
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(
     user != undefined
   );
-  const [refreshToken] = useLocalStorage<string | undefined>(
-    "refresh_token",
-    undefined
-  );
 
   const { refetch: logoutCall } = useQuery({
     queryFn: () =>
-      httpRequest.post(`${url}/auth/logout`, { refresh_token: refreshToken }),
+      httpRequest.post(`${url}/auth/logout`, {
+        refresh_token: JSON.parse(
+          localStorage.getItem("refresh_token") as string
+        ),
+      }),
     queryKey: ["logout", user?._id],
     enabled: false,
     onSuccess() {

@@ -70,3 +70,8 @@ h6 {
   -ms-overflow-style: none;
   scrollbar-width: none;
 }
+
+.container_70 {
+  width: 60%;
+  margin: auto;
+}

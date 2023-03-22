@@ -21,7 +21,7 @@ export default function MoreFrom({
   followers: Array<string>;
 }) {
   const { user } = useAuth();
-  const [iFollow, setIFollow] = useState(followers.includes(user!._id));
+  const [iFollow, setIFollow] = useState(followers.includes(user?._id ?? ""));
   const { data: response } = useQuery({
     queryFn: () => httpRequest.get(`${url}/post/more/${postId}/${userId}`),
     queryKey: ["more", "from", userId, postId],
@@ -91,21 +91,23 @@ export default function MoreFrom({
           </p>
         </div>
         <div className="right_more_from">
-          <button
-            onClick={() => handleFollowUnfollow()}
-            style={{
-              marginTop: "20px",
-              backgroundColor: iFollow ? "transparent" : "#669254",
-              padding: "10px 18px",
-              border: iFollow ? "1px solid gray" : "none",
-              outline: "none",
-              borderRadius: "18px",
-              color: iFollow ? "black" : "white",
-              cursor: "pointer",
-            }}
-          >
-            {iFollow ? "Unfollow" : "Follow"}
-          </button>
+          {user?._id !== userId && (
+            <button
+              onClick={() => handleFollowUnfollow()}
+              style={{
+                marginTop: "20px",
+                backgroundColor: iFollow ? "transparent" : "#669254",
+                padding: "10px 18px",
+                border: iFollow ? "1px solid gray" : "none",
+                outline: "none",
+                borderRadius: "18px",
+                color: iFollow ? "black" : "white",
+                cursor: "pointer",
+              }}
+            >
+              {iFollow ? "Unfollow" : "Follow"}
+            </button>
+          )}
         </div>
       </div>
       <div style={{ display: "flex", flexDirection: "column", gap: "30px" }}>

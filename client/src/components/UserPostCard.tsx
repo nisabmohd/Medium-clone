@@ -22,7 +22,7 @@ export default function UserPostCard({
 }: UserPostCardProps) {
   const { user } = useAuth();
   const [iFollow, setIFollow] = useState<boolean>(
-    () => followers.includes(user!._id) ?? false
+    () => followers.includes(user?._id ?? "") ?? false
   );
   const { refetch: follow } = useQuery({
     queryFn: () => httpRequest.put(`${url}/user/follow/${userId}`),

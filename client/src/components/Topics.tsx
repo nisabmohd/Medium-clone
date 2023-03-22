@@ -3,11 +3,16 @@ import { url } from "../baseUrl";
 import { httpRequest } from "../interceptor/axiosInterceptor";
 import Chip from "./Chip";
 
-export default function Topics() {
+export default function Topics({
+  text = "Recommended topics",
+}: {
+  text?: string;
+}) {
   const { data } = useQuery({
     queryFn: () => httpRequest.get(`${url}/post/suggest/topics`),
     queryKey: ["suggest", "topics"],
   });
+
   return (
     <div style={{ width: "90%", marginLeft: "auto" }}>
       <h5
@@ -19,7 +24,7 @@ export default function Topics() {
           letterSpacing: "0.55px",
         }}
       >
-        Recommended topics
+        {text}
       </h5>
       <div
         className="chips"
