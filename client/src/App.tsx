@@ -81,7 +81,6 @@ export default function App() {
                 <Container
                   sx={{ width: "50%", margin: "auto", height: "100%" }}
                 >
-                  <WriteNavbar />
                   <Write />
                 </Container>
               </Authentication>

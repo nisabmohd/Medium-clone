@@ -14,9 +14,14 @@ export const getHomePost = asyncHandler(async (req, res, next) => {
   const { userId } = req;
   const user = await User.findOne({ _id: userId });
   const ignoreList = user?.ignore ?? [];
+  const ignoreAuthor = user?.mutedAuthor ?? [];
   const posts = await getPostsWithUser(
     Post.find({
-      $and: [{ userId: { $ne: userId } }, { _id: { $nin: ignoreList } }],
+      $and: [
+        { userId: { $ne: userId } },
+        { _id: { $nin: ignoreList } },
+        { userId: { $nin: ignoreAuthor } },
+      ],
     })
   );
   res.send(posts);
@@ -89,9 +94,14 @@ export const suggestTopPosts = asyncHandler(async (req, res, next) => {
   const { userId } = req;
   const user = await User.findOne({ _id: userId });
   const ignoreList = user?.ignore ?? [];
+  const ignoreAuthor = user?.mutedAuthor ?? [];
   const posts = await getPostsWithUser(
     Post.find({
-      $and: [{ userId: { $ne: userId } }, { _id: { $nin: ignoreList } }],
+      $and: [
+        { userId: { $ne: userId } },
+        { _id: { $nin: ignoreList } },
+        { userId: { $nin: ignoreAuthor } },
+      ],
     })
       .sort({ votes: -1 })
       .limit(3)
@@ -142,7 +152,6 @@ export const vote = asyncHandler(async (req, res, next) => {
   res.send({ success: post.modifiedCount == 1 });
 });
 
-// pagination + sort todo
 export const comment = asyncHandler(async (req, res, next) => {
   const { postId } = req.params;
   const { userId } = req;
@@ -165,6 +174,18 @@ export const morefrom = asyncHandler(async (req, res, next) => {
 export const explorePost = asyncHandler(async (req, res, next) => {
   res.send(await getPostsWithUser(Post.find({}).sort({ _id: -1 })));
 });
+
+export const ignoreAuthor = asyncHandler(async (req, res, next) => {
+  const { userId } = req;
+  const { userId: authorId } = req.params;
+  const updated = await User.updateOne(
+    { _id: userId },
+    { $push: { mutedAuthor: authorId } }
+  );
+  res.send({ success: updated.modifiedCount == 1 });
+});
+
+export const getAllComments = asyncHandler(async (req, res, next) => {});
 
 async function getPostsWithUser(q: any) {
   const posts = await q.sort({ _id: -1 });

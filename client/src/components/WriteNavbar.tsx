@@ -2,7 +2,12 @@ import { Link } from "react-router-dom";
 import { mediumLogo, moreIcon, NotificationIcon } from "../assets/icons";
 import AvatarMenu from "./AvatarMenu";
 
-export default function WriteNavbar() {
+type WriteNavType = {
+  onClick(): void;
+  disabled: boolean;
+};
+
+export default function WriteNavbar({ onClick, disabled }: WriteNavType) {
   return (
     <div
       style={{
@@ -27,9 +32,13 @@ export default function WriteNavbar() {
       >
         {/* cbe4ca */}
         <button
+          disabled={disabled}
+          onClick={() => {
+            !disabled && onClick();
+          }}
           style={{
             color: "white",
-            backgroundColor: "#1a8917",
+            backgroundColor: disabled ? "#cbe4ca" : "#1a8917",
             border: "none",
             outline: "none",
             padding: "6px 12px",
