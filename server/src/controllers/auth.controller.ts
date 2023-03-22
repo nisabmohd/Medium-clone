@@ -22,9 +22,11 @@ export const tokenRefresh = asyncHandler((req, res, next) => {
 
 export const logout = asyncHandler(async (req, res, next) => {
   const { refresh_token } = req.body;
+  console.log(refresh_token);
+
   const loggedOut = await Token.deleteOne({ token: refresh_token });
   if (!loggedOut.deletedCount)
-    throw new ServerError(4000, "Something went wrong!");
+    throw new ServerError(400, "Something went wrong!");
   res.json({ message: "logged out succesfully" });
 });
 

@@ -35,18 +35,21 @@ export default function Auth({ children }: AuthProps) {
     "refresh_token",
     undefined
   );
+
   const { refetch: logoutCall } = useQuery({
     queryFn: () =>
       httpRequest.post(`${url}/auth/logout`, { refresh_token: refreshToken }),
     queryKey: ["logout", user?._id],
     enabled: false,
+    onSuccess() {
+      setUser(undefined);
+      setIsAuthenticated(false);
+      clearLocalStorage();
+    },
   });
 
   function logout() {
     logoutCall();
-    setUser(undefined);
-    setIsAuthenticated(false);
-    clearLocalStorage();
   }
 
   function handleUser(user: User) {
