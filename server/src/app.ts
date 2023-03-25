@@ -5,6 +5,7 @@ import logger from "./middlewares/logger";
 import postRouter from "./routers/post";
 import authRouter from "./routers/auth";
 import userRouter from "./routers/user";
+import searchRouter from "./routers/search";
 import cors from "cors";
 import { errorHandler } from "./middlewares/errorHandler";
 
@@ -31,5 +32,6 @@ app.get("/test", (req, res) => {
 app.use("/post", postRouter);
 app.use("/auth", authRouter);
 app.use("/user", userRouter);
+app.use("/search", searchRouter);
 
 app.use(errorHandler);

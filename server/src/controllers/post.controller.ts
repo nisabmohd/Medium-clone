@@ -36,8 +36,6 @@ export const getPost = asyncHandler(async (req, res, next) => {
 
 export const writePost = asyncHandler(async (req, res, next) => {
   const { userId } = req;
-  console.log(req.body.tags);
-
   var test: string = req.body.markdown ?? "";
   const codeRegex = /<code>(.*?)<\/code>/g;
   const withoutCode = req.body.markdown.replace(codeRegex, "");
