@@ -20,7 +20,8 @@
     "express-async-handler": "^1.2.0",
     "jsonwebtoken": "^9.0.0",
     "mongoose": "^7.0.1",
-    "qs": "^6.11.1"
+    "qs": "^6.11.1",
+    "socket.io": "^4.6.1"
   },
   "devDependencies": {
     "@types/cors": "^2.8.13",

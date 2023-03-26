@@ -1,6 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import { useAppContext } from "../App";
 import { url } from "../baseUrl";
 import { useAuth } from "../contexts/Auth";
 import { httpRequest } from "../interceptor/axiosInterceptor";
@@ -21,6 +22,7 @@ export default function UserPostCard({
   image,
 }: UserPostCardProps) {
   const { user } = useAuth();
+  const { socket } = useAppContext();
   const [iFollow, setIFollow] = useState<boolean>(
     () => followers.includes(user?._id ?? "") ?? false
   );
@@ -40,6 +42,7 @@ export default function UserPostCard({
       unfollow();
     } else {
       setIFollow(true);
+      socket.emit("notify", { userId });
       follow();
     }
   }

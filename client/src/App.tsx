@@ -11,11 +11,20 @@ import { useAuth } from "./contexts/Auth";
 import UnAuthNavbar from "./components/UnAuthNavbar";
 import UnAuthHome from "./pages/UnAuthHome";
 import SignIn from "./pages/SignIn";
-import { useState, createContext, useContext } from "react";
+import {
+  useState,
+  createContext,
+  useContext,
+  useMemo,
+  useEffect,
+  useRef,
+} from "react";
 import { Toaster, toast, Toast } from "react-hot-toast";
 import CloseIcon from "@mui/icons-material/Close";
 import WriteNavbar from "./components/WriteNavbar";
 import { Container } from "@mui/system";
+import { io } from "socket.io-client";
+import { url } from "./baseUrl";
 
 export const DEFAULT_IMG =
   "https://firebasestorage.googleapis.com/v0/b/upload-pics-e599e.appspot.com/o/images%2F1_dmbNkD5D-u45r44go_cf0g.png?alt=media&token=3ef51503-f601-448b-a55b-0682607ddc8a";
@@ -23,6 +32,7 @@ export const DEFAULT_IMG =
 type AppContextType = {
   hideNavbar(val: boolean): void;
   handleToast(message: string): void;
+  socket: any;
 };
 
 const Context = createContext<AppContextType | undefined>(undefined);
@@ -32,8 +42,23 @@ export function useAppContext() {
 }
 
 export default function App() {
-  const { isAuthenticated } = useAuth();
+  const { isAuthenticated, user } = useAuth();
   const [showNav, setShowNav] = useState(true);
+
+  const [notificationsCount, setNotificationsCount] = useState(0);
+  const socket = useMemo(() => io(url), []);
+
+  useEffect(() => {
+    socket.emit("start", { userId: user!._id });
+    socket.emit("checkNotifications", { userId: user!._id });
+    socket.on("notificationsCount", ({ count }) => {
+      setNotificationsCount(count);
+    });
+    socket.on("haveNotifications", (have) => {
+      console.log(have);
+      if (have) setNotificationsCount((prev) => prev + 1);
+    });
+  }, []);
 
   function hideNavbar(val: boolean) {
     setShowNav(!val);
@@ -48,16 +73,25 @@ export default function App() {
       },
     });
   }
+  function NullifyNotificationsCount() {
+    setNotificationsCount(0);
+  }
 
   const contextValue: AppContextType = {
     hideNavbar,
     handleToast,
+    socket,
   };
   return (
     <Context.Provider value={contextValue}>
       <Toaster position="top-center" reverseOrder={false} />
       <div className="App" style={{ height: "100vh" }}>
-        {showNav && (isAuthenticated ? <Navbar /> : <UnAuthNavbar />)}
+        {showNav &&
+          (isAuthenticated ? (
+            <Navbar notificationsCount={notificationsCount} />
+          ) : (
+            <UnAuthNavbar />
+          ))}
         <Routes>
           <Route path="/tag?/:tag?" element={<Home />} />
           <Route path="/signin/:tab" element={<SignIn />} />
@@ -67,7 +101,7 @@ export default function App() {
             path="/notifications"
             element={
               <Authentication>
-                <Notifications />
+                <Notifications emptyNotifications={NullifyNotificationsCount} />
               </Authentication>
             }
           />

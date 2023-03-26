@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useAuth } from "../contexts/Auth";
 import { httpRequest } from "../interceptor/axiosInterceptor";
 import { url } from "../baseUrl";
+import { useAppContext } from "../App";
 
 type UserCardProps = {
   name: string;
@@ -20,6 +21,7 @@ export default function UserCard({
   followers,
 }: UserCardProps) {
   const { user } = useAuth();
+  const { socket } = useAppContext();
   const [iFollow, setIFollow] = useState<boolean>(
     () => followers.includes(user!._id) ?? false
   );
@@ -39,6 +41,7 @@ export default function UserCard({
       unfollow();
     } else {
       setIFollow(true);
+      socket.emit("notify", { userId: _id });
       follow();
     }
   }

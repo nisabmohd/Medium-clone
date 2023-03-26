@@ -47,7 +47,7 @@ export default function Notification({
       </div>
       <Link
         to={postId ? `/blog/${postId}` : `/user/${userId}`}
-        className="notification_content"
+        className="notification_content hover_black"
         style={{
           display: "flex",
           flexDirection: "column",
@@ -56,7 +56,7 @@ export default function Notification({
           textDecoration: "none",
         }}
       >
-        <p style={{ fontSize: "14px" }}>
+        <p className="hover_black" style={{ fontSize: "14px" }}>
           {`${username}`}
           <span style={{ color: "gray" }}>{"  " + message}</span>
           {` ${postTitle ?? ""}`}

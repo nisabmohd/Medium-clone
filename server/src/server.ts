@@ -1,6 +1,6 @@
 import { config } from "dotenv";
 config();
-import { app as server } from "./app";
+import { server } from "./app";
 import mongoose from "mongoose";
 import env from "./utils/envalid";
 

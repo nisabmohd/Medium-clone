@@ -1,5 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
-import React from "react";
+import { useEffect } from "react";
+import { useAppContext } from "../App";
 import { url } from "../baseUrl";
 import Notification from "../components/Notification";
 import Topics from "../components/Topics";
@@ -8,12 +9,22 @@ import WhoToFollow from "../components/WhoToFollow";
 import { useAuth } from "../contexts/Auth";
 import { httpRequest } from "../interceptor/axiosInterceptor";
 
-export default function Notifications() {
+export default function Notifications({
+  emptyNotifications,
+}: {
+  emptyNotifications(): void;
+}) {
   const { user } = useAuth();
   const { data, isLoading, isError } = useQuery({
     queryFn: () => httpRequest.get(`${url}/user/notifications`),
     queryKey: ["notifications", "user", user?._id],
   });
+  const { socket } = useAppContext();
+  useEffect(() => {
+    socket.emit("readAll", { userId: user?._id });
+    emptyNotifications();
+  }, []);
+
   return (
     <div
       className="container"
