@@ -36,7 +36,15 @@ export default function Notification({
         marginBottom: "14px",
       }}
     >
-      <div className="left_photo_not">
+      <span
+        style={{
+          backgroundColor: read ? "white" : "#1a8917",
+          width: "4px",
+          height: "100%",
+          borderRadius: "4px",
+        }}
+      ></span>
+      <div className="left_photo_not" style={{ marginLeft: "-5px" }}>
         <Link to={`/user/${userId}`}>
           <img
             style={{ height: "34px", width: "34px", borderRadius: "50%" }}

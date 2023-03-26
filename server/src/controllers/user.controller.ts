@@ -111,3 +111,7 @@ export const getNotifications = asyncHandler(async (req, res, next) => {
   );
   res.send(notifications?.notifications.reverse());
 });
+
+// getAllFollowers
+
+// getAllFollowings

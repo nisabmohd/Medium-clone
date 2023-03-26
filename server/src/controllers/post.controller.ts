@@ -83,12 +83,6 @@ export const deletePost = asyncHandler(async (req, res, next) => {
   res.send({ success: deletedRef.deletedCount == 1 });
 });
 
-//todo
-export const savePost = asyncHandler(async (req, res, next) => {
-  const { userId } = req;
-  const { listName } = req.body;
-});
-
 export const suggestTopPosts = asyncHandler(async (req, res, next) => {
   const { userId } = req;
   const user = await User.findOne({ _id: userId });
@@ -203,7 +197,14 @@ export const ignoreAuthor = asyncHandler(async (req, res, next) => {
   res.send({ success: updated.modifiedCount == 1 });
 });
 
+//todo
 export const getAllComments = asyncHandler(async (req, res, next) => {});
+
+//todo
+export const savePost = asyncHandler(async (req, res, next) => {
+  const { userId } = req;
+  const { listName } = req.body;
+});
 
 async function getPostsWithUser(q: any) {
   const posts = await q.sort({ _id: -1 });

@@ -1,5 +1,4 @@
 import { useQuery } from "@tanstack/react-query";
-import { useEffect } from "react";
 import { useAppContext } from "../App";
 import { url } from "../baseUrl";
 import Notification from "../components/Notification";
@@ -7,6 +6,7 @@ import Topics from "../components/Topics";
 import TopPicks from "../components/TopPicks";
 import WhoToFollow from "../components/WhoToFollow";
 import { useAuth } from "../contexts/Auth";
+import useDebounce from "../hooks/useDebounce";
 import { httpRequest } from "../interceptor/axiosInterceptor";
 
 export default function Notifications({
@@ -20,7 +20,8 @@ export default function Notifications({
     queryKey: ["notifications", "user", user?._id],
   });
   const { socket } = useAppContext();
-  useEffect(() => {
+
+  useDebounce(() => {
     socket.emit("readAll", { userId: user?._id });
     emptyNotifications();
   }, []);
