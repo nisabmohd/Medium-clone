@@ -19,6 +19,7 @@ import { useMemo, useState } from "react";
 import { useAuth } from "../contexts/Auth";
 import MoreFrom from "../components/MoreFrom";
 import { GetStarted } from "../components/AvatarMenu";
+import { useAppContext } from "../App";
 
 export default function Post() {
   const { webShare } = useShare();
@@ -27,6 +28,7 @@ export default function Post() {
   const postUrl = useMemo(() => window.location.href, [id]);
   const [votes, setVotes] = useState(0);
   const [turnBlack, setTurnBlack] = useState(false);
+  const { socket } = useAppContext();
 
   const { isLoading, error, data } = useQuery({
     queryFn: () => httpRequest.get(`${url}/post/${id}`),
@@ -44,6 +46,7 @@ export default function Post() {
     enabled: false,
     onSuccess: (res) => {
       if (res.data.success) {
+        socket.emit("notify", { userId: data?.data.user._id });
         setVotes((prev) => prev + 1);
       }
     },
