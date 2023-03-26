@@ -49,8 +49,9 @@ export default function App() {
   const socket = useMemo(() => io(url), []);
 
   useEffect(() => {
-    socket.emit("start", { userId: user!._id });
-    socket.emit("checkNotifications", { userId: user!._id });
+    if (!user) return;
+    socket.emit("start", { userId: user?._id });
+    socket.emit("checkNotifications", { userId: user?._id });
     socket.on("notificationsCount", ({ count }) => {
       setNotificationsCount(count);
     });
