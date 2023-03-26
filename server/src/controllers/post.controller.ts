@@ -144,11 +144,30 @@ export const ignorePost = asyncHandler(async function (req, res, next) {
 export const vote = asyncHandler(async (req, res, next) => {
   const { postId } = req.params;
   const { userId } = req;
-  const post = await Post.updateOne(
+  const post = await Post.findOneAndUpdate(
     { _id: postId },
-    { $push: { votes: userId } }
+    { $push: { votes: userId } },
+    { returnDocument: "after" }
   );
-  res.send({ success: post.modifiedCount == 1 });
+  if (post) {
+    const user = await User.findOne({ _id: userId });
+    await User.updateOne(
+      { _id: post.userId },
+      {
+        $push: {
+          notifications: {
+            userId,
+            username: user?.name,
+            avatar: user?.avatar,
+            message: "clapped for",
+            postId,
+            postTitle: post.title,
+          },
+        },
+      }
+    );
+  }
+  res.send({ success: post != undefined });
 });
 
 export const comment = asyncHandler(async (req, res, next) => {

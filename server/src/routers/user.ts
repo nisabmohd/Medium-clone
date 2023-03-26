@@ -3,6 +3,7 @@ import {
   deleteUser,
   editUser,
   followUser,
+  getNotifications,
   getUser,
   getUserIntrests,
   suggestUsers,
@@ -17,6 +18,8 @@ router
   .delete(isAuthenticated, deleteUser);
 
 router.route("/suggest").get(isAuthenticated, suggestUsers);
+
+router.route("/notifications").get(isAuthenticated, getNotifications);
 
 router.route("/intrests").get(isAuthenticated, getUserIntrests);
 

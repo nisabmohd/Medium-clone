@@ -23,6 +23,18 @@ const userSchema = new Schema(
     intrests: [{ type: String, required: true }],
     ignore: [{ type: Schema.Types.ObjectId, ref: "posts" }],
     mutedAuthor: [{ type: Schema.Types.ObjectId, ref: "users" }],
+    notifications: [
+      {
+        userId: { type: Schema.Types.ObjectId, ref: "users" },
+        username: { type: String, required: true },
+        avatar: String,
+        message: { type: String, required: true },
+        postId: { type: Schema.Types.ObjectId, ref: "posts" },
+        postTitle: String,
+        read: { type: Boolean, default: false },
+        createdAt: { type: Date, default: Date.now },
+      },
+    ],
   },
   { timestamps: true }
 );

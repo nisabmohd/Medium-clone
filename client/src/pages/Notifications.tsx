@@ -1,9 +1,19 @@
+import { useQuery } from "@tanstack/react-query";
 import React from "react";
+import { url } from "../baseUrl";
+import Notification from "../components/Notification";
 import Topics from "../components/Topics";
 import TopPicks from "../components/TopPicks";
 import WhoToFollow from "../components/WhoToFollow";
+import { useAuth } from "../contexts/Auth";
+import { httpRequest } from "../interceptor/axiosInterceptor";
 
 export default function Notifications() {
+  const { user } = useAuth();
+  const { data, isLoading, isError } = useQuery({
+    queryFn: () => httpRequest.get(`${url}/user/notifications`),
+    queryKey: ["notifications", "user", user?._id],
+  });
   return (
     <div
       className="container"
@@ -38,13 +48,41 @@ export default function Notifications() {
               flexDirection: "row",
               alignItems: "center",
               justifyContent: "space-between",
-              marginBottom: "78px",
-              marginTop: "12px",
+              marginBottom: "28px",
+              marginTop: "14px",
             }}
           >
-            <h1 style={{ fontSize: "40px" }}>{"Notifications"}</h1>
+            <h1 style={{ fontSize: "40px", letterSpacing: "0.38px" }}>
+              {"Notifications"}
+            </h1>
           </div>
-          {/*  */}
+          {data?.data?.map(
+            (item: {
+              _id: string;
+              userId: string;
+              username: string;
+              avatar: string;
+              message: string;
+              postId?: string;
+              postTitle?: string;
+              read: boolean;
+              createdAt: string;
+            }) => {
+              return (
+                <Notification
+                  key={item._id}
+                  avatar={item.avatar}
+                  createdAt={item.createdAt}
+                  message={item.message}
+                  read={item.read}
+                  userId={item.userId}
+                  username={item.username}
+                  postId={item.postId}
+                  postTitle={item.postTitle}
+                />
+              );
+            }
+          )}
         </div>
       </div>
       <div

@@ -32,15 +32,30 @@ export const followUser = asyncHandler(async (req, res, next) => {
     res.send({ success: false });
     return;
   }
-  const me = await User.updateOne(
+  const me = await User.findOneAndUpdate(
     { _id: userId },
-    { $push: { followings: userTo } }
+    { $push: { followings: userTo } },
+    { returnDocument: "after" }
   );
-  const other = await User.updateOne(
+  const other = await User.findOneAndUpdate(
     { _id: userTo },
-    { $push: { followers: userId } }
+    { $push: { followers: userId } },
+    { returnDocument: "after" }
   );
-  res.send({ success: other.modifiedCount == 1 && me.modifiedCount == 1 });
+  await User.updateOne(
+    { _id: other?._id },
+    {
+      $push: {
+        notifications: {
+          userId,
+          username: me?.name,
+          avatar: me?.avatar,
+          message: "started following you",
+        },
+      },
+    }
+  );
+  res.send({ success: other && me });
 });
 
 export const unfollowUser = asyncHandler(async (req, res, next) => {
@@ -88,4 +103,11 @@ export const getUserIntrests = asyncHandler(async (req, res, next) => {
   res.send(intrests);
 });
 
-//user notifications + pagination
+// totdo pagination
+export const getNotifications = asyncHandler(async (req, res, next) => {
+  const notifications = await User.findOne(
+    { _id: req.userId },
+    { notifications: 1, _id: 0 }
+  );
+  res.send(notifications?.notifications.reverse());
+});

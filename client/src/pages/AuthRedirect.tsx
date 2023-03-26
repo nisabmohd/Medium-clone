@@ -9,15 +9,15 @@ export default function AuthRedirect() {
   const [err, setErr] = useState<string | undefined>(undefined);
   const [query] = useSearchParams();
   const navigate = useNavigate();
-  const [_, setRefreshToken] = useLocalStorage<string | undefined>(
+  const [, setRefreshToken] = useLocalStorage<string | undefined>(
     "refresh_token",
     undefined
   );
-  const [__, setAccessToken] = useLocalStorage<string | undefined>(
+  const [, setAccessToken] = useLocalStorage<string | undefined>(
     "access_token",
     undefined
   );
-  const [___, setUser] = useLocalStorage<any>("user", undefined);
+  const [, setUser] = useLocalStorage<any>("user", undefined);
   const { handleUser } = useAuth();
 
   useEffect(() => {
