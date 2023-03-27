@@ -54,13 +54,17 @@ export default function SearchResults() {
 
   useEffect(() => {
     if (!query || !tab) return;
-    if (tab === "stories") setApiQuery("posts");
-    else if (tab === "people") setApiQuery("users");
-    else if (tab === "topics") setApiQuery("topics");
-    const tabs = SEARCHBAR_OPTIONS.map((tabItem) => {
-      return { ...tabItem, url: tabItem.url.replace("${q}", query!) };
-    });
-    setTabOptions(tabs);
+    setApiQuery("");
+    const t = setTimeout(() => {
+      if (tab === "stories") setApiQuery("posts");
+      else if (tab === "people") setApiQuery("users");
+      else if (tab === "topics") setApiQuery("topics");
+      const tabs = SEARCHBAR_OPTIONS.map((tabItem) => {
+        return { ...tabItem, url: tabItem.url.replace("${q}", query!) };
+      });
+      setTabOptions(tabs);
+    }, 400);
+    return () => clearTimeout(t);
   }, [tab, query]);
 
   useEffect(() => {
