@@ -32,6 +32,7 @@ export default function Explore() {
           {data?.data?.map((item: any) => {
             return (
               <Post
+                unAuth={true}
                 showUserList={true}
                 filterPost={() => {}}
                 postId={item.post._id}

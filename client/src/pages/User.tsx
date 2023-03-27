@@ -12,17 +12,17 @@ const USER_PAGE_TAB_OPTIONS = [
   {
     id: 1,
     url: "/user/userId",
-    title: "Home",
+    title: "home",
   },
   {
     id: 2,
-    url: "/user/userId/Lists",
-    title: "Lists",
+    url: "/user/userId/lists",
+    title: "lists",
   },
   {
     id: 3,
-    url: "/user/userId/About",
-    title: "About",
+    url: "/user/userId/about",
+    title: "about",
   },
 ];
 
@@ -91,7 +91,7 @@ export default function User() {
             <h1 style={{ fontSize: "40px" }}>{data?.data?.name}</h1>
             <span style={{ color: "gray" }}>{moreIcon}</span>
           </div>
-          <Tab options={optionsTab} activeTab={tab ?? "Home"} />
+          <Tab options={optionsTab} activeTab={tab ?? "home"} />
           <span style={{ marginTop: "-20px" }}>{""}</span>
           {postData?.data.map((item: any) => {
             return (

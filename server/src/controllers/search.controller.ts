@@ -2,12 +2,13 @@ import asyncHandler from "express-async-handler";
 import Post from "../models/post";
 import Tag from "../models/tag";
 import User from "../models/user";
+import { getPostsWithUser } from "./post.controller";
 
 //todo pagination
 export const postSearch = asyncHandler(async (req, res, nnext) => {
   const { query } = req.params;
   const regex = new RegExp(`${query}`, "i");
-  const posts = await Post.find({ title: regex });
+  const posts = await getPostsWithUser(Post.find({ title: regex }));
   res.send(posts);
 });
 

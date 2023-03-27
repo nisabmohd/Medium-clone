@@ -7,10 +7,10 @@ import {
 
 const router = express.Router();
 
-router.route("/post/:query").get(postSearch);
+router.route("/posts/:query").get(postSearch);
 
-router.route("/user/:query").get(userSearch);
+router.route("/users/:query").get(userSearch);
 
-router.route("/topic/:query").get(topicSearch);
+router.route("/topics/:query").get(topicSearch);
 
 export default router;

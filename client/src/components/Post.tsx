@@ -21,6 +21,7 @@ type PostProps = {
   filterPost?: (postId: string) => void;
   showMuteicon?: boolean;
   showUserList: boolean;
+  unAuth?: boolean;
 };
 
 export default function Post({
@@ -36,6 +37,7 @@ export default function Post({
   filterPost,
   showMuteicon = true,
   showUserList = true,
+  unAuth = false,
 }: PostProps) {
   const { handleToast } = useAppContext();
 
@@ -153,7 +155,9 @@ export default function Post({
               textDecoration: "none",
             }}
           >
-            {summary.slice(0, 190) + "..."}
+            {unAuth
+              ? summary.slice(0, 130) + "..."
+              : summary.slice(0, 190) + "..."}
           </Link>
 
           <div

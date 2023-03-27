@@ -206,7 +206,7 @@ export const savePost = asyncHandler(async (req, res, next) => {
   const { listName } = req.body;
 });
 
-async function getPostsWithUser(q: any) {
+export async function getPostsWithUser(q: any) {
   const posts = await q.sort({ _id: -1 });
   return Promise.all(
     posts.map(async (post: any) => {

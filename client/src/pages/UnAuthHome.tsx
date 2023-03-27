@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import { useAppContext } from "../App";
 import Explore from "../components/YellowHome/Explore";
 import Hero from "../components/YellowHome/Hero";

@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import { toTitleCase } from "../utils/helper";
 
 type TabProps = {
   options: Array<{ id: number; url: string; title: string }>;
@@ -40,7 +41,7 @@ export default function Tab({ options, activeTab }: TabProps) {
             }}
             key={option.id}
           >
-            {option.title}
+            {toTitleCase(option.title)}
           </Link>
         );
       })}
