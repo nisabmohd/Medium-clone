@@ -14,6 +14,7 @@ export default function Search() {
   }
   return (
     <div
+      className="searchbar"
       style={{
         display: "flex",
         flexDirection: "row",

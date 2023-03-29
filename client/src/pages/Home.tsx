@@ -65,6 +65,7 @@ function HomeContainer({ tag }: { tag: string }) {
       >
         {isAuthenticated && <SuggestionBar activeTab={tag ?? "For you"} />}
         <div
+          className="inner_container_main"
           style={{
             width: "90%",
             marginRight: "auto",

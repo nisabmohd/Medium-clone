@@ -207,7 +207,7 @@ function AuthMenu({
           </MenuItem>
         </Link>
         <Link
-          to={`/user/${userId}/Lists`}
+          to={`/user/${userId}/lists`}
           style={{
             textDecoration: "none",
             color: "inherit",

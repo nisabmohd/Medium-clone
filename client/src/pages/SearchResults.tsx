@@ -94,6 +94,7 @@ export default function SearchResults() {
         }}
       >
         <div
+          className="inner_container_main"
           style={{
             width: "90%",
             marginRight: "auto",

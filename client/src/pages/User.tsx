@@ -69,6 +69,7 @@ export default function User() {
         }}
       >
         <div
+          className="inner_container_main"
           style={{
             width: "90%",
             marginRight: "auto",

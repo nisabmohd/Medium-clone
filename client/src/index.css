@@ -79,3 +79,102 @@ h6 {
   width: 60%;
   margin: auto;
 }
+
+
+
+@media screen and (max-width:1500px) {
+  .container {
+    width: 75% !important;
+  }
+
+  .rightbar {
+    width: 33% !important;
+  }
+
+  .postsList {
+    width: 68% !important;
+  }
+}
+
+@media screen and (max-width:1080px) {
+  .container {
+    width: 95% !important;
+  }
+
+  .rightbar {
+    width: 36% !important;
+  }
+
+  .postsList {
+    width: 64% !important;
+  }
+
+  .write_page {
+    width: 90% !important;
+  }
+}
+
+@media screen and (max-width:855px) {
+  .container {
+    width: 95% !important;
+  }
+
+  .rightbar {
+    display: none !important;
+  }
+
+  .postsList {
+    width: 100% !important;
+    border-right: none !important;
+  }
+
+  .resp_summary {
+    display: none !important;
+  }
+
+  .inner_container_main {
+    width: 100% !important;
+
+  }
+
+  .inner_container_main>div {
+    margin-right: 0 !important;
+  }
+
+  .hide_scroll {
+    width: 100% !important;
+  }
+
+
+
+
+}
+
+
+@media screen and (max-width:500px) {
+  .searchbar {
+    display: none !important;
+  }
+
+  .post_image {
+    width: 80px !important;
+    height: 60px !important;
+  }
+
+  .post_heading {
+    font-size: 17px !important;
+  }
+
+  .post_content {
+    width: 100% !important;
+  }
+
+  .morefrom {
+    width: unset !important;
+    margin-left: 0 !important;
+  }
+
+  .postgap {
+    gap: 24px !important;
+  }
+}

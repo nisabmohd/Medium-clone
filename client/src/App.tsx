@@ -112,11 +112,12 @@ export default function App() {
             path="/write/:postId?"
             element={
               <Authentication>
-                <Container
-                  sx={{ width: "50%", margin: "auto", height: "100%" }}
+                <div
+                  className="write_page"
+                  style={{ width: "50%", margin: "auto", height: "100%" }}
                 >
                   <Write />
-                </Container>
+                </div>
               </Authentication>
             }
           />

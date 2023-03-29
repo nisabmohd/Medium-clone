@@ -53,6 +53,7 @@ export default function MoreFrom({
   }
   return (
     <div
+      className="morefrom"
       style={{
         backgroundColor: "#fafafa",
         padding: "22px 25px",

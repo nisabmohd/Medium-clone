@@ -123,6 +123,7 @@ export default function Post({
         </p>
       )}
       <div
+        className="postgap"
         style={{
           display: "flex",
           flexDirection: "row",
@@ -131,7 +132,10 @@ export default function Post({
         }}
       >
         <div className="left_post">
-          <h3 style={{ margin: "8px 0", marginTop: "-2px", fontSize: "22px" }}>
+          <h3
+            className="post_heading"
+            style={{ margin: "8px 0", marginTop: "-2px", fontSize: "22px" }}
+          >
             <Link
               to={`/blog/${postId}`}
               style={{
@@ -144,6 +148,7 @@ export default function Post({
             </Link>
           </h3>
           <Link
+            className="resp_summary"
             to={`/blog/${postId}`}
             style={{
               fontSize: "15.25px",
@@ -215,6 +220,7 @@ export default function Post({
         <Link to={`/blog/${postId}`} className="image">
           {image && (
             <img
+              className="post_image"
               style={{ width: "112px", height: "112px", objectFit: "cover" }}
               src={image}
               alt=""
