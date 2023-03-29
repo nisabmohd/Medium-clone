@@ -34,6 +34,7 @@ export default function PostAuthor({
   const [_, copy] = useClipboard();
   return (
     <div
+      className="author_details"
       style={{
         width: "100%",
         display: "flex",

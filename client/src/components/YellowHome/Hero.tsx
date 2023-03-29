@@ -26,10 +26,20 @@ export default function Hero() {
           className="left_hero"
           style={{ display: "flex", flexDirection: "column", gap: "42px" }}
         >
-          <p style={{ fontSize: "100px", fontFamily: "DM Serif Display" }}>
+          <p
+            className="hero_title"
+            style={{
+              fontSize: "100px",
+              fontFamily: "DM Serif Display",
+              zIndex: 99,
+            }}
+          >
             Stay curious.
           </p>
-          <p style={{ fontSize: "30px", width: "60%" }}>
+          <p
+            className="hero_desc"
+            style={{ fontSize: "30px", width: "60%", zIndex: 99 }}
+          >
             Discover stories, thinking, and expertise from writers on any topic.
           </p>
           <Link
@@ -52,6 +62,7 @@ export default function Hero() {
         </div>
         <div className="right_hero">
           <img
+            className="img_hero"
             style={{
               height: "95%",
               marginLeft: "auto",

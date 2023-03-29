@@ -29,25 +29,27 @@ export default function Explore() {
             marginTop: "30px",
           }}
         >
-          {data?.data?.map((item: any) => {
-            return (
-              <Post
-                unAuth={true}
-                showUserList={true}
-                filterPost={() => {}}
-                postId={item.post._id}
-                timestamp={item.post.createdAt}
-                title={item.post.title}
-                username={item.user.name}
-                userId={item.user._id}
-                image={item.post.image}
-                tag={item.post.tags.at(0)}
-                userImage={item.user.avatar}
-                key={item.post._id}
-                summary={item.post.summary}
-              />
-            );
-          })}
+          <div className="inner_container_main">
+            {data?.data?.map((item: any) => {
+              return (
+                <Post
+                  unAuth={true}
+                  showUserList={true}
+                  filterPost={() => {}}
+                  postId={item.post._id}
+                  timestamp={item.post.createdAt}
+                  title={item.post.title}
+                  username={item.user.name}
+                  userId={item.user._id}
+                  image={item.post.image}
+                  tag={item.post.tags.at(0)}
+                  userImage={item.user.avatar}
+                  key={item.post._id}
+                  summary={item.post.summary}
+                />
+              );
+            })}
+          </div>
         </div>
         <div
           className="rightbar"

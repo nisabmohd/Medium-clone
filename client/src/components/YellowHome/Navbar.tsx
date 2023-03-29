@@ -23,7 +23,7 @@ export default function Navbar() {
       >
         <div className="left_cont_nav_un">
           <Link to="/">
-            <img src={completeLogo} alt="" />
+            <img className="logo_img" src={completeLogo} alt="" />
           </Link>
         </div>
         <div

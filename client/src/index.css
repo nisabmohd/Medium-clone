@@ -112,6 +112,22 @@ h6 {
   .write_page {
     width: 90% !important;
   }
+
+  .container_70 {
+    width: 95% !important;
+  }
+
+  .img_hero {
+    display: none !important;
+  }
+
+  .hero_title {
+    font-size: 52px !important;
+  }
+
+  .hero_desc {
+    font-size: 30px !important;
+  }
 }
 
 @media screen and (max-width:855px) {
@@ -145,17 +161,19 @@ h6 {
     width: 100% !important;
   }
 
-
-
+  .post_content {
+    width: 100% !important;
+  }
 
 }
 
-
-@media screen and (max-width:500px) {
+@media screen and (max-width:655px) {
   .searchbar {
     display: none !important;
   }
+}
 
+@media screen and (max-width:500px) {
   .post_image {
     width: 80px !important;
     height: 60px !important;
@@ -165,10 +183,6 @@ h6 {
     font-size: 17px !important;
   }
 
-  .post_content {
-    width: 100% !important;
-  }
-
   .morefrom {
     width: unset !important;
     margin-left: 0 !important;
@@ -176,5 +190,21 @@ h6 {
 
   .postgap {
     gap: 24px !important;
+  }
+
+  .logo_img {
+    width: 128px;
+    margin-left: -12px;
+  }
+
+  .btns {
+    display: none !important;
+  }
+
+  .author_details {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 22px !important;
+    align-items: flex-start !important;
   }
 }

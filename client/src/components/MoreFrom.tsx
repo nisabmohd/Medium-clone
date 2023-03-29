@@ -114,7 +114,10 @@ export default function MoreFrom({
           )}
         </div>
       </div>
-      <div style={{ display: "flex", flexDirection: "column", gap: "30px" }}>
+      <div
+        className="inner_container_main"
+        style={{ display: "flex", flexDirection: "column", gap: "30px" }}
+      >
         {response?.data?.map((post: any) => {
           return (
             <Post
