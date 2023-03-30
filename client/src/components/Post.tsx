@@ -1,10 +1,11 @@
 import { useQuery } from "@tanstack/react-query";
+import { useState } from "react";
 import { Link } from "react-router-dom";
 import ReactTimeAgo from "react-time-ago";
 import { useAppContext } from "../App";
 import { moreIcon, mutePost, savePost } from "../assets/icons";
 import { url } from "../baseUrl";
-import useShare from "../hooks/useShare";
+import Menu from "@mui/material/Menu";
 import { httpRequest } from "../interceptor/axiosInterceptor";
 import Chip from "./Chip";
 
@@ -17,8 +18,9 @@ type PostProps = {
   postId: string;
   tag?: string;
   summary: string;
-  userId?: string;
+  userId: string;
   filterPost?: (postId: string) => void;
+  filterAuthorPost?: (userId: string) => void;
   showMuteicon?: boolean;
   showUserList: boolean;
   unAuth?: boolean;
@@ -38,6 +40,7 @@ export default function Post({
   showMuteicon = true,
   showUserList = true,
   unAuth = false,
+  filterAuthorPost,
 }: PostProps) {
   const { handleToast } = useAppContext();
 
@@ -48,11 +51,35 @@ export default function Post({
     onSuccess: (data) => {},
   });
 
+  const { refetch: ignoreAuthorCall } = useQuery({
+    queryFn: () => httpRequest.patch(`${url}/post/ignoreAuthor/${userId}`),
+    queryKey: ["ignoreAuthor", userId],
+    enabled: false,
+    onSuccess: (data) => {},
+  });
+
   function ignorePost() {
     ignorePostCall();
     handleToast("Got it. You will not see this story again");
     filterPost && filterPost(postId);
   }
+
+  function ignoreAuthor() {
+    ignoreAuthorCall();
+    handleToast("Got it. You will not see this author's story again");
+    handleClose();
+    filterAuthorPost && filterAuthorPost(userId);
+  }
+
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+  const open = Boolean(anchorEl);
+
+  const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+    setAnchorEl(event.currentTarget);
+  };
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
 
   return (
     <div
@@ -210,10 +237,33 @@ export default function Post({
                 </span>
               )}
               <span
+                onClick={handleClick}
                 style={{ color: "rgba(117, 117, 117, 1)", cursor: "pointer" }}
               >
                 {moreIcon}
               </span>
+              <Menu
+                id="basic-menu"
+                anchorEl={anchorEl}
+                open={open}
+                onClose={handleClose}
+                MenuListProps={{
+                  "aria-labelledby": "basic-button",
+                }}
+              >
+                <div style={{ padding: "8px 14px" }}>
+                  <p
+                    onClick={ignoreAuthor}
+                    style={{
+                      width: "100%",
+                      fontSize: "14px",
+                      cursor: "pointer",
+                    }}
+                  >
+                    Mute this author
+                  </p>
+                </div>
+              </Menu>
             </div>
           </div>
         </div>

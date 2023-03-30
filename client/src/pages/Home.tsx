@@ -45,6 +45,10 @@ function HomeContainer({ tag }: { tag: string }) {
   function filterPost(postId: string) {
     setposts((prev) => prev.filter((item) => item.post._id !== postId));
   }
+
+  function filterAuthorPost(userId: string) {
+    setposts((prev) => prev.filter((item) => item.user._id !== userId));
+  }
   return (
     <div
       className="container"
@@ -80,6 +84,7 @@ function HomeContainer({ tag }: { tag: string }) {
               <Post
                 showUserList={true}
                 filterPost={filterPost}
+                filterAuthorPost={filterAuthorPost}
                 postId={item.post._id}
                 timestamp={item.post.createdAt}
                 title={item.post.title}

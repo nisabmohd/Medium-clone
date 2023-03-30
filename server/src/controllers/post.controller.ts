@@ -1,5 +1,4 @@
 import asyncHandler from "express-async-handler";
-import post from "../models/post";
 import Post from "../models/post";
 import Tag from "../models/tag";
 import User from "../models/user";

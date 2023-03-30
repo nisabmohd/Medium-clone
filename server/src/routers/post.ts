@@ -8,6 +8,7 @@ import {
   getPost,
   getPostOfTopic,
   getUserPost,
+  ignoreAuthor,
   ignorePost,
   morefrom,
   savePost,
@@ -39,6 +40,8 @@ router.route("/comment/:postId").put(isAuthenticated, comment);
 router.route("/topic/:topic").get(getPostOfTopic);
 
 router.route("/user/:userId").get(getUserPost);
+
+router.route("/ignoreAuthor/:userId").patch(isAuthenticated, ignoreAuthor);
 
 router.route("/ignore/:postId").patch(isAuthenticated, ignorePost);
 

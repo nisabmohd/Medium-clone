@@ -36,6 +36,7 @@ export default function Explore() {
                   unAuth={true}
                   showUserList={true}
                   filterPost={() => {}}
+                  filterAuthorPost={() => {}}
                   postId={item.post._id}
                   timestamp={item.post.createdAt}
                   title={item.post.title}

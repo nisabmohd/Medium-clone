@@ -75,6 +75,11 @@ export default function SearchResults() {
   function filterPost(postId: string) {
     setPosts((prev) => prev.filter((item) => item?.post?._id !== postId));
   }
+
+  function filterAuthorPost(userId: string) {
+    setPosts((prev) => prev.filter((item) => item.user._id !== userId));
+  }
+
   return (
     <div
       className="container"
@@ -131,6 +136,7 @@ export default function SearchResults() {
               <Post
                 showUserList={true}
                 filterPost={filterPost}
+                filterAuthorPost={filterAuthorPost}
                 postId={item.post._id}
                 timestamp={item.post.createdAt}
                 title={item.post.title}
@@ -141,6 +147,7 @@ export default function SearchResults() {
                 userImage={item.user.avatar}
                 key={item.post._id}
                 summary={item.post.summary}
+                showMuteicon={false}
               />
             ))}
           {tab === "topics" && (
