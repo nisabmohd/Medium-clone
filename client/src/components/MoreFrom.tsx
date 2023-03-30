@@ -130,6 +130,7 @@ export default function MoreFrom({
               key={post._id}
               tag={post.tags.at(0)}
               showUserList={false}
+              userId={post.userId}
             />
           );
         })}
