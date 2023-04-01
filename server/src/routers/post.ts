@@ -33,6 +33,8 @@ router
   .delete(isAuthenticated, deletePost)
   .patch(isAuthenticated, savePost);
 
+router.route("/users/:topic").get(isAuthenticated, getPostOfTopic);
+
 router.route("/vote/:postId").patch(isAuthenticated, vote);
 
 router.route("/comment/:postId").put(isAuthenticated, comment);

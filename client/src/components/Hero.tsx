@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import mmm from "../../assets/mmm.png";
+import mmm from "../assets/mmm.png";
 
 export default function Hero() {
   return (

@@ -1,8 +1,8 @@
 import { useEffect } from "react";
 import { useAppContext } from "../App";
-import Explore from "../components/YellowHome/Explore";
-import Hero from "../components/YellowHome/Hero";
-import Navbar from "../components/YellowHome/Navbar";
+import Explore from "../components/Explore";
+import Hero from "../components/Hero";
+import Navbar from "../components/YellowNavbar";
 
 export default function UnAuthHome() {
   const { hideNavbar } = useAppContext();

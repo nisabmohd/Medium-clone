@@ -14,10 +14,11 @@ const userSchema = new Schema(
     avatar: String,
     followers: [{ type: Schema.Types.ObjectId, ref: "users" }],
     followings: [{ type: Schema.Types.ObjectId, ref: "users" }],
-    list: [
+    lists: [
       {
         name: String,
         posts: [{ type: Schema.Types.ObjectId, ref: "posts" }],
+        images: [{ type: String }],
       },
     ],
     intrests: [{ type: String, required: true }],

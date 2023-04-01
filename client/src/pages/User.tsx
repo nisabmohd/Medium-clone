@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
 import { useParams } from "react-router-dom";
@@ -6,9 +7,12 @@ import { url } from "../baseUrl";
 import Post from "../components/Post";
 import Tab from "../components/Tab";
 import UserPostCard from "../components/UserPostCard";
+import { useAuth } from "../contexts/Auth";
 import { httpRequest } from "../interceptor/axiosInterceptor";
+import AboutSection from "../components/AboutSection";
+import SavedSection from "../components/SavedSection";
 
-const USER_PAGE_TAB_OPTIONS = [
+const USER_PAGE_TAB_OPTIONS_AUTH = [
   {
     id: 1,
     url: "/user/userId",
@@ -26,25 +30,52 @@ const USER_PAGE_TAB_OPTIONS = [
   },
 ];
 
+const USER_PAGE_TAB_OPTIONS_UNAUTH = [
+  {
+    id: 1,
+    url: "/user/userId",
+    title: "home",
+  },
+  {
+    id: 3,
+    url: "/user/userId/about",
+    title: "about",
+  },
+];
 export default function User() {
   const { tab } = useParams();
   const { id } = useParams();
-  const [optionsTab, setOptionsTab] = useState(USER_PAGE_TAB_OPTIONS);
+  const { user } = useAuth();
+
+  const [optionsTab, setOptionsTab] = useState<
+    typeof USER_PAGE_TAB_OPTIONS_AUTH
+  >([]);
+
+  useEffect(() => {
+    if (tab) return;
+    refetch();
+  }, [tab]);
 
   const { data } = useQuery({
     queryFn: () => httpRequest.get(`${url}/user/${id}`),
     queryKey: ["user", id],
     onSuccess: (data) => {
       document.title = data.data.name + " - Medium";
-      setOptionsTab((prev) =>
-        prev.map((item) => {
-          return { ...item, url: item.url.replace("userId", data.data._id) };
-        })
-      );
+      setOptionsTab(() => {
+        if (user?._id === id)
+          return USER_PAGE_TAB_OPTIONS_AUTH.map((item) => {
+            return { ...item, url: item.url.replace("userId", data.data._id) };
+          });
+        else
+          return USER_PAGE_TAB_OPTIONS_UNAUTH.map((item) => {
+            return { ...item, url: item.url.replace("userId", data.data._id) };
+          });
+      });
     },
   });
+  console.log(tab);
 
-  const { data: postData } = useQuery({
+  const { data: postData, refetch } = useQuery({
     queryFn: () => httpRequest.get(`${url}/post/user/${id}`),
     enabled: data?.data != undefined,
     queryKey: ["post", "user", id],
@@ -94,24 +125,33 @@ export default function User() {
           </div>
           <Tab options={optionsTab} activeTab={tab ?? "home"} />
           <span style={{ marginTop: "-20px" }}>{""}</span>
-          {postData?.data.map((item: any) => {
-            return (
-              <Post
-                showUserList={true}
-                postId={item._id}
-                timestamp={item.createdAt}
-                title={item.title}
-                username={data?.data?.name}
-                userId={data?.data?.name._id}
-                image={item.image}
-                tag={item.tags.at(0)}
-                userImage={data?.data?.avatar}
-                key={item._id}
-                summary={item.summary}
-                showMuteicon={false}
-              />
-            );
-          })}
+          {!tab &&
+            postData?.data.map((item: any) => {
+              return (
+                <Post
+                  showUserList={true}
+                  postId={item._id}
+                  timestamp={item.createdAt}
+                  title={item.title}
+                  username={data?.data?.name}
+                  userId={data?.data?.name._id}
+                  image={item.image}
+                  tag={item.tags.at(0)}
+                  userImage={data?.data?.avatar}
+                  key={item._id}
+                  summary={item.summary}
+                  showMuteicon={false}
+                />
+              );
+            })}
+          {tab == "lists" && <SavedSection />}
+          {tab == "about" && (
+            <AboutSection
+              bio={data?.data.bio}
+              followers={data?.data.followers.length}
+              followings={data?.data.followings.length}
+            />
+          )}
         </div>
       </div>
       <div

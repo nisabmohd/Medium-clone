@@ -1,8 +1,8 @@
 import { useQuery } from "@tanstack/react-query";
-import { url } from "../../baseUrl";
-import { httpRequest } from "../../interceptor/axiosInterceptor";
-import Post from "../Post";
-import Topics from "../Topics";
+import { url } from "../baseUrl";
+import { httpRequest } from "../interceptor/axiosInterceptor";
+import Post from "./Post";
+import Topics from "./Topics";
 
 export default function Explore() {
   const { data, isError, isLoading } = useQuery({

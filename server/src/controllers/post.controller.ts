@@ -114,14 +114,17 @@ export const getPostOfTopic = asyncHandler(async (req, res, next) => {
     await Promise.all(
       (user?.followings ?? []).map(async (userId) => {
         posts.push(...(await getPostsWithUser(Post.find({ userId }))));
-        return null;
       })
     );
     posts.sort((a, b) => Date.parse(b.createdAt) - Date.parse(a.createdAt));
     res.send(posts);
     return;
   }
-  res.send(await getPostsWithUser(Post.find({ tags: req.params.topic })));
+  res.send(
+    await getPostsWithUser(
+      Post.find({ tags: req.params.topic }).sort({ _id: -1 })
+    )
+  );
 });
 
 export const ignorePost = asyncHandler(async function (req, res, next) {

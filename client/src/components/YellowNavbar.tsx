@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
-import completeLogo from "../../assets/logo.png";
+import completeLogo from "../assets/logo.png";
 
-export default function Navbar() {
+export default function YellowNavbar() {
   return (
     <div
       style={{

@@ -34,7 +34,10 @@ function HomeContainer({ tag }: { tag: string }) {
     },
   });
   useQuery({
-    queryFn: () => httpRequest.get(`${url}/post/topic/${tag}`),
+    queryFn: () =>
+      httpRequest.get(
+        `${url}/post/${tag === "Following" ? "users" : "topic"}/${tag}`
+      ),
     queryKey: ["home", "topic", tag],
     enabled: tag != undefined,
     onSuccess: (data) => {
