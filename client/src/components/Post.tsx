@@ -1,13 +1,13 @@
 import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import ReactTimeAgo from "react-time-ago";
 import { useAppContext } from "../App";
 import { moreIcon, mutePost, savePost } from "../assets/icons";
 import { url } from "../baseUrl";
-import Menu from "@mui/material/Menu";
 import { httpRequest } from "../interceptor/axiosInterceptor";
 import Chip from "./Chip";
+import PostMenu from "./PostMenu";
 
 type PostProps = {
   title: string;
@@ -43,6 +43,7 @@ export default function Post({
   filterAuthorPost,
 }: PostProps) {
   const { handleToast } = useAppContext();
+  const navigate = useNavigate();
 
   const { refetch: ignorePostCall } = useQuery({
     queryFn: () => httpRequest.patch(`${url}/post/ignore/${postId}`),
@@ -58,6 +59,17 @@ export default function Post({
     onSuccess: (data) => {},
   });
 
+  const { refetch: deleteStory } = useQuery({
+    queryFn: () => httpRequest.delete(`${url}/post/${postId}`),
+    queryKey: ["delete", postId],
+    enabled: false,
+    onSuccess() {
+      handleToast("Story deleted successfully");
+      handleClose();
+      filterPost && filterPost(postId);
+    },
+  });
+
   function ignorePost() {
     ignorePostCall();
     handleToast("Got it. You will not see this story again");
@@ -69,6 +81,14 @@ export default function Post({
     handleToast("Got it. You will not see this author's story again");
     handleClose();
     filterAuthorPost && filterAuthorPost(userId);
+  }
+
+  function deletePost() {
+    deleteStory();
+  }
+
+  function editPost() {
+    navigate(`/write/${postId}`);
   }
 
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
@@ -242,28 +262,15 @@ export default function Post({
               >
                 {moreIcon}
               </span>
-              <Menu
-                id="basic-menu"
+              <PostMenu
                 anchorEl={anchorEl}
                 open={open}
-                onClose={handleClose}
-                MenuListProps={{
-                  "aria-labelledby": "basic-button",
-                }}
-              >
-                <div style={{ padding: "8px 14px" }}>
-                  <p
-                    onClick={ignoreAuthor}
-                    style={{
-                      width: "100%",
-                      fontSize: "14px",
-                      cursor: "pointer",
-                    }}
-                  >
-                    Mute this author
-                  </p>
-                </div>
-              </Menu>
+                handleClose={handleClose}
+                ignoreAuthor={ignoreAuthor}
+                deletePost={deletePost}
+                editPost={editPost}
+                userId={userId}
+              />
             </div>
           </div>
         </div>

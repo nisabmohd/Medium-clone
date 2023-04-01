@@ -1,4 +1,4 @@
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { httpRequest } from "../interceptor/axiosInterceptor";
 import { url } from "../baseUrl";
@@ -20,6 +20,7 @@ import { useAuth } from "../contexts/Auth";
 import MoreFrom from "../components/MoreFrom";
 import { GetStarted } from "../components/AvatarMenu";
 import { useAppContext } from "../App";
+import PostMenu from "../components/PostMenu";
 
 export default function Post() {
   const { webShare } = useShare();
@@ -29,6 +30,8 @@ export default function Post() {
   const [votes, setVotes] = useState(0);
   const [turnBlack, setTurnBlack] = useState(false);
   const { socket } = useAppContext();
+  const navigate = useNavigate();
+  const { handleToast } = useAppContext();
 
   const { isLoading, error, data } = useQuery({
     queryFn: () => httpRequest.get(`${url}/post/${id}`),
@@ -54,6 +57,48 @@ export default function Post() {
   function votePost() {
     setTurnBlack(true);
     clap();
+  }
+
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+  const open = Boolean(anchorEl);
+
+  const { refetch: ignoreAuthorCall } = useQuery({
+    queryFn: () =>
+      httpRequest.patch(`${url}/post/ignoreAuthor/${data?.data.user._id}`),
+    queryKey: ["ignoreAuthor", data?.data.user._id],
+    enabled: false,
+  });
+
+  const { refetch: deleteStory } = useQuery({
+    queryFn: () => httpRequest.delete(`${url}/post/${id}`),
+    queryKey: ["delete", "page", id],
+    enabled: false,
+    onSuccess() {
+      handleToast("Story deleted successfully");
+      handleClose();
+      navigate(-1);
+    },
+  });
+
+  const handleClick = (event: any) => {
+    setAnchorEl(event.currentTarget);
+  };
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
+  function deletePost() {
+    deleteStory();
+  }
+
+  function editPost() {
+    navigate(`/write/${id}`);
+  }
+
+  function ignoreAuthor() {
+    ignoreAuthorCall();
+    handleToast("Got it. You will not see this author's story again");
+    handleClose();
   }
 
   if (error) return <p>Something went wrong ...</p>;
@@ -93,6 +138,13 @@ export default function Post() {
               username={data.data.user.name}
               userId={data.data.user._id}
               postUrl={postUrl}
+              anchorEl={anchorEl}
+              deletePost={deletePost}
+              open={open}
+              handleClose={handleClose}
+              editPost={editPost}
+              ignoreAuthor={ignoreAuthor}
+              handleClick={handleClick}
             />
           )}
           <h1
@@ -207,7 +259,18 @@ export default function Post() {
                   {shareicon}
                 </span>
                 <span style={iconColor}>{savePost}</span>
-                <span style={iconColor}>{moreIcon}</span>
+                <span onClick={handleClick} style={iconColor}>
+                  {moreIcon}
+                </span>
+                <PostMenu
+                  anchorEl={anchorEl}
+                  deletePost={deletePost}
+                  open={open}
+                  handleClose={handleClose}
+                  editPost={editPost}
+                  ignoreAuthor={ignoreAuthor}
+                  userId={data?.data.user._id}
+                />
               </div>
             </div>
           </div>

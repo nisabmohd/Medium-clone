@@ -54,7 +54,11 @@ export default function StoryCard({
       </div>
       <div
         className="post_details"
-        style={{ display: "flex", flexDirection: "row" }}
+        style={{
+          display: "flex",
+          flexDirection: "row",
+          justifyContent: "space-between",
+        }}
       >
         <Link
           to={`/blog/${postId}`}

@@ -7,9 +7,10 @@ import {
   twitterIcon,
 } from "../assets/icons";
 import ReactTimeAgo from "react-time-ago";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import useShare from "../hooks/useShare";
 import useClipboard from "../hooks/useClipboard";
+import PostMenu from "./PostMenu";
 
 type PostAuthorProps = {
   postId: string;
@@ -19,6 +20,13 @@ type PostAuthorProps = {
   userId: string;
   title: string;
   postUrl: string;
+  anchorEl: any;
+  open: boolean;
+  ignoreAuthor: () => void;
+  handleClose: () => void;
+  deletePost(): void;
+  editPost(): void;
+  handleClick(e: any): void;
 };
 
 export default function PostAuthor({
@@ -28,10 +36,18 @@ export default function PostAuthor({
   userId,
   username,
   title,
+  handleClick,
   postUrl,
+  anchorEl,
+  deletePost,
+  editPost,
+  handleClose,
+  ignoreAuthor,
+  open,
 }: PostAuthorProps) {
   const { socialShare } = useShare();
   const [_, copy] = useClipboard();
+
   return (
     <div
       className="author_details"
@@ -153,7 +169,18 @@ export default function PostAuthor({
           }}
         >
           <span style={iconStyle}>{savePost}</span>
-          <span style={iconStyle}>{moreIcon}</span>
+          <span onClick={handleClick} style={iconStyle}>
+            {moreIcon}
+          </span>
+          <PostMenu
+            anchorEl={anchorEl}
+            deletePost={deletePost}
+            open={open}
+            handleClose={handleClose}
+            editPost={editPost}
+            ignoreAuthor={ignoreAuthor}
+            userId={userId}
+          />
         </div>
       </div>
     </div>

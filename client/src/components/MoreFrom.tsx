@@ -24,9 +24,15 @@ export default function MoreFrom({
   const { user } = useAuth();
   const { socket } = useAppContext();
   const [iFollow, setIFollow] = useState(followers.includes(user?._id ?? ""));
-  const { data: response } = useQuery({
+  const [posts, setposts] = useState<Array<any>>([]);
+  const { handleToast } = useAppContext();
+
+  useQuery({
     queryFn: () => httpRequest.get(`${url}/post/more/${postId}/${userId}`),
     queryKey: ["more", "from", userId, postId],
+    onSuccess(resp) {
+      setposts(resp?.data);
+    },
   });
 
   const { refetch: follow } = useQuery({
@@ -40,6 +46,10 @@ export default function MoreFrom({
     queryKey: ["unfollow", "more", "from", postId, userId],
     enabled: false,
   });
+
+  function filterPost(postId: string) {
+    setposts((prev) => prev.filter((item) => item._id !== postId));
+  }
 
   function handleFollowUnfollow() {
     if (iFollow) {
@@ -118,7 +128,7 @@ export default function MoreFrom({
         className="inner_container_main"
         style={{ display: "flex", flexDirection: "column", gap: "30px" }}
       >
-        {response?.data?.map((post: any) => {
+        {posts.map((post: any) => {
           return (
             <Post
               postId={post._id}
@@ -131,6 +141,7 @@ export default function MoreFrom({
               tag={post.tags.at(0)}
               showUserList={false}
               userId={post.userId}
+              filterPost={filterPost}
             />
           );
         })}

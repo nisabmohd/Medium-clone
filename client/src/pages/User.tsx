@@ -50,6 +50,7 @@ export default function User() {
   const [optionsTab, setOptionsTab] = useState<
     typeof USER_PAGE_TAB_OPTIONS_AUTH
   >([]);
+  const [posts, setposts] = useState<Array<any>>([]);
 
   useEffect(() => {
     if (tab) return;
@@ -73,13 +74,19 @@ export default function User() {
       });
     },
   });
-  console.log(tab);
 
-  const { data: postData, refetch } = useQuery({
+  const { refetch } = useQuery({
     queryFn: () => httpRequest.get(`${url}/post/user/${id}`),
     enabled: data?.data != undefined,
     queryKey: ["post", "user", id],
+    onSuccess(response) {
+      setposts(response.data);
+    },
   });
+
+  function filterPost(postId: string) {
+    setposts((prev) => prev.filter((item) => item._id !== postId));
+  }
 
   return (
     <div
@@ -126,7 +133,7 @@ export default function User() {
           <Tab options={optionsTab} activeTab={tab ?? "home"} />
           <span style={{ marginTop: "-20px" }}>{""}</span>
           {!tab &&
-            postData?.data.map((item: any) => {
+            posts.map((item: any) => {
               return (
                 <Post
                   showUserList={true}
@@ -134,13 +141,14 @@ export default function User() {
                   timestamp={item.createdAt}
                   title={item.title}
                   username={data?.data?.name}
-                  userId={data?.data?.name._id}
+                  userId={id as string}
                   image={item.image}
                   tag={item.tags.at(0)}
                   userImage={data?.data?.avatar}
                   key={item._id}
                   summary={item.summary}
                   showMuteicon={false}
+                  filterPost={filterPost}
                 />
               );
             })}
