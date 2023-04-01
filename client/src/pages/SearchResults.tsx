@@ -31,6 +31,7 @@ const SEARCHBAR_OPTIONS = [
 ];
 
 export default function SearchResults() {
+  const { user } = useAuth();
   const [tabsOptions, setTabOptions] = useState<
     Array<{ id: number; url: string; title: string }>
   >([]);
@@ -42,7 +43,10 @@ export default function SearchResults() {
   const { isAuthenticated } = useAuth();
 
   const { refetch } = useQuery({
-    queryFn: () => httpRequest.get(`${url}/search/${apiQuery}/${query}`),
+    queryFn: () =>
+      httpRequest.post(`${url}/search/${apiQuery}/${query}`, {
+        userId: user?._id,
+      }),
     queryKey: ["search", "get", tab, query],
     enabled: false,
     onSuccess(response) {
