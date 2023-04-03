@@ -3,8 +3,6 @@ import Post from "../models/post";
 import Tag from "../models/tag";
 import User from "../models/user";
 import ServerError from "../utils/ServerError";
-import user from "../models/user";
-
 export const getUserPost = asyncHandler(async (req, res, next) => {
   res.send(await Post.find({ userId: req.params.userId }).sort({ _id: -1 }));
 });
@@ -225,11 +223,28 @@ export const savePost = asyncHandler(async (req, res, next) => {
   const { listName } = req.body;
   const { postId } = req.params;
   if (!listName) throw new ServerError(400, "listName not provided");
-  const updated = await user.updateOne(
-    { _id: userId, "lists.name": listName },
-    { $push: { "lists.$.posts": postId } }
-  );
-  res.send({ success: updated.modifiedCount == 1 });
+  const post = await Post.findOne({ _id: postId });
+  if (!post) throw new ServerError(400, "Post does not exist");
+  const find = await User.findOne({ _id: userId, "lists.name": listName });
+  if (!find) {
+    const updated = await User.updateOne(
+      {
+        _id: userId,
+      },
+      {
+        $push: {
+          lists: { name: listName, posts: [postId], images: [post.image] },
+        },
+      }
+    );
+    res.send({ success: updated.modifiedCount == 1 });
+  } else {
+    const updated = await User.updateOne(
+      { _id: userId, "lists.name": listName },
+      { $push: { "lists.$.posts": postId, "lists.$.images": post.image } }
+    );
+    res.send({ success: updated.modifiedCount == 1 });
+  }
 });
 
 export const unSavePost = asyncHandler(async (req, res, next) => {
@@ -237,12 +252,16 @@ export const unSavePost = asyncHandler(async (req, res, next) => {
   const { listName } = req.body;
   const { postId } = req.params;
   if (!listName) throw new ServerError(400, "listName not provided");
-  const updated = await user.updateOne(
+  const post = await Post.findOne({ _id: postId });
+  if (!post) throw new ServerError(400, "Post does not exist");
+  const updated = await User.updateOne(
     { _id: userId, "lists.name": listName },
-    { $pull: { "lists.$.posts": postId } }
+    { $pull: { "lists.$.posts": postId, "lists.$.images": post.image } }
   );
   res.send({ success: updated.modifiedCount == 1 });
 });
+
+// delete list
 
 //todo pagination
 export const getAllSavedFromList = asyncHandler(async (req, res, next) => {
