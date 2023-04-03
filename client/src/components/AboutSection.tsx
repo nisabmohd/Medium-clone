@@ -54,7 +54,7 @@ export default function AboutSection({
           {followers} Followers
         </Link>
         <Link
-          to={`/user/${userId}/followers`}
+          to={`/user/${userId}/followings`}
           style={{ color: "#72a589", fontSize: "13px", textDecoration: "none" }}
         >
           {followings} Followings
