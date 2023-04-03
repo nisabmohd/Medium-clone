@@ -114,6 +114,10 @@ export default function User() {
     } else {
       refetch();
     }
+    return () => {
+      setposts([]);
+      setUserData([]);
+    };
   }, [data?.data, tab]);
 
   function filterPost(postId: string) {
