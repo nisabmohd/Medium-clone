@@ -112,6 +112,28 @@ export const getNotifications = asyncHandler(async (req, res, next) => {
   res.send(notifications?.notifications.reverse());
 });
 
-// getAllFollowers
+export const getAllFollowers = asyncHandler(async (req, res, next) => {
+  const { userId } = req.params;
+  if (!userId) throw new ServerError(400, "No user id provided");
+  const user = await User.findOne({ _id: userId });
+  if (!user) throw new ServerError(400, "User does not exist");
+  const followers = await Promise.all(
+    user!.followers.map(async (item) => {
+      return await User.findOne({ _id: item }, { notifications: 0 });
+    })
+  );
+  res.send(followers);
+});
 
-// getAllFollowings
+export const getAllFollowings = asyncHandler(async (req, res, next) => {
+  const { userId } = req.params;
+  if (!userId) throw new ServerError(400, "No user id provided");
+  const user = await User.findOne({ _id: userId });
+  if (!user) throw new ServerError(400, "User does not exist");
+  const followings = await Promise.all(
+    user!.followings.map(async (item) => {
+      return await User.findOne({ _id: item }, { notifications: 0 });
+    })
+  );
+  res.send(followings);
+});

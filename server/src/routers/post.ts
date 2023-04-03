@@ -4,6 +4,8 @@ import {
   deletePost,
   editPost,
   explorePost,
+  getAllComments,
+  getAllSavedFromList,
   getHomePost,
   getPost,
   getPostOfTopic,
@@ -14,6 +16,7 @@ import {
   savePost,
   suggestTopics,
   suggestTopPosts,
+  unSavePost,
   vote,
   writePost,
 } from "../controllers/post.controller";
@@ -30,8 +33,15 @@ router
   .route("/:postId")
   .get(getPost)
   .put(isAuthenticated, editPost)
-  .delete(isAuthenticated, deletePost)
-  .patch(isAuthenticated, savePost);
+  .delete(isAuthenticated, deletePost);
+
+router.route("/save/:postId").patch(isAuthenticated, savePost);
+
+router.route("/unsave/:postId").patch(isAuthenticated, unSavePost);
+
+router.route("/comments/:postId").get(isAuthenticated, getAllComments);
+
+router.route("/saved/:listName").get(isAuthenticated, getAllSavedFromList);
 
 router.route("/users/:topic").get(isAuthenticated, getPostOfTopic);
 

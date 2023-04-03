@@ -3,6 +3,7 @@ import Post from "../models/post";
 import Tag from "../models/tag";
 import User from "../models/user";
 import ServerError from "../utils/ServerError";
+import user from "../models/user";
 
 export const getUserPost = asyncHandler(async (req, res, next) => {
   res.send(await Post.find({ userId: req.params.userId }).sort({ _id: -1 }));
@@ -199,13 +200,67 @@ export const ignoreAuthor = asyncHandler(async (req, res, next) => {
   res.send({ success: updated.modifiedCount == 1 });
 });
 
-//todo
-export const getAllComments = asyncHandler(async (req, res, next) => {});
+//todo pagination
+export const getAllComments = asyncHandler(async (req, res, next) => {
+  const { postId } = req.params;
+  if (!postId) throw new ServerError(400, "Post Id is not provided");
+  const post = await Post.findOne({ _id: postId });
+  if (!post) throw new ServerError(400, "Post does not exist");
+  const comments = await Promise.all(
+    post.comments.map(async (comment) => {
+      return {
+        comment: comment.comment,
+        user: await User.findOne(
+          { _id: comment.userId },
+          { notifications: 0, lists: 0 }
+        ),
+      };
+    })
+  );
+  res.send(comments);
+});
 
-//todo
 export const savePost = asyncHandler(async (req, res, next) => {
   const { userId } = req;
   const { listName } = req.body;
+  const { postId } = req.params;
+  if (!listName) throw new ServerError(400, "listName not provided");
+  const updated = await user.updateOne(
+    { _id: userId, "lists.name": listName },
+    { $push: { "lists.$.posts": postId } }
+  );
+  res.send({ success: updated.modifiedCount == 1 });
+});
+
+export const unSavePost = asyncHandler(async (req, res, next) => {
+  const { userId } = req;
+  const { listName } = req.body;
+  const { postId } = req.params;
+  if (!listName) throw new ServerError(400, "listName not provided");
+  const updated = await user.updateOne(
+    { _id: userId, "lists.name": listName },
+    { $pull: { "lists.$.posts": postId } }
+  );
+  res.send({ success: updated.modifiedCount == 1 });
+});
+
+//todo pagination
+export const getAllSavedFromList = asyncHandler(async (req, res, next) => {
+  const { listName } = req.params;
+  if (!listName) throw new ServerError(400, "listName not provided");
+  const user = await User.findOne({ _id: req.userId });
+  if (!user) throw new ServerError(400, "User does not exist");
+  const savedList = user.lists.find((list) => list.name == listName);
+  if (!savedList) throw new ServerError(400, "List does not exist");
+  const posts = await Promise.all(
+    savedList.posts.map(async (postId) => {
+      return await Post.findOne({ _id: postId });
+    })
+  );
+  res.send({
+    name: savedList.name,
+    posts,
+  });
 });
 
 export async function getPostsWithUser(q: any) {

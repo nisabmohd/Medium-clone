@@ -16,7 +16,7 @@ const userSchema = new Schema(
     followings: [{ type: Schema.Types.ObjectId, ref: "users" }],
     lists: [
       {
-        name: String,
+        name: { type: String },
         posts: [{ type: Schema.Types.ObjectId, ref: "posts" }],
         images: [{ type: String }],
       },

@@ -3,6 +3,8 @@ import {
   deleteUser,
   editUser,
   followUser,
+  getAllFollowers,
+  getAllFollowings,
   getNotifications,
   getUser,
   getUserIntrests,
@@ -24,6 +26,10 @@ router.route("/notifications").get(isAuthenticated, getNotifications);
 router.route("/intrests").get(isAuthenticated, getUserIntrests);
 
 router.route("/:userId").get(getUser);
+
+router.route("/followers/:userId").get(getAllFollowers);
+
+router.route("/followings/:userId").get(getAllFollowings);
 
 router.route("/follow/:userId").put(isAuthenticated, followUser);
 
