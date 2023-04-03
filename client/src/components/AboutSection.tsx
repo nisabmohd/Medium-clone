@@ -1,13 +1,17 @@
+import { Link } from "react-router-dom";
+
 type AboutProps = {
   followings: number;
   followers: number;
   bio?: string;
+  userId: string;
 };
 
 export default function AboutSection({
   followers,
   followings,
   bio,
+  userId,
 }: AboutProps) {
   return (
     <>
@@ -43,12 +47,18 @@ export default function AboutSection({
           gap: "22px",
         }}
       >
-        <p style={{ color: "#72a589", fontSize: "13px" }}>
+        <Link
+          to={`/user/${userId}/followers`}
+          style={{ color: "#72a589", fontSize: "13px", textDecoration: "none" }}
+        >
           {followers} Followers
-        </p>
-        <p style={{ color: "#72a589", fontSize: "13px" }}>
+        </Link>
+        <Link
+          to={`/user/${userId}/followers`}
+          style={{ color: "#72a589", fontSize: "13px", textDecoration: "none" }}
+        >
           {followings} Followings
-        </p>
+        </Link>
       </div>
     </>
   );

@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { moreIcon } from "../assets/icons";
 import { url } from "../baseUrl";
 import Post from "../components/Post";
@@ -11,6 +11,8 @@ import { useAuth } from "../contexts/Auth";
 import { httpRequest } from "../interceptor/axiosInterceptor";
 import AboutSection from "../components/AboutSection";
 import SavedSection from "../components/SavedSection";
+import UserCard from "../components/UserCard";
+import { toTitleCase } from "../utils/helper";
 
 const USER_PAGE_TAB_OPTIONS_AUTH = [
   {
@@ -51,6 +53,7 @@ export default function User() {
     typeof USER_PAGE_TAB_OPTIONS_AUTH
   >([]);
   const [posts, setposts] = useState<Array<any>>([]);
+  const [userData, setUserData] = useState<Array<any>>([]);
 
   useEffect(() => {
     if (tab) return;
@@ -77,12 +80,41 @@ export default function User() {
 
   const { refetch } = useQuery({
     queryFn: () => httpRequest.get(`${url}/post/user/${id}`),
-    enabled: data?.data != undefined,
+    enabled: false,
     queryKey: ["post", "user", id],
     onSuccess(response) {
       setposts(response.data);
     },
   });
+
+  const { refetch: getAllFollowers } = useQuery({
+    queryFn: () => httpRequest.get(`${url}/user/followers/${id}`),
+    enabled: false,
+    queryKey: ["followers", "user", id],
+    onSuccess(res) {
+      setUserData(res.data);
+    },
+  });
+
+  const { refetch: getAllFollowings } = useQuery({
+    queryFn: () => httpRequest.get(`${url}/user/followings/${id}`),
+    enabled: false,
+    queryKey: ["followings", "user", id],
+    onSuccess(res) {
+      setUserData(res.data);
+    },
+  });
+
+  useEffect(() => {
+    if (!data?.data || !tab) return;
+    if (tab == "followers") {
+      getAllFollowers();
+    } else if (tab == "followings") {
+      getAllFollowings();
+    } else {
+      refetch();
+    }
+  }, [data?.data, tab]);
 
   function filterPost(postId: string) {
     setposts((prev) => prev.filter((item) => item._id !== postId));
@@ -106,61 +138,124 @@ export default function User() {
           marginRight: "auto",
         }}
       >
-        <div
-          className="inner_container_main"
-          style={{
-            width: "90%",
-            marginRight: "auto",
-            display: "flex",
-            flexDirection: "column",
-            gap: "30px",
-          }}
-        >
+        {tab == "followers" || tab == "followings" ? (
           <div
-            className="upperline"
+            className="inner_container_main"
             style={{
+              width: "90%",
+              marginRight: "auto",
               display: "flex",
-              flexDirection: "row",
-              alignItems: "center",
-              justifyContent: "space-between",
-              marginBottom: "18px",
-              marginTop: "28px",
+              flexDirection: "column",
+              gap: "30px",
+              marginTop: "30px",
             }}
           >
-            <h1 style={{ fontSize: "40px" }}>{data?.data?.name}</h1>
-            <span style={{ color: "gray" }}>{moreIcon}</span>
-          </div>
-          <Tab options={optionsTab} activeTab={tab ?? "home"} />
-          <span style={{ marginTop: "-20px" }}>{""}</span>
-          {!tab &&
-            posts.map((item: any) => {
+            <div
+              style={{
+                display: "flex",
+                flexDirection: "row",
+                alignItems: "center",
+                gap: "10px",
+                fontSize: "13.5px",
+              }}
+            >
+              <Link
+                to={`/user/${id}`}
+                style={{ color: "gray", textDecoration: "none" }}
+              >
+                {data?.data.name}
+              </Link>
+              <svg
+                width="18"
+                height="18"
+                viewBox="0 0 18 18"
+                fill="none"
+                className="sk sl"
+              >
+                <path
+                  d="M6.75 4.5l4.5 4.5-4.5 4.5"
+                  stroke="#242424"
+                  strokeWidth="1.13"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                ></path>
+              </svg>
+              <p>{toTitleCase(tab)}</p>
+            </div>
+            <h1 style={{ marginBottom: "18px" }}>
+              {userData.length} {toTitleCase(tab)}
+            </h1>
+            {userData.map((user: any) => {
               return (
-                <Post
-                  showUserList={true}
-                  postId={item._id}
-                  timestamp={item.createdAt}
-                  title={item.title}
-                  username={data?.data?.name}
-                  userId={id as string}
-                  image={item.image}
-                  tag={item.tags.at(0)}
-                  userImage={data?.data?.avatar}
-                  key={item._id}
-                  summary={item.summary}
-                  showMuteicon={false}
-                  filterPost={filterPost}
+                <UserCard
+                  _id={user._id}
+                  avatar={user.avatar}
+                  followers={user.followers}
+                  name={user.name}
+                  bio={user.bio}
+                  key={user._id}
                 />
               );
             })}
-          {tab == "lists" && <SavedSection />}
-          {tab == "about" && (
-            <AboutSection
-              bio={data?.data.bio}
-              followers={data?.data.followers.length}
-              followings={data?.data.followings.length}
-            />
-          )}
-        </div>
+          </div>
+        ) : (
+          <div
+            className="inner_container_main"
+            style={{
+              width: "90%",
+              marginRight: "auto",
+              display: "flex",
+              flexDirection: "column",
+              gap: "30px",
+            }}
+          >
+            <div
+              className="upperline"
+              style={{
+                display: "flex",
+                flexDirection: "row",
+                alignItems: "center",
+                justifyContent: "space-between",
+                marginBottom: "18px",
+                marginTop: "28px",
+              }}
+            >
+              <h1 style={{ fontSize: "40px" }}>{data?.data?.name}</h1>
+              <span style={{ color: "gray" }}>{moreIcon}</span>
+            </div>
+            <Tab options={optionsTab} activeTab={tab ?? "home"} />
+            <span style={{ marginTop: "-20px" }}>{""}</span>
+            {!tab &&
+              posts.map((item: any) => {
+                return (
+                  <Post
+                    showUserList={true}
+                    postId={item._id}
+                    timestamp={item.createdAt}
+                    title={item.title}
+                    username={data?.data?.name}
+                    userId={id as string}
+                    image={item.image}
+                    tag={item.tags.at(0)}
+                    userImage={data?.data?.avatar}
+                    key={item._id}
+                    summary={item.summary}
+                    showMuteicon={false}
+                    filterPost={filterPost}
+                  />
+                );
+              })}
+            {tab == "lists" && <SavedSection />}
+            {tab == "about" && (
+              <AboutSection
+                userId={id!}
+                bio={data?.data.bio}
+                followers={data?.data.followers.length}
+                followings={data?.data.followings.length}
+              />
+            )}
+          </div>
+        )}
       </div>
       <div
         className="rightbar"

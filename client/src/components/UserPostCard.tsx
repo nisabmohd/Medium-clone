@@ -81,17 +81,19 @@ export default function UserPostCard({
       >
         {username}
       </Link>
-      <span
+      <Link
+        to={`/user/${userId}/followers`}
         style={{
           marginLeft: "8px",
           marginTop: "-4px",
           fontSize: "14px",
           fontFamily: "Roboto",
           color: "#4b4a4a",
+          textDecoration: "none",
         }}
       >
         {followers.length > 0 ? followers.length + " Followers" : ""}
-      </span>
+      </Link>
       {bio && (
         <p
           style={{
@@ -104,7 +106,6 @@ export default function UserPostCard({
           {bio}
         </p>
       )}
-
       {user?._id !== userId ? (
         <button
           onClick={() => handleFollowUnfollow()}
