@@ -2,6 +2,8 @@
 
 This clone is made with React, Node, Express, Typescript and MongoDB.
 
+<img src="./screenshots/screely-home.png">
+
 ## Prerequisites
 
 Make sure you have installed all of the following prerequisites on your development machine:
@@ -61,6 +63,5 @@ $ npm run dev
 
 ### Overview
 
-<img src="./screenshots/unauth.png" />
-<img src="./screenshots/home.png" />
-<img src="./screenshots/post.png" />
+<img src="./screenshots/screely-home-dark.png">
+<img src="./screenshots/screely-post-dark.png">
