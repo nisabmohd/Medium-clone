@@ -34,11 +34,12 @@ export const getPost = asyncHandler(async (req, res, next) => {
 
 export const writePost = asyncHandler(async (req, res, next) => {
   const { userId } = req;
-  var test: string = req.body.markdown ?? "";
+  let test: string = req.body.markdown ?? "";
   const codeRegex = /<code>(.*?)<\/code>/g;
   const withoutCode = req.body.markdown.replace(codeRegex, "");
-  var imgRegex = /<img.*?src=['"](.*?)['"]/;
-  const imgUrl = imgRegex.exec(test)?.at(1);
+  let imgRegex = /<img.*?src=['"](.*?)['"]/;
+  let t = imgRegex.exec(test);
+  const imgUrl = t ? t[0] : undefined;
   const htmlRegexG = /<(?:"[^"]*"['"]*|'[^']*'['"]*|[^'">])+>/g;
   const summary = withoutCode.replace(htmlRegexG, "");
   const postRef = new Post({

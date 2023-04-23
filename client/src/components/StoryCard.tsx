@@ -75,7 +75,7 @@ export default function StoryCard({
           {title}
         </Link>
         {showImg && (
-          <div className="img">
+          <Link to={`/blog/${postId}`} className="img">
             <img
               style={{
                 marginTop: "-12px",
@@ -86,7 +86,7 @@ export default function StoryCard({
               src={image}
               alt=""
             />
-          </div>
+          </Link>
         )}
       </div>
     </div>
