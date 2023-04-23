@@ -46,7 +46,7 @@ export default function SuggestionBar({ activeTab }: { activeTab: string }) {
       <>
         {
           <Link
-            to="/intrests/add"
+            to="/suggestions"
             style={{
               color: "gray",
               height: "100%",

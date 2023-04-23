@@ -4,9 +4,19 @@ import { useAuth } from "../contexts/Auth";
 
 type AuthenticationProps = {
   children: ReactNode;
+  fallback?: ReactNode;
 };
 
-export default function Authentication({ children }: AuthenticationProps) {
+export default function Authentication({
+  children,
+  fallback,
+}: AuthenticationProps) {
   const { isAuthenticated } = useAuth();
-  return isAuthenticated ? <>{children}</> : <Navigate to="/" />;
+  return isAuthenticated ? (
+    <>{children}</>
+  ) : fallback ? (
+    <>{fallback}</>
+  ) : (
+    <Navigate to="/" />
+  );
 }

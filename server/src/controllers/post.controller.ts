@@ -102,7 +102,15 @@ export const suggestTopPosts = asyncHandler(async (req, res, next) => {
 });
 
 export const suggestTopics = asyncHandler(async (req, res, next) => {
-  const tags = await Tag.find({}, { name: 1 }).sort({ _id: -1 }).limit(7);
+  const { userId } = req.query;
+  const user = await User.findOne({ _id: userId });
+  const ignoreTopics = [];
+  if (user) {
+    ignoreTopics.push(...user.intrests);
+  }
+  const tags = await Tag.find({ name: { $nin: ignoreTopics } }, { name: 1 })
+    .sort({ _id: -1 })
+    .limit(7);
   res.send(tags);
 });
 
@@ -262,7 +270,7 @@ export const unSavePost = asyncHandler(async (req, res, next) => {
   res.send({ success: updated.modifiedCount == 1 });
 });
 
-// delete list
+// delete list -todo
 
 //todo pagination
 export const getAllSavedFromList = asyncHandler(async (req, res, next) => {

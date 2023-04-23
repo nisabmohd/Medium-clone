@@ -1,6 +1,6 @@
 import Navbar from "./components/Navbar";
 import Home from "./pages/Home";
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, Navigate } from "react-router-dom";
 import AuthRedirect from "./pages/AuthRedirect";
 import Authentication from "./router/Authentication";
 import Post from "./pages/Post";
@@ -9,7 +9,6 @@ import User from "./pages/User";
 import Write from "./pages/Write";
 import { useAuth } from "./contexts/Auth";
 import UnAuthNavbar from "./components/UnAuthNavbar";
-import UnAuthHome from "./pages/UnAuthHome";
 import SignIn from "./pages/SignIn";
 import {
   useState,
@@ -21,11 +20,10 @@ import {
 } from "react";
 import { Toaster, toast, Toast } from "react-hot-toast";
 import CloseIcon from "@mui/icons-material/Close";
-import WriteNavbar from "./components/WriteNavbar";
-import { Container } from "@mui/system";
 import { io } from "socket.io-client";
 import { url } from "./baseUrl";
 import SearchResults from "./pages/SearchResults";
+import Suggestions from "./pages/Suggestions";
 
 export const DEFAULT_IMG =
   "https://firebasestorage.googleapis.com/v0/b/upload-pics-e599e.appspot.com/o/images%2F1_dmbNkD5D-u45r44go_cf0g.png?alt=media&token=3ef51503-f601-448b-a55b-0682607ddc8a";
@@ -97,6 +95,7 @@ export default function App() {
         <Routes>
           <Route path="/tag?/:tag?" element={<Home />} />
           <Route path="/signin/:tab" element={<SignIn />} />
+          <Route path="/suggestions" element={<Suggestions />} />
           <Route path="/search/:tab/:query" element={<SearchResults />} />
           <Route path="/blog/:id" element={<Post />} />
           <Route path="/user/:id/:tab?" element={<User />} />
@@ -111,7 +110,7 @@ export default function App() {
           <Route
             path="/write/:postId?"
             element={
-              <Authentication>
+              <Authentication fallback={<Navigate to="/signin/new" />}>
                 <div
                   className="write_page"
                   style={{ width: "50%", margin: "auto", height: "100%" }}

@@ -2,6 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import { url } from "../baseUrl";
 import { httpRequest } from "../interceptor/axiosInterceptor";
 import Chip from "./Chip";
+import { useAuth } from "../contexts/Auth";
 
 export default function Topics({
   text = "Recommended topics",
@@ -10,8 +11,12 @@ export default function Topics({
   text?: string;
   style?: object;
 }) {
+  const { user } = useAuth();
   const { data } = useQuery({
-    queryFn: () => httpRequest.get(`${url}/post/suggest/topics`),
+    queryFn: () =>
+      httpRequest.get(
+        `${url}/post/suggest/topics${user ? `?userId=${user._id}` : ""}`
+      ),
     queryKey: ["suggest", "topics"],
   });
 
