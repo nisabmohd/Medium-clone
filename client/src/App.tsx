@@ -55,7 +55,6 @@ export default function App() {
       setNotificationsCount(count);
     });
     socket.on("haveNotifications", (have) => {
-      console.log(have);
       if (have) setNotificationsCount((prev) => prev + 1);
     });
   }, []);

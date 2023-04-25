@@ -103,6 +103,30 @@ export const getUserIntrests = asyncHandler(async (req, res, next) => {
   res.send(intrests);
 });
 
+export const addUserIntrests = asyncHandler(async (req, res, next) => {
+  const { topic } = req.query;
+  const { userId } = req;
+  const result = await User.updateOne(
+    { _id: userId },
+    { $push: { intrests: topic } }
+  );
+  res.send({
+    success: result.modifiedCount == 1,
+  });
+});
+
+export const removeUserIntrests = asyncHandler(async (req, res, next) => {
+  const { topic } = req.query;
+  const { userId } = req;
+  const result = await User.updateOne(
+    { _id: userId },
+    { $pull: { intrests: topic } }
+  );
+  res.send({
+    success: result.modifiedCount == 1,
+  });
+});
+
 // totdo pagination
 export const getNotifications = asyncHandler(async (req, res, next) => {
   const notifications = await User.findOne(

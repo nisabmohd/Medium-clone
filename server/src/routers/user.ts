@@ -1,5 +1,6 @@
 import express from "express";
 import {
+  addUserIntrests,
   deleteUser,
   editUser,
   followUser,
@@ -8,6 +9,7 @@ import {
   getNotifications,
   getUser,
   getUserIntrests,
+  removeUserIntrests,
   suggestUsers,
   unfollowUser,
 } from "../controllers/user.controller";
@@ -23,7 +25,11 @@ router.route("/suggest").get(isAuthenticated, suggestUsers);
 
 router.route("/notifications").get(isAuthenticated, getNotifications);
 
-router.route("/intrests").get(isAuthenticated, getUserIntrests);
+router
+  .route("/intrests")
+  .get(isAuthenticated, getUserIntrests)
+  .patch(isAuthenticated, addUserIntrests)
+  .delete(isAuthenticated, removeUserIntrests);
 
 router.route("/:userId").get(getUser);
 

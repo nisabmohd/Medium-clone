@@ -14,9 +14,7 @@ export default function Topics({
   const { user } = useAuth();
   const { data } = useQuery({
     queryFn: () =>
-      httpRequest.get(
-        `${url}/post/suggest/topics${user ? `?userId=${user._id}` : ""}`
-      ),
+      httpRequest.get(`${url}/post/suggest/topics?userId=${user?._id}`),
     queryKey: ["suggest", "topics"],
   });
 
