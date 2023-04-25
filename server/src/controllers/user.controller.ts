@@ -161,3 +161,9 @@ export const getAllFollowings = asyncHandler(async (req, res, next) => {
   );
   res.send(followings);
 });
+
+export const getAllList = asyncHandler(async (req, res, next) => {
+  const { userId } = req;
+  const userList = await User.findOne({ _id: userId }, { lists: 1, _id: 0 });
+  res.send(userList);
+});

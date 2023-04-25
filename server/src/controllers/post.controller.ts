@@ -235,9 +235,8 @@ export const getAllComments = asyncHandler(async (req, res, next) => {
 
 export const savePost = asyncHandler(async (req, res, next) => {
   const { userId } = req;
-  const { listName } = req.body;
+  const { listName = "Reading list" } = req.body;
   const { postId } = req.params;
-  if (!listName) throw new ServerError(400, "listName not provided");
   const post = await Post.findOne({ _id: postId });
   if (!post) throw new ServerError(400, "Post does not exist");
   const find = await User.findOne({ _id: userId, "lists.name": listName });
@@ -288,7 +287,15 @@ export const getAllSavedFromList = asyncHandler(async (req, res, next) => {
   if (!savedList) throw new ServerError(400, "List does not exist");
   const posts = await Promise.all(
     savedList.posts.map(async (postId) => {
-      return await Post.findOne({ _id: postId });
+      const currPost = await Post.findOne({ _id: postId });
+      const currUser = await User.findOne(
+        { _id: currPost?.userId },
+        { notifications: 0 }
+      );
+      return {
+        user: currUser,
+        post: currPost,
+      };
     })
   );
   res.send({

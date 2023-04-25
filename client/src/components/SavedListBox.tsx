@@ -1,8 +1,22 @@
 import {} from "react";
+import { Link } from "react-router-dom";
 
-export default function SavedListBox() {
+type SavedListBoxProps = {
+  name: string;
+  stories: number;
+  images: Array<string>;
+  userId: string;
+};
+
+export default function SavedListBox({
+  name,
+  stories,
+  images,
+  userId,
+}: SavedListBoxProps) {
   return (
-    <div
+    <Link
+      to={`/user/${userId}/lists?active=${name}`}
       style={{
         width: "100%",
         backgroundColor: "#fafafa",
@@ -14,43 +28,21 @@ export default function SavedListBox() {
         alignItems: "center",
         justifyContent: "space-between",
         overflow: "hidden",
+        textDecoration: "none",
+        color: "inherit",
       }}
     >
       <div className="left_section_list_box" style={{ marginLeft: "22px" }}>
-        <h3>Reading list</h3>
-        <p style={{ fontSize: "13px" }}>33 stories</p>
+        <h3>{name}</h3>
+        <p style={{ fontSize: "13px" }}>{stories} stories</p>
       </div>
       <div className="right_images">
         <img
-          style={{
-            height: "128px",
-            marginRight: "-60px",
-            position: "relative",
-            zIndex: "22",
-            borderRight: "2px solid white",
-            objectFit: "cover",
-          }}
-          src="https://miro.medium.com/v2/resize:fill:101:101/1*IWKaeBkpyvI1RN4uMjdfEA.png"
-          alt=""
-        />
-        <img
-          style={{
-            height: "100%",
-            marginRight: "-60px",
-            position: "relative",
-            zIndex: "9 !important",
-            objectFit: "cover",
-            borderRight: "2px solid white",
-          }}
-          src="https://miro.medium.com/v2/resize:fill:149:130/0*UziLdJOwiH8zcO85"
-          alt=""
-        />
-        <img
-          style={{ height: "100%", objectFit: "cover" }}
-          src="https://miro.medium.com/v2/resize:fill:149:130/1*USEHLI_nAVPV7dwpJSm8cQ.jpeg"
+          style={{ height: "130px", maxWidth: "130px", objectFit: "cover" }}
+          src={images.at(-1)}
           alt=""
         />
       </div>
-    </div>
+    </Link>
   );
 }

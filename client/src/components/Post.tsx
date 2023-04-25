@@ -24,6 +24,7 @@ type PostProps = {
   showMuteicon?: boolean;
   showUserList: boolean;
   unAuth?: boolean;
+  showMoreIcon?: boolean;
 };
 
 export default function Post({
@@ -41,6 +42,7 @@ export default function Post({
   showUserList = true,
   unAuth = false,
   filterAuthorPost,
+  showMoreIcon = true,
 }: PostProps) {
   const { handleToast } = useAppContext();
   const navigate = useNavigate();
@@ -256,12 +258,14 @@ export default function Post({
                   {mutePost}
                 </span>
               )}
-              <span
-                onClick={handleClick}
-                style={{ color: "rgba(117, 117, 117, 1)", cursor: "pointer" }}
-              >
-                {moreIcon}
-              </span>
+              {showMoreIcon && (
+                <span
+                  onClick={handleClick}
+                  style={{ color: "rgba(117, 117, 117, 1)", cursor: "pointer" }}
+                >
+                  {moreIcon}
+                </span>
+              )}
               <PostMenu
                 anchorEl={anchorEl}
                 open={open}

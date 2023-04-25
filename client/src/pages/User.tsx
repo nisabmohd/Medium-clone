@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link, useParams, useSearchParams } from "react-router-dom";
 import { moreIcon } from "../assets/icons";
 import { url } from "../baseUrl";
 import Post from "../components/Post";
@@ -13,6 +13,7 @@ import AboutSection from "../components/AboutSection";
 import SavedSection from "../components/SavedSection";
 import UserCard from "../components/UserCard";
 import { toTitleCase } from "../utils/helper";
+import ListSection from "../components/ListSection";
 
 const USER_PAGE_TAB_OPTIONS_AUTH = [
   {
@@ -48,6 +49,9 @@ export default function User() {
   const { tab } = useParams();
   const { id } = useParams();
   const { user } = useAuth();
+  const [query] = useSearchParams();
+
+  const activeQuery = query.get("active");
 
   const [optionsTab, setOptionsTab] = useState<
     typeof USER_PAGE_TAB_OPTIONS_AUTH
@@ -142,66 +146,82 @@ export default function User() {
           marginRight: "auto",
         }}
       >
-        {tab == "followers" || tab == "followings" ? (
-          <div
-            className="inner_container_main"
-            style={{
-              width: "90%",
-              marginRight: "auto",
-              display: "flex",
-              flexDirection: "column",
-              gap: "30px",
-              marginTop: "30px",
-            }}
-          >
+        {tab && (tab == "followers" || tab == "followings" || activeQuery) ? (
+          activeQuery ? (
             <div
+              className="inner_container_main"
               style={{
+                width: "90%",
+                marginRight: "auto",
                 display: "flex",
-                flexDirection: "row",
-                alignItems: "center",
-                gap: "10px",
-                fontSize: "13.5px",
+                flexDirection: "column",
+                gap: "30px",
+                marginTop: "30px",
               }}
             >
-              <Link
-                to={`/user/${id}`}
-                style={{ color: "gray", textDecoration: "none" }}
-              >
-                {data?.data.name}
-              </Link>
-              <svg
-                width="18"
-                height="18"
-                viewBox="0 0 18 18"
-                fill="none"
-                className="sk sl"
-              >
-                <path
-                  d="M6.75 4.5l4.5 4.5-4.5 4.5"
-                  stroke="#242424"
-                  strokeWidth="1.13"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                ></path>
-              </svg>
-              <p>{toTitleCase(tab)}</p>
+              <ListSection listName={activeQuery} />
             </div>
-            <h1 style={{ marginBottom: "18px" }}>
-              {userData.length} {toTitleCase(tab)}
-            </h1>
-            {userData.map((user: any) => {
-              return (
-                <UserCard
-                  _id={user._id}
-                  avatar={user.avatar}
-                  followers={user.followers}
-                  name={user.name}
-                  bio={user.bio}
-                  key={user._id}
-                />
-              );
-            })}
-          </div>
+          ) : (
+            <div
+              className="inner_container_main"
+              style={{
+                width: "90%",
+                marginRight: "auto",
+                display: "flex",
+                flexDirection: "column",
+                gap: "30px",
+                marginTop: "30px",
+              }}
+            >
+              <div
+                style={{
+                  display: "flex",
+                  flexDirection: "row",
+                  alignItems: "center",
+                  gap: "10px",
+                  fontSize: "13.5px",
+                }}
+              >
+                <Link
+                  to={`/user/${id}`}
+                  style={{ color: "gray", textDecoration: "none" }}
+                >
+                  {data?.data.name}
+                </Link>
+                <svg
+                  width="18"
+                  height="18"
+                  viewBox="0 0 18 18"
+                  fill="none"
+                  className="sk sl"
+                >
+                  <path
+                    d="M6.75 4.5l4.5 4.5-4.5 4.5"
+                    stroke="#242424"
+                    strokeWidth="1.13"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  ></path>
+                </svg>
+                <p>{toTitleCase(tab)}</p>
+              </div>
+              <h1 style={{ marginBottom: "18px" }}>
+                {userData.length} {toTitleCase(tab)}
+              </h1>
+              {userData.map((user: any) => {
+                return (
+                  <UserCard
+                    _id={user._id}
+                    avatar={user.avatar}
+                    followers={user.followers}
+                    name={user.name}
+                    bio={user.bio}
+                    key={user._id}
+                  />
+                );
+              })}
+            </div>
+          )
         ) : (
           <div
             className="inner_container_main"
@@ -249,7 +269,7 @@ export default function User() {
                   />
                 );
               })}
-            {tab == "lists" && <SavedSection />}
+            {tab == "lists" && id && <SavedSection userId={id} />}
             {tab == "about" && (
               <AboutSection
                 userId={id!}

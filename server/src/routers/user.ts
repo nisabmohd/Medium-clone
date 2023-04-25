@@ -6,6 +6,7 @@ import {
   followUser,
   getAllFollowers,
   getAllFollowings,
+  getAllList,
   getNotifications,
   getUser,
   getUserIntrests,
@@ -13,6 +14,7 @@ import {
   suggestUsers,
   unfollowUser,
 } from "../controllers/user.controller";
+
 import isAuthenticated from "../middlewares/auth";
 const router = express.Router();
 
@@ -30,6 +32,8 @@ router
   .get(isAuthenticated, getUserIntrests)
   .patch(isAuthenticated, addUserIntrests)
   .delete(isAuthenticated, removeUserIntrests);
+
+router.route("/list").get(isAuthenticated, getAllList);
 
 router.route("/:userId").get(getUser);
 
