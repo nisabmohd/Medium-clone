@@ -341,16 +341,19 @@ const DialogComponent = ({
                 border: "2px solid #eeecec",
                 backgroundColor: "#fafafa",
                 padding: "4px 8px",
+                outline: "transparent",
               }}
               type="text"
               placeholder="Add topics followed by commas eg : Java,Typescript"
             />
             <button
-              onClick={handlePublish}
+              onClick={() => {
+                tags.length > 0 && handlePublish();
+              }}
               style={{
                 marginTop: "18px",
                 color: "white",
-                backgroundColor: "#1a8917",
+                backgroundColor: tags.length > 0 ? "#1a8917" : "#cbe4ca",
                 border: "none",
                 outline: "transparent",
                 width: "fit-content",
