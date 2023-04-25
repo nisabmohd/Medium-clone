@@ -29,7 +29,7 @@ export default function Topic({ name }: TopicProps) {
     enabled: false,
     onSuccess(res) {
       if (res.data.success) {
-        setIFollow(true);
+        setIFollow(false);
       }
     },
   });
