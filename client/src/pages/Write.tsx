@@ -11,17 +11,26 @@ import { useQuery } from "@tanstack/react-query";
 import { httpRequest } from "../interceptor/axiosInterceptor";
 import { url } from "../baseUrl";
 import { useNavigate, useParams } from "react-router-dom";
+import useLocalStorage from "../hooks/useLocalStorage";
+
+const INITAIL_POST_DATA = { title: "", markdown: "", tags: "" };
 
 export default function Write() {
   const { hideNavbar } = useAppContext();
-  const [post, setPost] = useState({ title: "", markdown: "", tags: "" });
+  const [post, setPost] = useState(INITAIL_POST_DATA);
   const navigate = useNavigate();
   const { postId } = useParams();
   const [hasPostId, setHasPostId] = useState(false);
+  const [localDraft, setLocalDraft] = useLocalStorage(
+    "draft",
+    INITAIL_POST_DATA
+  );
+  const [showDraft, setShowDraft] = useState(false);
 
   useEffect(() => {
     if (postId) setHasPostId(true);
-    () => setHasPostId(false);
+    setShowDraft(true);
+    return () => setHasPostId(false);
   }, [postId]);
 
   useEffect(() => {
@@ -29,6 +38,10 @@ export default function Write() {
     document.title = "New story -Medium";
     return () => hideNavbar(false);
   }, []);
+
+  useEffect(() => {
+    setPost(localDraft);
+  }, [showDraft]);
 
   const { refetch: makePost } = useQuery({
     queryFn: () => {
@@ -84,6 +97,7 @@ export default function Write() {
   };
 
   const handletags = (val: string) => {
+    setLocalDraft((prev) => ({ ...prev, tags: val }));
     setPost((prev) => {
       return {
         ...prev,
@@ -121,11 +135,12 @@ export default function Write() {
       >
         <TextareaAutosize
           autoFocus={true}
-          onChange={(e) =>
+          onChange={(e) => {
+            setLocalDraft((prev) => ({ ...prev, title: e.target.value }));
             setPost((prev) => {
               return { ...prev, title: e.target.value };
-            })
-          }
+            });
+          }}
           value={post.title}
           placeholder="Title"
           style={{
@@ -137,11 +152,12 @@ export default function Write() {
           }}
         />
         <TextareaAutosize
-          onChange={(e) =>
+          onChange={(e) => {
+            setLocalDraft((prev) => ({ ...prev, markdown: e.target.value }));
             setPost((prev) => {
               return { ...prev, markdown: e.target.value };
-            })
-          }
+            });
+          }}
           value={post.markdown}
           className="hide_scroll"
           placeholder="Tell your story..."

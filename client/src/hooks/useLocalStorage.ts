@@ -5,7 +5,7 @@ export default function useLocalStorage<T>(key: string, initialValue: T) {
     const localVal = localStorage.getItem(key);
     return localVal ? JSON.parse(localVal) : initialValue;
   });
-  const changeValue = useCallback((param: T | ((prevValue: T) => T)) => {
+  const changeValue = (param: T | ((prevValue: T) => T)) => {
     if (param instanceof Function) {
       const t: T = param(val);
       setVal(t);
@@ -14,7 +14,8 @@ export default function useLocalStorage<T>(key: string, initialValue: T) {
       setVal(param);
       localStorage.setItem(key, JSON.stringify(param));
     }
-  }, []);
+  };
+
   return [val, changeValue] as const;
 }
 
